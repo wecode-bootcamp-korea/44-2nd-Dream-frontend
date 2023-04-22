@@ -1,0 +1,14 @@
+{
+  "productName": "포르쉐 911",
+  "modelNumber": "porche-asfgg-154342",
+  "categoryName": "Car",
+  "originalPrice": "219900.00",
+  "imageUrl": "https://images.unsplash.com/photo-1567329776387-a135c5ea2f75?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+  "productAge": "18세 이상",
+  "productLevel": 3,
+  "recentDealPrice": "500000.00",
+  "buyNowPrice": "600000.00",
+  "sellNowPrice": "300000.00",
+  "likeCount": "4",
+  "premiumPercent": "127.38%"
+}
