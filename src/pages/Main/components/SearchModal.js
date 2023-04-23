@@ -2,9 +2,16 @@ import React from 'react';
 import Clock from 'react-live-clock';
 import styled from 'styled-components';
 
-function SearchModal() {
+function SearchModal({ setModalOpen }) {
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <Total>
+      <CloseBtnWrap>
+        <CloseBtn onClick={closeModal}>✕</CloseBtn>
+      </CloseBtnWrap>
       <SearchWrap>
         <SearchInputWrap>
           <SearchInput
@@ -35,7 +42,7 @@ function SearchModal() {
             <Clock
               format="MM.DD HH:mm:ss"
               ticking={true}
-              timezone="KR/Pacific"
+              // timezone="KR/Pacific"
             />
           </DateText>
         </SearchContentTitle>
@@ -59,8 +66,31 @@ function SearchModal() {
 }
 
 const Total = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  inset: 0;
+  background-color: white;
+`;
+
+const CloseBtnWrap = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 30px;
+`;
+
+const CloseBtn = styled.button`
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  background-color: white;
+  border: none;
+  font-size: 20px;
+  text-align: center;
+  color: rgb(83, 83, 83, 0.5);
+  cursor: pointer;
 `;
 
 const SearchWrap = styled.div`
@@ -68,6 +98,9 @@ const SearchWrap = styled.div`
   justify-content: center;
   width: 100%;
   padding: 50px 0 0;
+  z-index: 100;
+  /* opacity: 1;
+  visibility: visible; */
 `;
 
 const SearchInputWrap = styled.div`
