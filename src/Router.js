@@ -5,7 +5,7 @@ import InterestProduct from './pages/InterestProduct/InterestProduct';
 import Login from './pages/Login/Login';
 import Token from './pages/Login/Token';
 import Main from './pages/Main/Main';
-import Payment from './pages/Payment/Payment.Js';
+import Payment from './pages/Payment/Payment.js';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import PurchaseBid from './pages/PurchaseBid/PurchaseBid';
 
