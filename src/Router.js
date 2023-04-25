@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AgreePage from './pages/AgreePage/AgreePage';
 import BiddingPage from './pages/BiddingPage/BiddingPage';
+import Nav from './components/Nav/Nav';
+import Footer from './components/Footer/Footer';
 import InterestProduct from './pages/InterestProduct/InterestProduct';
 import Login from './pages/Login/Login';
 import Token from './pages/Login/Token';
@@ -13,6 +15,7 @@ import ProductDetail from './pages/ProductDetail/ProductDetail';
 const Router = () => {
   return (
     <BrowserRouter>
+      <Nav />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/dream/kakao" element={<Token />} />
@@ -24,6 +27,7 @@ const Router = () => {
         <Route path="/bidding" element={<BiddingPage />} />
         <Route path="/payment" element={<Payment />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 };
