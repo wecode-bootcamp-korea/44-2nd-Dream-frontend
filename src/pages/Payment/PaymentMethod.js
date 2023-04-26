@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+
 const PaymentMethod = () => {
+  const [payMehtodId, setPayMehtodId] = useState(0);
+
+  const handleMehtod = methodId => {
+    setPayMehtodId(methodId);
+  };
+
   return (
     <PaymentMethodContainer>
       <PaymentMethodTitle>결제 방법</PaymentMethodTitle>
@@ -16,7 +23,12 @@ const PaymentMethod = () => {
       <CardSortWrap>
         {CARD_CORPERATE.map(card => {
           return (
-            <CardSort key={card.id}>
+            <CardSort
+              key={card.id}
+              id={card.id}
+              payMehtodId={payMehtodId}
+              onClick={() => handleMehtod(card.id)}
+            >
               <CardName>{card.name}</CardName>
               <CardLogo url={card.image} />
             </CardSort>
@@ -110,16 +122,22 @@ const CardSort = styled.div`
   justify-content: space-between;
   width: 248px;
   height: 60px;
-  border: 1px solid #a3a3a3;
+  /* border: 1px solid #a3a3a3; */
   border-radius: 12px;
   padding: 7px 7px 8px 11px;
   margin-right: 10px;
   margin-top: 10px;
+  border: ${props =>
+    props.id === props.payMehtodId
+      ? '1.5px solid #4a4a4a'
+      : '1px solid #a3a3a3'};
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const CardName = styled.span`
   font-size: 16px;
-  /* font-weight: 300; */
 `;
 
 const CardLogo = styled.div`

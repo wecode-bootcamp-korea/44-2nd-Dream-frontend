@@ -1,15 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ProductInfo = () => {
+const ProductInfo = ({ data }) => {
+  const { productName, modelNumber, imageUrl } = data;
+
   return (
     <ProductInfoContainer>
-      <ProductIamge />
+      <ProductIamge imageUrl={imageUrl} />
       <ProductInfoWrap>
-        <ProductModel>H01877</ProductModel>
-        <ProductEnglishName>Adidas Samba Vegan White Black</ProductEnglishName>
-        <ProductKoreanName>아디다스 삼바 비건 화이트 블랙</ProductKoreanName>
-        <ProductSize>310</ProductSize>
+        <ProductModel>{modelNumber}</ProductModel>
+        <ProductEnglishName />
+        <ProductKoreanName>{productName} </ProductKoreanName>
+        <ProductSize>ONE SIZE</ProductSize>
       </ProductInfoWrap>
     </ProductInfoContainer>
   );
@@ -18,7 +20,6 @@ const ProductInfoContainer = styled.div`
   display: flex;
   background-color: #ffffff;
   width: 840px;
-  /* height: 80px; */
   padding: 32px;
   margin-top: 8px;
 `;
@@ -28,6 +29,10 @@ const ProductIamge = styled.img`
   height: 80px;
   background-color: orange;
   border-radius: 8px;
+  background-image: url(${props => props.imageUrl});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 const ProductInfoWrap = styled.div`
@@ -50,13 +55,14 @@ const ProductEnglishName = styled.h4`
 
 const ProductKoreanName = styled.h5`
   color: gray;
-  margin-bottom: 4px;
+  margin-top: 6px;
   margin-left: 14px;
 `;
 
 const ProductSize = styled.h6`
   font-weight: bold;
-  margin-bottom: 4px;
+  margin-top: 14px;
+
   margin-left: 14px;
 `;
 

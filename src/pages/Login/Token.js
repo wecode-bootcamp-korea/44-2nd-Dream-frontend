@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Token = () => {
-  const clientId = process.env.REACT_APP_CLIENT_ID;
-  const RedirectUri = process.env.REACT_APP_REDIRECT_URI;
   const IP = '10.58.52.92:3000';
   const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get('code');
@@ -14,7 +12,7 @@ const Token = () => {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       //인가 코드
-      body: `grant_type=authorization_code&client_id=${clientId}&redirect_uri=${RedirectUri}&code=${code}`,
+      body: `grant_type=authorization_code&client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&code=${code}`,
     })
       .then(req => req.json())
       .then(result => {
