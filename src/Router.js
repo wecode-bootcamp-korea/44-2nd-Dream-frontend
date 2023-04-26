@@ -11,7 +11,7 @@ import Main from './pages/Main/Main';
 import SearchModal from './pages/Main/components/SearchModal';
 import Payment from './pages/Payment/Payment';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
-
+import Success from './pages/Payment/Success';
 const Router = () => {
   return (
     <BrowserRouter>
@@ -24,17 +24,9 @@ const Router = () => {
         <Route path="/detail" element={<ProductDetail />} />
         <Route path="/interestProduct" element={<InterestProduct />} />
         <Route path="/agree" element={<AgreePage />} />
-<<<<<<< HEAD
         <Route path="/bidding" element={<BiddingPage />} />
         <Route path="/payment" element={<Payment />} />
-=======
-        <Route path="/purchaseBid" element={<PurchaseBid />} />
-<<<<<<< HEAD
-        {/* <Route path="/payment" element={<Payment />} /> */}
->>>>>>> 4bef2e3 (Add: main page - Filter 기능 구현중)
-=======
-        <Route path="/payment" element={<Payment />} />
->>>>>>> 5773990 (wip)
+        <Route path="/success" element={<Success />} />
       </Routes>
       <Footer />
     </BrowserRouter>

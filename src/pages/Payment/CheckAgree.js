@@ -1,30 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const CheckAgree = () => {
+const CheckAgree = ({
+  tossPay,
+  pageMode,
+  bidPrice,
+  commission,
+  dealNumber,
+  productName,
+  writeInfo,
+}) => {
+  const [checked, setChecked] = useState([false, false, false, false]);
+
+  const handleCheckBox = targetId => {
+    const newIsChecked = [...checked];
+    newIsChecked[targetId - 1] = !newIsChecked[targetId - 1];
+    setChecked(newIsChecked);
+  };
+
+  const allChecked = checked.every(check => check === true);
+
   return (
     <CheckAgreeContainer>
-      {AGREE_DATA.map(value => {
+      {(pageMode === '구매' ? AGREE_PURCHASE : AGREE_SELL).map(value => {
         return (
-          <>
-            <AllDetail key={value.id}>
+          <CheckBoxWrap key={value.id}>
+            <AllDetail>
               <CheckDetailWrap>
-                <CheckAgreeDetail id={value.id}>{value.title}</CheckAgreeDetail>
+                <CheckAgreeDetail pageMode={pageMode} id={value.id}>
+                  {value.title}
+                </CheckAgreeDetail>
                 <CheckSub>{value.sub}</CheckSub>
               </CheckDetailWrap>
               <StyledLabel>
-                <StyledInput type="checkbox" />
+                <StyledInput
+                  type="checkbox"
+                  onChange={() => {
+                    handleCheckBox(value.id);
+                  }}
+                />
               </StyledLabel>
             </AllDetail>
-            <Border id={value.id} />
-          </>
+            <Border id={value.id} pageMode={pageMode} />
+          </CheckBoxWrap>
         );
       })}
       <TotalPriceWrap>
-        <TotalPriceName>총 결제금액</TotalPriceName>
-        <TotalPrice>1,576,200원</TotalPrice>
+        <TotalPriceName>
+          {pageMode === '구매' ? '총 결제금액' : '정산금액'}
+        </TotalPriceName>
+        <TotalPrice pageMode={pageMode}>
+          {(bidPrice + commission).toLocaleString()}원
+        </TotalPrice>
       </TotalPriceWrap>
-      <PaymentButton>결제하기</PaymentButton>
+      <PaymentButton
+        allChecked={allChecked}
+        onClick={() =>
+          tossPay(dealNumber, bidPrice, commission, productName, writeInfo)
+        }
+        disabled={!allChecked}
+      >
+        {pageMode === '구매' ? '결제하기' : '바로 판매하기'}
+      </PaymentButton>
     </CheckAgreeContainer>
   );
 };
@@ -51,17 +88,17 @@ const CheckDetailWrap = styled.div`
 `;
 
 const StyledInput = styled.input`
-  appearance: none;
-  width: 2rem;
-  height: 2rem;
-  border: 1.5px solid gainsboro;
-  border-radius: 0.2rem;
-
-  &:checked {
-    border-color: transparent;
-    background-color: black;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-left: 40px;
+  accent-color: #222222;
+  &:hover {
+    cursor: pointer;
   }
 `;
+
+const CheckBoxWrap = styled.div``;
 
 const StyledLabel = styled.label`
   display: flex;
@@ -70,10 +107,19 @@ const StyledLabel = styled.label`
 `;
 
 const CheckAgreeDetail = styled.h3`
-  font-size: ${props => (props.id === 4 ? '20px' : '19px')};
-  font-weight: ${props => props.id === 4 && 'bold'};
+  font-size: ${({ pageMode, id }) =>
+    id === 4 && pageMode === '구매'
+      ? '20px'
+      : id === 5 && pageMode === '판매'
+      ? '20px'
+      : '19px'};
+  font-weight: ${({ pageMode, id }) =>
+    id === 4 && pageMode === '구매'
+      ? 'bold'
+      : id === 5 && pageMode === '판매' && 'bold'};
   margin-bottom: 12px;
   padding-top: 15px;
+  line-height: 1.3;
   color: #3e3e3e;
   flex-wrap: wrap;
   width: 660px;
@@ -83,15 +129,13 @@ const CheckSub = styled.p`
   font-size: 16px;
   color: #a3a3a3;
 `;
-
-const CheckBox = styled.div`
-  width: 30px;
-  height: 30px;
-`;
-
 const Border = styled.div`
-  border-bottom: ${props =>
-    props.id === 4 ? '1px solid none' : '1px solid #a3a3a3'};
+  border-bottom: ${({ pageMode, id }) =>
+    id === 4 && pageMode === '구매'
+      ? '1px solid none'
+      : id === 5 && pageMode === '판매'
+      ? '1px solid none'
+      : '1px solid #a3a3a3'};
 `;
 
 const TotalPriceWrap = styled.div`
@@ -104,29 +148,35 @@ const TotalPriceWrap = styled.div`
 const TotalPriceName = styled.h2`
   font-weight: bold;
   font-size: 20px;
+  letter-spacing: 1px;
 `;
 
 const TotalPrice = styled.span`
-  color: #f15746;
+  color: ${({ pageMode }) => (pageMode === '구매' ? ' #f15746' : '#41b978')};
   font-size: 27px;
   font-style: italic;
   font-weight: bold;
+  letter-spacing: 1px;
 `;
 
 const PaymentButton = styled.button`
   font-weight: 600;
   margin-top: 10px;
-  height: 52px;
+  height: 62px;
   border-radius: 12px;
   letter-spacing: -0.16px;
-  font-size: 16px;
+  font-size: 19px;
   border: none;
   color: white;
+  background-color: ${({ allChecked }) => allChecked && '#222222'};
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export default CheckAgree;
 
-const AGREE_DATA = [
+const AGREE_PURCHASE = [
   {
     id: 1,
     title:
@@ -148,6 +198,31 @@ const AGREE_DATA = [
   {
     id: 4,
     title: '구매 조건을 모두 확인하였으며, 거래 진행에 동의합니다.',
-    // sub: '앱 알림 해제, 알림푹 차단, 전화번호 변경 후 미등록 시에는 거래 진행 상태 알람을 받을 수 없습니다.',
   },
+];
+
+const AGREE_SELL = [
+  {
+    id: 1,
+    title:
+      '거래가 체결되면 일요일 ・ 공휴일ㅇ르 제외하고 48시간 내에 KREAM으로 발송을 완료한 후, 발송 정보를 정확히 입력해야 합니다.',
+    sub: '착불 배송시 판매 금액에서 차감 정산하며, 미정산 시 별도 고지없이 해당 금액을 결제 시도할 수 있습니다.',
+  },
+  {
+    id: 2,
+    title:
+      '송장 번호 미기재 ・ 오입력 시 입고가 진행되지 않으며, 발송 후 5일(일요일 ・ 공휴일 제외) 내 미도착은 허위 정보 입력으로 간주하여 미입고 페널티를 부과합니다.',
+    sub: '앱 알림 해제, 알림톡 차단, 전화번호 변경 후 미등록 시에는 거래 진행 상태 알림을 받을 수 없으며 이로 인한 거래 실패는 판매자의 책임입니다.',
+  },
+  {
+    id: 3,
+    title: '검수 기준과 패널티 및 이용 정책을 다시 한번 확인하였습니다',
+    sub: '이용정책 위반 시, 판매 금액의 최대 15.0%의 패널티가 부과도비니다. 패널티 회피 시 이후 거래가 제한되며 별도 고지없이 해당 금액을 결제 시도할 수 있습니다.',
+  },
+  {
+    id: 4,
+    title:
+      " '바로 판매하기' 를 선택하시면 즉시 거래가 체결되며, 단순 변심이나 실수에 의한 취소가 불가능합니다. ",
+  },
+  { id: 5, title: '판매 조건을 모두 확인하였으며, 거래 진행에 동의합니다' },
 ];

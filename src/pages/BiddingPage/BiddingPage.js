@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 function BiddingPage() {
-  const [pageMode, setPageMode] = useState('구매');
+  const [pageMode, setPageMode] = useState('판매');
   const [currentBtn, setCurrentBtn] = useState(2);
   const [currentId, setCurrentId] = useState(4);
   const [value, setValue] = useState('');

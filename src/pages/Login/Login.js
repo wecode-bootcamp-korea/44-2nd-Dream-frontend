@@ -6,7 +6,7 @@ import Search from './Search';
 import ka from '../../assets/ka.png';
 
 const Login = () => {
-  const kakaoAuthUrl = process.env.REACT_APP_KAKAO_AUTH_URL;
+  const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
   const openKakaoLogin = () => {
     window.location.href = kakaoAuthUrl;
   };
