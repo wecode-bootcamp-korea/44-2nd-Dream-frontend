@@ -6,6 +6,7 @@ import Login from './pages/Login/Login';
 import Token from './pages/Login/Token';
 import Main from './pages/Main/Main';
 import Payment from './pages/Payment/Payment.js';
+import SearchModal from './pages/Main/components/SearchModal';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import PurchaseBid from './pages/PurchaseBid/PurchaseBid';
 
@@ -17,6 +18,7 @@ const Router = () => {
         <Route path="/dream/kakao" element={<Token />} />
 
         <Route path="/" element={<Main />} />
+        <Route path="/modal" element={<SearchModal />} />
         <Route path="/detail" element={<ProductDetail />} />
         <Route path="/interestProduct" element={<InterestProduct />} />
         <Route path="/agree" element={<AgreePage />} />
