@@ -2,8 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logoImg from '../../assets/dreamLogo.png';
-
 function MainHeader() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const showModal = e => {
+    setModalOpen(true);
+    e.preventDefault();
+  };
+
   return (
     <HeaderWrap>
       <HeaderTop>
@@ -46,7 +52,6 @@ function MainHeader() {
     </HeaderWrap>
   );
 }
-
 const HeaderWrap = styled.header`
   width: 100%;
   height: 161px;
@@ -57,7 +62,6 @@ const HeaderWrap = styled.header`
   background-color: white;
   z-index: 2;
 `;
-
 const HeaderTop = styled.nav`
   display: flex;
   justify-content: flex-end;
@@ -65,19 +69,16 @@ const HeaderTop = styled.nav`
   padding-top: 20px;
   padding-right: 79px;
 `;
-
 const TopUl = styled.ul`
   display: flex;
   justify-content: space-around;
   cursor: pointer;
 `;
-
 const TopLi = styled.li`
   padding: 5px 10px;
   color: gray;
   font-size: 13px;
 `;
-
 const HeaderMain = styled.div`
   max-width: 100%;
   display: flex;
@@ -85,7 +86,6 @@ const HeaderMain = styled.div`
   padding: 25px 80px 20px;
   align-items: center;
 `;
-
 const Logo = styled.div`
   width: 130px;
   height: 30px;
@@ -93,26 +93,21 @@ const Logo = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
 `;
-
 const MainUl = styled(TopUl)``;
-
 const MainLi = styled.li`
   padding: 5px 10px;
   font-size: 18px;
   font-weight: ${props => (props.weight ? '700' : '400')};
 `;
-
 const LinkTag = styled(Link)`
   color: #222222;
   text-decoration: none;
 `;
-
 const MainCategory = styled.div`
   display: flex;
   justify-content: start;
   box-shadow: 0 1px 0 0 rgba(1, 1, 1, 0.2);
 `;
-
 const CategoryUl = styled.ul`
   display: flex;
   flex-wrap: wrap;
@@ -132,9 +127,7 @@ const LinkS = styled(Link)`
     box-shadow: 0 3px 0 0 black;
   }
 `;
-
 export default MainHeader;
-
 const CATEGORY = [
   { id: 1, text: 'Total' },
   { id: 2, text: 'Basic' },
