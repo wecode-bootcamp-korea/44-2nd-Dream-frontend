@@ -7,7 +7,7 @@ import InterestProduct from './pages/InterestProduct/InterestProduct';
 import Login from './pages/Login/Login';
 import Token from './pages/Login/Token';
 import Main from './pages/Main/Main';
-import SearchModal from './pages/Main/components/SearchModal';
+import SearchModal from '../src/components/Nav/SearchModal';
 import Payment from './pages/Payment/Payment';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Success from './pages/Payment/Success';
@@ -185,6 +185,14 @@ const Router = () => {
             />
           }
         />
+        <Route path="/detail" element={<ProductDetail />} />
+        <Route path="/interestProduct" element={<InterestProduct />} />
+        <Route path="/agree" element={<AgreePage />} />
+        <Route path="/bidding" element={<BiddingPage />} />
+        <Route path="/payment" element={<Payment />} />
+        {/* <Route path="/purchaseBid" element={<PurchaseBid />} /> */}
+        {/* <Route path="/payment" element={<Payment />} /> */}
+        <Route path="/payment" element={<Payment />} />
       </Routes>
     </BrowserRouter>
   );

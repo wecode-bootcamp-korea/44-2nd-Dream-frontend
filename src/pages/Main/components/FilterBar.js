@@ -17,7 +17,6 @@ function FilterBar() {
         <ButtonWrap>
           <RocketDelivery>무료배송</RocketDelivery>
         </ButtonWrap>
-
         <CategoryWrap>
           {sideCategory?.map(({ id, title, name }) => {
             return (
