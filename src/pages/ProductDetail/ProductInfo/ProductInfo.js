@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { BsBookmarkHeart } from 'react-icons/bs';
 import { BsBookmarkHeartFill } from 'react-icons/bs';
@@ -7,7 +8,6 @@ import SippingInfo from '../ShippingInfo/ShippingInfo';
 import BeforeCheck from '../BeforeCheck/BeforeCheck';
 import Guarantee from '../Guarantee/Guarantee';
 import GoingPrice from '../GoingPrice/GoingPrice';
-import { useState } from 'react';
 
 function ProductInfo({
   openTradeModal,
@@ -15,17 +15,45 @@ function ProductInfo({
   graphData,
   setGraphData,
   detailData,
+  setPageMode,
+  tradeData,
+  handleLike,
 }) {
   const [interestBtn, setInterestBtn] = useState(false);
+  const navigate = useNavigate();
+
+  function goToPurchase() {
+    setPageMode(true);
+    navigate('/agree');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goToSales() {
+    setPageMode(false);
+    navigate('/agree');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   function handleInterestToggle() {
     setInterestBtn(prev => !prev);
   }
 
+  // function pushLike() {
+  //   fetch('http://10.58.52.75:3000/like/27', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ userId: 51 }),
+  //   })
+  //     .then(response => response.json())
+  //     .then(result => console.log(result));
+  // }
+
   return (
     <InfoArea>
       <BrandName>DREAM</BrandName>
-      <EnglishName>Lego Harry Potter Hogwarts Great Hall</EnglishName>
+      <EnglishName>The Lego Group All rights</EnglishName>
       <KoreanName>{detailData.productName}</KoreanName>
       <SizeArea>
         <SizeTitle>사이즈</SizeTitle>
@@ -34,33 +62,56 @@ function ProductInfo({
       <PriceArea>
         <PriceTitle>최근 거래가</PriceTitle>
         <div>
-          <RecentPrice>{`${Number(
-            detailData.recentDealPrice
-          ).toLocaleString()}원`}</RecentPrice>
-          <RateOfReturn>{`⏏︎ 29,000원 (+${detailData.premiumPercent})`}</RateOfReturn>
+          <RecentPrice>
+            {detailData.recentDealPrice === null
+              ? '- 원'
+              : `${Number(detailData.recentDealPrice)?.toLocaleString()}원`}
+          </RecentPrice>
+          <RateOfReturn
+            textColor={
+              detailData.recentDealPrice - detailData.originalPrice > 0
+            }
+          >
+            {detailData.recentDealPrice === null
+              ? null
+              : `${
+                  detailData.recentDealPrice - detailData.originalPrice > 0
+                    ? '▲'
+                    : '▼'
+                } ${(
+                  detailData.recentDealPrice - detailData.originalPrice
+                )?.toLocaleString()}원 (${detailData.premiumPercent}%)`}
+          </RateOfReturn>
         </div>
       </PriceArea>
       <ButtonArea>
-        <PurchaseButton>
+        <PurchaseButton onClick={goToPurchase}>
           <Purchase>구매</Purchase>
           <div>
-            <PurchasePrice>{`${Number(
-              detailData.buyNowPrice
-            ).toLocaleString()}원`}</PurchasePrice>
+            <PurchasePrice>
+              {detailData.buyNowPrice === null
+                ? '-'
+                : `${Number(detailData.buyNowPrice)?.toLocaleString()}원`}
+            </PurchasePrice>
             <ImmediatePurchase>즉시 구매가</ImmediatePurchase>
           </div>
         </PurchaseButton>
-        <SellButton>
+        <SellButton onClick={goToSales}>
           <Sell>판매</Sell>
           <div>
             <SellPrice>{`${Number(
               detailData.sellNowPrice
-            ).toLocaleString()}원`}</SellPrice>
+            )?.toLocaleString()}원`}</SellPrice>
             <ImmediateSell>즉시 판매가</ImmediateSell>
           </div>
         </SellButton>
       </ButtonArea>
-      <Interest onClick={handleInterestToggle}>
+      <Interest
+        onClick={() => {
+          handleInterestToggle();
+          handleLike();
+        }}
+      >
         {interestBtn ? <FullInterestIcon /> : <EmptyInterestIcon />}
         <InterestItem>관심 상품</InterestItem>
         <InterestNum>
@@ -76,6 +127,7 @@ function ProductInfo({
         graphChange={graphChange}
         graphData={graphData}
         setGraphData={setGraphData}
+        tradeData={tradeData}
       />
       <BeforeCheck />
       <Guarantee />
@@ -85,8 +137,8 @@ function ProductInfo({
 const InfoArea = styled.div`
   position: relative;
   left: 300px;
-  width: 600px;
-  padding-left: 40px;
+  width: 610px;
+  padding-left: 50px;
   border-left: 1px solid #ebebeb;
 `;
 
@@ -155,10 +207,11 @@ const RecentPrice = styled.div`
 
 const RateOfReturn = styled.div`
   font-size: 13px;
-  color: #f15746;
+  color: ${({ textColor }) => (textColor ? '#f15746' : '#41b979')};
 `;
 
 const ButtonArea = styled.div`
+  width: 100%;
   display: flex;
   gap: 10px;
 `;

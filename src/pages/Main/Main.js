@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import MainHeader from './components/MainHeader';
 import MainImg from './components/MainImg';
 import CategoryBtn from './components/CategoryBtn';
 import FilterBar from './components/FilterBar';
@@ -56,9 +55,7 @@ function Main() {
 
   return (
     <MainWrap>
-      <MainHeader />
       <MainImg mainImage={mainImage} id={mainImage.id} url={mainImage.url} />
-
       <CategoryMapDiv>
         {CATEGORY.map(({ id, text }) => {
           return <CategoryBtn key={id} id={id} text={text} />;
@@ -120,7 +117,7 @@ const MainWrap = styled.div`
 `;
 
 const CategoryMapDiv = styled.div`
-  width: 100vw;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 3px;

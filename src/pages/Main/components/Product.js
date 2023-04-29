@@ -16,16 +16,23 @@ function Product({
   productOriginalPrice,
 }) {
   const navigate = useNavigate();
+
   const goToDetail = () => {
-    navigate('/detail');
+    navigate(`/detail/${id}`);
   };
+
   const goToInterest = () => {
     navigate('/interestProduct');
   };
+
   return (
     <ProductsBox>
       <ProductWrap>
-        <TopItemWrap onClick={goToDetail}>
+        <TopItemWrap
+          onClick={() => {
+            goToDetail(id);
+          }}
+        >
           <ImgWrap>
             <PremiumValue>{percent}%</PremiumValue>
             <Img src={url} alt="img" />
@@ -169,14 +176,9 @@ const Img = styled.img`
   width: 250px;
   height: 250px;
   padding: 10px;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
-  border: 2px solid rgba(188, 188, 188, 0.2);
   border-radius: 5px;
-
-  &:hover {
-    border: 1px solid rgb(188, 188, 188);
-  }
 `;
 
 export default Product;

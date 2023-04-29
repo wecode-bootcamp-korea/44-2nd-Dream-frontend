@@ -9,6 +9,7 @@ function DropZone({
   handleUpload,
   textAreaValue,
   setTextAreaValue,
+  reviewSubmit,
 }) {
   const onDrop = useCallback(acceptedFiles => {
     setFile(acceptedFiles[0]);
@@ -70,6 +71,7 @@ function DropZone({
           handleUpload();
           closeReviewModal();
           setFile(null);
+          reviewSubmit();
         }}
       >
         등록

@@ -1,25 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
-const FinalOrderInfo = ({ pageMode, bidPrice, commission, dueDate }) => {
+const FinalOrderInfo = ({ pageMode, bidData, currentBtn }) => {
   // console.log('bidPrice', bidPrice);
   return (
     <FinalOrderInfoContainer>
       <FinalOrderInfoTitle>최종 주문 정보</FinalOrderInfoTitle>
       <FinalOrderInfoPriceTitle>
-        {pageMode === '구매' ? '총 결제 금액' : '정산금액'}
+        {pageMode ? '총 결제 금액' : '정산금액'}
       </FinalOrderInfoPriceTitle>
       <FinalOrderInfoPrice pageMode={pageMode}>
-        {(bidPrice + commission)?.toLocaleString()}원
+        {pageMode
+          ? bidData.bidPrice + bidData.commission
+          : (bidData.bidPrice - bidData.commission)?.toLocaleString()}
+        원
       </FinalOrderInfoPrice>
       <OrderBorder />
       <PriceHopeWrap>
         <PriceHopeName>
-          {pageMode === '구매' ? '구매 희망가' : '즉시 판매가'}
+          {pageMode ? '구매 희망가' : '즉시 판매가'}
         </PriceHopeName>
-        <PriceHopeInfo>{bidPrice?.toLocaleString()}원 </PriceHopeInfo>
+        <PriceHopeInfo>{bidData.bidPrice?.toLocaleString()}원 </PriceHopeInfo>
       </PriceHopeWrap>
 
-      {pageMode === '구매' && (
+      {pageMode && (
         <PointWrap pageMode={pageMode}>
           <PointName>포인트</PointName>
           <PointPrice>-</PointPrice>
@@ -32,21 +35,25 @@ const FinalOrderInfo = ({ pageMode, bidPrice, commission, dueDate }) => {
       </InspectionWrap>
       <Feewrap>
         <FeeName>수수료</FeeName>
-        <FeePrice>{pageMode === '구매' ? commission : -commission}원</FeePrice>
+        <FeePrice>
+          {pageMode ? bidData.commission : -bidData.commission}원
+        </FeePrice>
       </Feewrap>
       <DeliveryWrap>
         <DeliveryName>배송비</DeliveryName>
         <DeliveryPrice>
-          {pageMode === '구매' ? '무료' : '선불 ・ 판매자 부담'}
+          {pageMode ? '무료' : '선불 ・ 판매자 부담'}
         </DeliveryPrice>
       </DeliveryWrap>
-      {pageMode === '구매' && (
+      {pageMode && (
         <>
-          <Border />
-          <BidDeadlineWrap>
-            <BidDeadlineName>입찰 마감 기한</BidDeadlineName>
-            <BidDeadlineDate>7일 - {dueDate}까지</BidDeadlineDate>
-          </BidDeadlineWrap>
+          {currentBtn === 1 && <Border />}
+          {currentBtn === 1 && (
+            <BidDeadlineWrap>
+              <BidDeadlineName>입찰 마감 기한</BidDeadlineName>
+              <BidDeadlineDate>{bidData.dueDate}까지</BidDeadlineDate>
+            </BidDeadlineWrap>
+          )}
         </>
       )}
     </FinalOrderInfoContainer>
@@ -73,7 +80,7 @@ const FinalOrderInfoPriceTitle = styled.h3`
 
 const FinalOrderInfoPrice = styled.p`
   align-self: flex-end;
-  color: ${({ pageMode }) => (pageMode === '구매' ? '#f15746' : '#41b978')};
+  color: ${({ pageMode }) => (pageMode ? '#f15746' : '#41b978')};
   font-size: 27px;
   font-style: italic;
   padding-bottom: 25px;

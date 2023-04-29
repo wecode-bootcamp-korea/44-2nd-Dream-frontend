@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import useFetch from '../../../hooks/useFetch';
 import DropZone from './DropZone/DropZone';
 import ReviewList from './ReviewList/ReviewList';
 
-function PhotoReview({ reviewModalWindow, openReviewModal, closeReviewModal }) {
+function PhotoReview({
+  reviewModalWindow,
+  openReviewModal,
+  closeReviewModal,
+  file,
+  textAreaValue,
+  setFile,
+  setTextAreaValue,
+  reviewSubmit,
+}) {
   const [reviewData, setReviewData] = useFetch('/data/reviewData.json');
-  const [file, setFile] = useState(null);
-  const [textAreaValue, setTextAreaValue] = useState('');
 
   function handleUpload() {
     setReviewData([
@@ -52,6 +59,7 @@ function PhotoReview({ reviewModalWindow, openReviewModal, closeReviewModal }) {
           handleUpload={handleUpload}
           textAreaValue={textAreaValue}
           setTextAreaValue={setTextAreaValue}
+          reviewSubmit={reviewSubmit}
         />
       )}
     </ReviewContainer>

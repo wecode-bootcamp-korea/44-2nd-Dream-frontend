@@ -2,33 +2,39 @@ import React from 'react';
 import styled from 'styled-components';
 import { BsBookmarkHeart } from 'react-icons/bs';
 
-function ScrollModal() {
+function ScrollModal({ detailData }) {
   return (
     <EntireArea>
       <FlexArea>
         <FlexStart>
-          <ItemImage />
+          <ItemImage itemImg={detailData.imageUrl} />
           <ProductName>
-            <EnglishName>Lego Harry Potter Hogwarts Great Hall</EnglishName>
-            <KoreanName>레고 해리포터 호그와트 그레이트 홀</KoreanName>
+            <EnglishName>The Lego Group All rights</EnglishName>
+            <KoreanName>{detailData.productName}</KoreanName>
           </ProductName>
         </FlexStart>
         <FlexEnd>
           <Interest>
             <InterestIcon />
-            <InterestNum>138</InterestNum>
+            <InterestNum>
+              {detailData.likeCount === null ? 0 : detailData.likeCount}
+            </InterestNum>
           </Interest>
           <PurchaseButton>
             <Purchase>구매</Purchase>
             <div>
-              <PurchasePrice>189,000원</PurchasePrice>
+              <PurchasePrice>
+                {detailData.buyNowPrice?.toLocaleString() + '원'}
+              </PurchasePrice>
               <ImmediatePurchase>즉시 구매가</ImmediatePurchase>
             </div>
           </PurchaseButton>
           <SellButton>
             <Sell>판매</Sell>
             <div>
-              <SellPrice>189,000원</SellPrice>
+              <SellPrice>
+                {detailData.sellNowPrice?.toLocaleString() + '원'}
+              </SellPrice>
               <ImmediateSell>즉시 판매가</ImmediateSell>
             </div>
           </SellButton>
@@ -40,11 +46,11 @@ function ScrollModal() {
 
 const EntireArea = styled.div`
   position: fixed;
-  top: 0;
+  top: 121px;
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 79px;
+  height: 95px;
   z-index: 1;
   background-color: #ffffff;
   box-shadow: 4px 0 10px 0 rgba(0, 0, 0, 0.2);
@@ -65,14 +71,15 @@ const FlexStart = styled.div`
 `;
 
 const ItemImage = styled.img`
-  background-image: url('https://images.unsplash.com/photo-1505322033502-1f4385692e6a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1068&q=80');
+  background-image: ${({ itemImg }) => `url(${itemImg})`};
+  background-position: center;
   background-size: cover;
-  border-radius: 13px;
-  width: 64px;
-  height: 64px;
+  width: 65px;
+  height: 65px;
 `;
 
 const ProductName = styled.div``;
+
 const EnglishName = styled.div`
   font-size: 15px;
 `;

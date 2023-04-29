@@ -1,23 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Line } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 import useFetch from '../../../hooks/useFetch';
+import { api } from '../../api';
 
-const MarketGraph = ({ graphData, setGraphData }) => {
-  useEffect(() => {
-    fetch(`/data/graphData${graphData}.json`)
-      .then(response => response.json())
-      .then(result => setGraphData(result));
-  }, [graphData]);
-
-  // const [graphData] = useFetch('http://10.58.52.75:3000/bid/graph/1');
+const MarketGraph = () => {
+  const [graphData] = useFetch(`${api.graph}24`);
 
   const data = {
-    labels: graphData.label,
+    labels: graphData.date,
     datasets: [
       {
         label: 'Going Price',
-        data: graphData.data,
+        data: graphData.bidPrice,
         fill: false,
         borderColor: 'rgb(247 180 174)',
         tension: 0.1,

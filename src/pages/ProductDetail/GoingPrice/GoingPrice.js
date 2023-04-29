@@ -2,14 +2,20 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import MarketGraph from '../MarketGraph/MarketGraph';
 
-function GoingPrice({ openTradeModal, graphChange, graphData, setGraphData }) {
+function GoingPrice({
+  openTradeModal,
+  graphChange,
+  graphData,
+  setGraphData,
+  tradeData,
+}) {
   const [currentDateId, setCurrentDateId] = useState(1);
   const [currentTradeId, setCurrentTradeId] = useState(1);
 
   const BREAK_DOWN = {
-    1: CONTRACT_DATA,
-    2: SALESBID_DATA,
-    3: PURCHASEBID_DATA,
+    1: 'deal',
+    2: 'selling',
+    3: 'buying',
   };
 
   const TRADE_HEADER = {
@@ -68,17 +74,21 @@ function GoingPrice({ openTradeModal, graphChange, graphData, setGraphData }) {
         <TradePrice>{TRADE_HEADER[currentTradeId][1]?.title}</TradePrice>
         <TradeDate>{TRADE_HEADER[currentTradeId][2]?.title}</TradeDate>
       </TradeHeader>
-      {BREAK_DOWN[currentTradeId].map(data => {
-        return (
-          <BreakDown key={data.id}>
-            <TradeSizeValue>ONE SIZE</TradeSizeValue>
-            <TradePriceValue>
-              {data.price.toLocaleString() + '원'}
-            </TradePriceValue>
-            <TradeDateValue>{data.value}</TradeDateValue>
-          </BreakDown>
-        );
-      })}
+      <BreakDownTable>
+        {tradeData[BREAK_DOWN[currentTradeId]]?.map(data => {
+          return (
+            <BreakDown key={data.id}>
+              <TradeSizeValue>ONE SIZE</TradeSizeValue>
+              <TradePriceValue>
+                {Number(data.bidPrice).toLocaleString() + '원'}
+              </TradePriceValue>
+              <TradeDateValue>
+                {currentTradeId === 1 ? data.dates : data.quantity}
+              </TradeDateValue>
+            </BreakDown>
+          );
+        })}
+      </BreakDownTable>
       <SeeMore
         onClick={() => {
           openTradeModal();
@@ -153,6 +163,11 @@ const TradePrice = styled(TradeSize)`
 
 const TradeDate = styled(TradePrice)``;
 
+const BreakDownTable = styled.div`
+  height: 195px;
+  overflow-y: hidden;
+`;
+
 const BreakDown = styled.div`
   display: flex;
   padding-top: 15px;
@@ -161,10 +176,12 @@ const BreakDown = styled.div`
 const TradeSizeValue = styled.div`
   flex: 1;
   font-size: 15px;
+  font-weight: 600;
   color: #222222;
 `;
 
 const TradePriceValue = styled(TradeSizeValue)`
+  font-weight: 400;
   text-align: right;
 `;
 
@@ -173,7 +190,7 @@ const TradeDateValue = styled(TradePriceValue)``;
 const SeeMore = styled.div`
   width: 100%;
   height: 42px;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 40px;
   padding: 0 18px;
   padding-top: 12px;
@@ -219,28 +236,4 @@ const TRADETAB_DATA = [
   { id: 1, trade: '체결 거래' },
   { id: 2, trade: '판매 입찰' },
   { id: 3, trade: '구매 입찰' },
-];
-
-const CONTRACT_DATA = [
-  { id: 1, price: 106000, value: '23/04/22' },
-  { id: 2, price: 109000, value: '23/04/22' },
-  { id: 3, price: 114000, value: '23/04/21' },
-  { id: 4, price: 114000, value: '23/04/20' },
-  { id: 5, price: 113000, value: '23/04/20' },
-];
-
-const SALESBID_DATA = [
-  { id: 1, price: 106000, value: 1 },
-  { id: 2, price: 107000, value: 1 },
-  { id: 3, price: 108000, value: 1 },
-  { id: 4, price: 108000, value: 1 },
-  { id: 5, price: 109000, value: 1 },
-];
-
-const PURCHASEBID_DATA = [
-  { id: 1, price: 139000, value: 1 },
-  { id: 2, price: 125000, value: 1 },
-  { id: 3, price: 120000, value: 1 },
-  { id: 4, price: 113000, value: 1 },
-  { id: 5, price: 110000, value: 1 },
 ];

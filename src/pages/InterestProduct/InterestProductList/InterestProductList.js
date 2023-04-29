@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function InterestProductList({ data, handleRemove }) {
+function InterestProductList({ data, handleLike }) {
   return (
     <ProductContainer>
-      <ProductImg image={data.image} />
+      <ProductImg image={data.productImage} />
       <ProductInfo>
-        <BrandName>Dream</BrandName>
-        <ProductName>{data.name}</ProductName>
+        <ModelNumber>{data.productModelNumber}</ModelNumber>
+        <ProductName>{data.productName}</ProductName>
         <ProductSize>ONE SIZE</ProductSize>
       </ProductInfo>
       <ButtonContainer>
@@ -15,13 +15,15 @@ function InterestProductList({ data, handleRemove }) {
           <PurchaseBtn>
             <PurchaseText>구매</PurchaseText>
             <PriceContainer>
-              <PurchasePrice>{data.price}</PurchasePrice>
+              <PurchasePrice>
+                {Number(data.immediateSalePrice).toLocaleString() + '원'}
+              </PurchasePrice>
               <NowPrice>즉시 구매가</NowPrice>
             </PriceContainer>
           </PurchaseBtn>
           <RemoveBtn
             onClick={() => {
-              handleRemove(data.id);
+              handleLike();
             }}
           >
             삭제
@@ -50,7 +52,7 @@ const ProductImg = styled.div`
 
 const ProductInfo = styled.div``;
 
-const BrandName = styled.div`
+const ModelNumber = styled.div`
   line-height: 17px;
   padding-bottom: 2px;
   font-size: 13px;

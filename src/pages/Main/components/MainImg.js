@@ -38,7 +38,7 @@ function MainImg({ mainImage }) {
 
 const SlideImg = styled.div`
   filter: contrast(120%);
-  width: 100vw;
+  width: 100%;
   height: 500px;
   background-image: ${({ image }) => `url(${image})`};
   background-size: cover;

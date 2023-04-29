@@ -1,33 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import InterestProductList from './InterestProductList/InterestProductList';
 import SideNav from './SideNav/SideNav';
 
-function InterestProduct() {
-  const [removeData, setRemoveData] = useState([]);
-
-  useEffect(() => {
-    fetch('/data/reviewData.json')
-      .then(response => response.json())
-      .then(result => setRemoveData(result));
-  }, []);
-
-  function handleRemove(targetId) {
-    const newProductData = removeData.filter(data => data.id !== targetId);
-    setRemoveData(newProductData);
-  }
-
+function InterestProduct({ handleLike, interestData }) {
   return (
     <FullContainer>
       <SideNav />
       <InterestProductContainer>
         <InterestProductTitle>관심 상품</InterestProductTitle>
-        {removeData.map(data => {
+        {interestData.map(data => {
           return (
             <InterestProductList
               key={data.id}
               data={data}
-              handleRemove={handleRemove}
+              handleLike={handleLike}
             />
           );
         })}

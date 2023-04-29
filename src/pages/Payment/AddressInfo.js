@@ -42,9 +42,7 @@ const AddressInfo = ({
   return (
     <AddressContainer>
       <AddressTitleWrap>
-        <AddressTitle>
-          {pageMode === '구매' ? '배송' : '반송'} 주소
-        </AddressTitle>
+        <AddressTitle>{pageMode ? '배송' : '반송'} 주소</AddressTitle>
         <AddressPlus onClick={handleClick}> + 새 주소 추가</AddressPlus>
       </AddressTitleWrap>
 
@@ -53,9 +51,7 @@ const AddressInfo = ({
         <ReceiverName>조건호</ReceiverName>
       </ReceiverWrap>
       <DeliveryAddressWrap>
-        <DeliveryTitle>
-          {pageMode === '구매' ? '배송' : '반송'} 주소
-        </DeliveryTitle>
+        <DeliveryTitle>{pageMode ? '배송' : '반송'} 주소</DeliveryTitle>
         <DeliveryDetail>
           <p>{writeInfo.address}</p>
         </DeliveryDetail>
@@ -71,10 +67,10 @@ const AddressInfo = ({
       <Border />
       <DeliveryMethodWrap>
         <DeliveryMethodTitle>
-          {pageMode === '구매' ? '배송' : '반송'} 방법
+          {pageMode ? '배송' : '반송'} 방법
         </DeliveryMethodTitle>
 
-        {pageMode === '구매' ? (
+        {pageMode ? (
           <>
             {DELIVERY_METHOD.map(value => {
               return (
