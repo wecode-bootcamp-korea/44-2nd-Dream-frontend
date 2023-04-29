@@ -1,10 +1,19 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, Link } from 'react';
+// import SearchModal from './SearchModal';
+import SearchModal from '../../pages/Main/components/SearchModal';
 import styled from 'styled-components';
 
 function MainHeader() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const showModal = e => {
+    setModalOpen(true);
+    e.preventDefault();
+  };
+
   return (
     <HeaderWrap>
+      {modalOpen && <SearchModal setModalOpen={setModalOpen} />}
       <HeaderTop>
         <TopUl>
           <TopLi>고객센터</TopLi>
@@ -17,12 +26,11 @@ function MainHeader() {
           <Logo>DREAM</Logo>
           <MainUl>
             <MainLi weight>
-              <HomeLink>
-                <Link href="/">HOME</Link>
-              </HomeLink>
+              <HomeLink to="/">HOME</HomeLink>
             </MainLi>
             <MainLi>LIKE</MainLi>
-            <MainLi>SEARCH</MainLi>
+            <MainLi onClick={showModal}>SEARCH</MainLi>
+            {modalOpen && <SearchModal setModalOpen={setModalOpen} />}
           </MainUl>
         </HeaderMain>
         <MainCategory>
@@ -30,7 +38,7 @@ function MainHeader() {
             {CATEGORY.map(({ id, text }) => {
               return (
                 <CategoryLi key={id}>
-                  <LinkS to="#">{text}</LinkS>
+                  <LinkLi to="#">{text}</LinkLi>
                 </CategoryLi>
               );
             })}
@@ -59,7 +67,7 @@ const HeaderTop = styled.nav`
   padding-right: 30px;
 `;
 
-const HomeLink = styled.div`
+const HomeLink = styled.a`
   color: inherit;
   text-decoration: none;
 `;
@@ -101,12 +109,16 @@ const MainLi = styled.li`
   font-weight: ${props => (props.weight ? '700' : '350')};
 `;
 
+const MainSearch = styled.div`
+  padding: 5px 10px;
+  font-size: 18px;
+`;
+
 const MainCategory = styled.div`
   display: flex;
   justify-content: start;
   box-shadow: 0 1px 0 0 rgba(1, 1, 1, 0.2);
 `;
-
 const CategoryUl = styled.ul`
   display: flex;
   flex-wrap: wrap;
@@ -117,7 +129,7 @@ const CategoryLi = styled.li`
   padding: 5px 20px;
   font-size: 18px;
 `;
-const LinkS = styled(Link)`
+const LinkLi = styled.a`
   color: inherit;
   text-decoration: none;
   transition: 0.25s ease;
