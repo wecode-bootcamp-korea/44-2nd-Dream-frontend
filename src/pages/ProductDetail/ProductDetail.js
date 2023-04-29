@@ -6,15 +6,36 @@ import ScrollModal from './ScrollModal/ScrollModal';
 import PhotoReview from './PhotoReview/PhotoReview';
 import BreakDownModal from './BreakDownModal/BreakDownModal';
 import useFetch from '../../hooks/useFetch';
+import Footer from '../../components/Footer/Footer';
+import { useParams } from 'react-router-dom';
+import { api } from '../../api';
 
-function ProductDetail() {
+function ProductDetail({
+  setPageMode,
+  detailData,
+  setDetailData,
+  file,
+  textAreaValue,
+  setFile,
+  setTextAreaValue,
+  reviewSubmit,
+  handleLike,
+}) {
   const [scrollModal, setScrollModal] = useState(false);
   const [tradeModalWindow, setTradeModalWindow] = useState(false);
   const [reviewModalWindow, setReviewModalWindow] = useState(false);
   const [graphData, setGraphData] = useState(1);
   const fixed = useRef();
+  const [tradeData] = useFetch('http://10.58.52.75:3000/bid/info/24');
 
-  const [detailData] = useFetch('/data/detailData.json');
+  const params = useParams();
+  const productId = params.id;
+
+  useEffect(() => {
+    fetch(`${api.productDetail}${productId}`)
+      .then(response => response.json())
+      .then(result => setDetailData(result));
+  }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -37,10 +58,10 @@ function ProductDetail() {
 
   function handleFixed() {
     const scrollTop = document.documentElement.scrollTop;
-    if (scrollTop > 1500) {
+    if (scrollTop > 1540) {
       fixed.current.style.position = 'absolute';
-      fixed.current.style.top = '1525px';
-    } else if (scrollTop < 1500) {
+      fixed.current.style.top = '1555px';
+    } else if (scrollTop < 1540) {
       fixed.current.style.top = '';
       fixed.current.style.position = 'fixed';
     }
@@ -71,34 +92,50 @@ function ProductDetail() {
   }
 
   return (
-    <FullContainer>
-      {scrollModal && <ScrollModal />}
-      {tradeModalWindow && <BreakDownModal closeTradeModal={closeTradeModal} />}
-      {(tradeModalWindow || reviewModalWindow) && (
-        <BlackModal
-          onClick={() => {
-            closeTradeModal();
-            closeReviewModal();
-          }}
+    <>
+      <FullContainer>
+        {scrollModal && <ScrollModal detailData={detailData} />}
+        {tradeModalWindow && (
+          <BreakDownModal
+            closeTradeModal={closeTradeModal}
+            tradeData={tradeData}
+          />
+        )}
+        {(tradeModalWindow || reviewModalWindow) && (
+          <BlackModal
+            onClick={() => {
+              closeTradeModal();
+              closeReviewModal();
+            }}
+          />
+        )}
+        <ProductArea>
+          <ProductImage fixed={fixed} detailData={detailData} />
+          <ProductInfo
+            detailData={detailData}
+            openTradeModal={openTradeModal}
+            graphChange={graphChange}
+            graphData={graphData}
+            setGraphData={setGraphData}
+            setPageMode={setPageMode}
+            tradeData={tradeData}
+            handleLike={handleLike}
+          />
+        </ProductArea>
+        <HorizontalLine />
+        <PhotoReview
+          reviewModalWindow={reviewModalWindow}
+          openReviewModal={openReviewModal}
+          closeReviewModal={closeReviewModal}
+          file={file}
+          textAreaValue={textAreaValue}
+          setFile={setFile}
+          setTextAreaValue={setTextAreaValue}
+          reviewSubmit={reviewSubmit}
         />
-      )}
-      <ProductArea>
-        <ProductImage fixed={fixed} detailData={detailData} />
-        <ProductInfo
-          detailData={detailData}
-          openTradeModal={openTradeModal}
-          graphChange={graphChange}
-          graphData={graphData}
-          setGraphData={setGraphData}
-        />
-      </ProductArea>
-      <HorizontalLine />
-      <PhotoReview
-        reviewModalWindow={reviewModalWindow}
-        openReviewModal={openReviewModal}
-        closeReviewModal={closeReviewModal}
-      />
-    </FullContainer>
+      </FullContainer>
+      <Footer />
+    </>
   );
 }
 

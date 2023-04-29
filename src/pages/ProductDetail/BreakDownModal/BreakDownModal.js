@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-function BreakDownModal({ closeTradeModal }) {
+function BreakDownModal({ closeTradeModal, tradeData }) {
   const [changeSort, setChangeSort] = useState(true);
   const [currentId, setCurrentId] = useState(1);
 
   const BREAK_DOWN = {
-    1: CONTRACT_DATA,
-    2: SALESBID_DATA,
-    3: PURCHASEBID_DATA,
+    1: 'deal',
+    2: 'selling',
+    3: 'buying',
   };
 
   const TRADE_HEADER = {
@@ -81,7 +81,6 @@ function BreakDownModal({ closeTradeModal }) {
               targetId={data.id}
               onClick={() => {
                 handleTradeBtn(data.id);
-                // handleBreakDown(data.id);
               }}
             >
               {data.trade}
@@ -127,14 +126,16 @@ function BreakDownModal({ closeTradeModal }) {
           </TradeDate>
         </ContentHeader>
         <BreakDownContainer>
-          {BREAK_DOWN[currentId].map(data => {
+          {tradeData[BREAK_DOWN[currentId]]?.map(data => {
             return (
               <BreakDown key={data.id}>
                 <TradeSizeValue>ONE SIZE</TradeSizeValue>
                 <TradePriceValue>
-                  {data.price.toLocaleString() + '원'}
+                  {Number(data.bidPrice).toLocaleString() + '원'}
                 </TradePriceValue>
-                <TradeDateValue>{data.value}</TradeDateValue>
+                <TradeDateValue>
+                  {currentId === 1 ? data.dates : data.quantity}
+                </TradeDateValue>
               </BreakDown>
             );
           })}
@@ -313,10 +314,12 @@ const BreakDown = styled.div`
 const TradeSizeValue = styled.div`
   flex: 1;
   font-size: 14px;
+  font-weight: 600;
   color: #222222;
 `;
 
 const TradePriceValue = styled(TradeSizeValue)`
+  font-weight: 400;
   text-align: right;
 `;
 
@@ -346,42 +349,4 @@ const PURCHASE_HEADER = [
   { id: 1, title: '사이즈' },
   { id: 2, title: '구매 희망가' },
   { id: 3, title: '수량' },
-];
-const CONTRACT_DATA = [
-  { id: 1, price: 106000, value: '23/04/22' },
-  { id: 2, price: 109000, value: '23/04/22' },
-  { id: 3, price: 114000, value: '23/04/21' },
-  { id: 4, price: 114000, value: '23/04/20' },
-  { id: 5, price: 113000, value: '23/04/20' },
-  { id: 6, price: 106000, value: '23/04/19' },
-  { id: 7, price: 109000, value: '23/04/19' },
-  { id: 8, price: 114000, value: '23/04/18' },
-  { id: 9, price: 114000, value: '23/04/18' },
-  { id: 10, price: 113000, value: '23/04/17' },
-];
-
-const SALESBID_DATA = [
-  { id: 1, price: 206000, value: 1 },
-  { id: 2, price: 107000, value: 1 },
-  { id: 3, price: 108000, value: 1 },
-  { id: 4, price: 108000, value: 1 },
-  { id: 5, price: 109000, value: 1 },
-  { id: 6, price: 106000, value: 1 },
-  { id: 7, price: 109000, value: 1 },
-  { id: 8, price: 114000, value: 1 },
-  { id: 9, price: 114000, value: 1 },
-  { id: 10, price: 113000, value: 1 },
-];
-
-const PURCHASEBID_DATA = [
-  { id: 1, price: 339000, value: 1 },
-  { id: 2, price: 225000, value: 1 },
-  { id: 3, price: 220000, value: 1 },
-  { id: 4, price: 213000, value: 1 },
-  { id: 5, price: 110000, value: 1 },
-  { id: 6, price: 106000, value: 1 },
-  { id: 7, price: 109000, value: 1 },
-  { id: 8, price: 114000, value: 1 },
-  { id: 9, price: 114000, value: 1 },
-  { id: 10, price: 113000, value: 1 },
 ];

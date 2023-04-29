@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ConfirmModal from './ConfirmModal/ConfirmModal';
 
-function AgreePage() {
+function AgreePage({ pageMode, detailData }) {
+  const navigate = useNavigate();
   const [confirmModal, setConfirmModal] = useState(false);
   const [isChecked, setIsChecked] = useState([
     false,
@@ -11,6 +13,14 @@ function AgreePage() {
     false,
     false,
   ]);
+  const allChecked = isChecked.every(el => el === true);
+
+  function goToBiddingPage() {
+    if (allChecked) {
+      navigate('/bidding');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
 
   function confirmModalOpen(targetId) {
     if (targetId === 1) {
@@ -28,8 +38,6 @@ function AgreePage() {
     setIsChecked(newIsChecked);
   }
 
-  const allChecked = isChecked.every(el => el === true);
-
   return (
     <AgreeContainer>
       {confirmModal && <ConfirmModal confirmModalClose={confirmModalClose} />}
@@ -43,19 +51,21 @@ function AgreePage() {
       <AgreeBox>
         <AgreeBoxContents>
           <AgreeBoxTItle>
-            <RedColorTItle>구매</RedColorTItle>
+            <RedColorTItle pageMode={pageMode}>
+              {pageMode ? '구매' : '판매'}
+            </RedColorTItle>
             <BlackColorTItle>하시기 전에 꼭 확인하세요.</BlackColorTItle>
           </AgreeBoxTItle>
           <ProductContainer>
-            <ProductImg />
+            <ProductImg itemImg={detailData.imageUrl} />
             <ProductInfo>
-              <ModelNumber>1904927</ModelNumber>
-              <EnglishName>Stussy Plush T-Shirt Black</EnglishName>
-              <KoreanName>스투시 플러쉬 티셔츠 블랙</KoreanName>
+              <ModelNumber>{detailData.modelNumber}</ModelNumber>
+              <EnglishName>The Lego Group All rights</EnglishName>
+              <KoreanName>{detailData.productName}</KoreanName>
               <ProductSize>ONE SIZE</ProductSize>
             </ProductInfo>
           </ProductContainer>
-          {PURCHASE_CONFIRM.map(data => {
+          {(pageMode ? PURCHASE_CONFIRM : SEll_CONFIRM).map(data => {
             return (
               <ConfirmContainer key={data.id}>
                 <ConfirmContent>
@@ -73,7 +83,9 @@ function AgreePage() {
               </ConfirmContainer>
             );
           })}
-          <ContinueButton allChecked={allChecked}>구매 계속</ContinueButton>
+          <ContinueButton allChecked={allChecked} onClick={goToBiddingPage}>
+            {pageMode ? '구매 계속' : '판매 계속'}
+          </ContinueButton>
         </AgreeBoxContents>
       </AgreeBox>
     </AgreeContainer>
@@ -111,7 +123,7 @@ const AgreeBoxTItle = styled.div``;
 const RedColorTItle = styled.span`
   font-size: 32px;
   font-weight: 700;
-  color: #f15746;
+  color: ${({ pageMode }) => (pageMode ? '#f15746' : '#30b46e')};
 `;
 
 const BlackColorTItle = styled(RedColorTItle)`
@@ -131,6 +143,9 @@ const ProductImg = styled.div`
   width: 80px;
   height: 80px;
   border: 1px solid #ebebeb;
+  background-image: ${({ itemImg }) => `url(${itemImg})`};
+  background-size: cover;
+  background-position: center;
 `;
 
 const ProductInfo = styled.div`
@@ -215,6 +230,9 @@ const ContinueButton = styled.div`
   font-weight: 700;
   color: #fff;
   text-align: center;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export default AgreePage;

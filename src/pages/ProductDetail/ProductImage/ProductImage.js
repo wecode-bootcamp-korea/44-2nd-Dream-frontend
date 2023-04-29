@@ -19,7 +19,7 @@ function ProductImage({ fixed, detailData }) {
 
 const ImageArea = styled.div`
   position: fixed;
-  left: 353px;
+  left: 18%;
   width: 600px;
   padding-right: 40px;
 `;

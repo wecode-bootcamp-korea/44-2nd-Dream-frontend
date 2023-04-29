@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ProductInfo = ({ data }) => {
-  const { productName, modelNumber, imageUrl } = data;
+const ProductInfo = ({ bidData }) => {
+  const { productName, modelNumber, imageUrl } = bidData;
 
   return (
     <ProductInfoContainer>
@@ -62,7 +62,6 @@ const ProductKoreanName = styled.h5`
 const ProductSize = styled.h6`
   font-weight: bold;
   margin-top: 14px;
-
   margin-left: 14px;
 `;
 

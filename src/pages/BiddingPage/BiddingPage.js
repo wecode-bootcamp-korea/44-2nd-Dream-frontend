@@ -1,25 +1,38 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-function BiddingPage() {
-  const [pageMode, setPageMode] = useState('판매');
-  const [currentBtn, setCurrentBtn] = useState(2);
+function BiddingPage({
+  pageMode,
+  detailData,
+  currentBtn,
+  setCurrentBtn,
+  bidSubmit,
+  handleDate,
+  bidValue,
+  setBidValue,
+  formattedDate,
+}) {
   const [currentId, setCurrentId] = useState(4);
-  const [value, setValue] = useState('');
-  const today = new Date();
-  const thirtyDaysLater = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
-  const [deadLineDate, setDeadLineDate] = useState(thirtyDaysLater);
+  const [commission, setCommission] = useState('-');
+  const [saleProceeds, setSaleProceeds] = useState('-');
+  const navigate = useNavigate();
 
   function handleButton(targetId) {
     setCurrentBtn(targetId);
   }
 
+  function goToPayment() {
+    navigate('/payment');
+  }
+
   function handleInput(e) {
     const regex = /^[0-9\b]+$/;
-    let inputValue = e.target.value.replace(/,/g, '');
+    let inputValue;
+    inputValue = e.target.value.replace(/,/g, '');
     inputValue = Number(inputValue);
     if (inputValue === '' || regex.test(inputValue)) {
-      setValue(inputValue.toLocaleString());
+      setBidValue(inputValue.toLocaleString());
     }
   }
 
@@ -27,82 +40,88 @@ function BiddingPage() {
     setCurrentId(targetId);
   }
 
-  const dateType = {
-    1: new Date(today.getTime() + 24 * 60 * 60 * 1000),
-    2: new Date(today.getTime() + 3 * 24 * 60 * 60 * 1000),
-    3: new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000),
-    4: new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000),
-    5: new Date(today.getTime() + 60 * 24 * 60 * 60 * 1000),
-  };
-
-  function handleDate(targetId) {
-    setDeadLineDate(dateType[targetId]);
+  function calculate() {
+    setCommission((Number(bidValue.replace(/,/g, '')) * 0.05).toLocaleString());
+    setSaleProceeds(
+      (Number(bidValue.replace(/,/g, '')) * 0.95).toLocaleString()
+    );
   }
-
-  const year = deadLineDate.getFullYear();
-  const month = String(deadLineDate.getMonth() + 1).padStart(2, '0');
-  const day = String(deadLineDate.getDate()).padStart(2, '0');
-  const formattedDate = `${year}/${month}/${day}`;
 
   return (
     <BiddingContainer>
       <BiddingBox>
         <ProductContainer>
-          <ProductImg />
+          <ProductImg itemImg={detailData.imageUrl} />
           <ProductInfo>
-            <ModelNumber>1904927</ModelNumber>
-            <EnglishName>Stussy Plush T-Shirt Black</EnglishName>
-            <KoreanName>스투시 플러쉬 티셔츠 블랙</KoreanName>
+            <ModelNumber>{detailData.modelNumber}</ModelNumber>
+            <KoreanName>{detailData.productName}</KoreanName>
             <ProductSize>ONE SIZE</ProductSize>
           </ProductInfo>
         </ProductContainer>
         <ImmediatePrice>
           <PurchasePrice>
             <div>즉시 구매가</div>
-            <p>299,000원</p>
+            <p>
+              {detailData.buyNowPrice === null
+                ? '-'
+                : detailData.buyNowPrice?.toLocaleString()}
+              원
+            </p>
           </PurchasePrice>
           <SellPrice>
             <div>즉시 판매가</div>
-            <p>136,000</p>
+            <p>{detailData.sellNowPrice?.toLocaleString()}원</p>
           </SellPrice>
         </ImmediatePrice>
         <ModeChangeContainer>
-          {(pageMode === '구매' ? PURCHASE_BUTTON : SELL_BUTTON).map(
-            (data, i) => {
-              return (
-                <ModeButton
-                  key={data.id}
-                  currentBtn={currentBtn}
-                  targetId={data.id}
-                  pageMode={pageMode}
-                  onClick={() => {
-                    handleButton(data.id);
-                  }}
-                >
-                  {data.buttonName}
-                </ModeButton>
-              );
-            }
-          )}
+          {(pageMode ? PURCHASE_BUTTON : SELL_BUTTON).map((data, i) => {
+            return (
+              <ModeButton
+                key={data.id}
+                currentBtn={currentBtn}
+                targetId={data.id}
+                pageMode={pageMode}
+                onClick={() => {
+                  handleButton(data.id);
+                }}
+              >
+                {data.buttonName}
+              </ModeButton>
+            );
+          })}
         </ModeChangeContainer>
         <PriceBox>
           <Title>
-            {currentBtn === 2 ? `즉시 ${pageMode}가` : `${pageMode} 희망가`}
+            {currentBtn === 2
+              ? pageMode
+                ? `즉시 구매가`
+                : `즉시 판매가`
+              : pageMode
+              ? `구매 희망가`
+              : `판매 희망가`}
           </Title>
           {currentBtn === 2 ? (
-            <Price>299,000원</Price>
+            <Price>
+              {pageMode
+                ? detailData.buyNowPrice === null
+                  ? '-'
+                  : detailData.buyNowPrice?.toLocaleString()
+                : detailData.sellNowPrice?.toLocaleString()}
+              원
+            </Price>
           ) : (
             <>
               <PriceInput
                 onChange={handleInput}
-                value={value}
+                onBlur={calculate}
+                value={bidValue}
                 placeholder="희망가 입력"
               />
               <WonText>원</WonText>
             </>
           )}
         </PriceBox>
-        {pageMode === '판매' && (
+        {!pageMode && (
           <>
             <OtherCosts>
               <OtherCostsKey>검수비</OtherCostsKey>
@@ -111,7 +130,9 @@ function BiddingPage() {
             <OtherCosts>
               <OtherCostsKey>수수료</OtherCostsKey>
               <OtherCostsValue>
-                {currentBtn === 2 ? '-6600원' : '-'}
+                {currentBtn === 2
+                  ? `-${(detailData.sellNowPrice * 0.05)?.toLocaleString()}원`
+                  : '-' + commission + '원'}
               </OtherCostsValue>
             </OtherCosts>
             <OtherCosts>
@@ -120,7 +141,7 @@ function BiddingPage() {
             </OtherCosts>
           </>
         )}
-        {pageMode === '구매' && (
+        {pageMode && (
           <PaymentInfo>총 결제금액은 다음 화면에서 계산됩니다.</PaymentInfo>
         )}
         {currentBtn === 1 && (
@@ -149,15 +170,28 @@ function BiddingPage() {
           </DeadLineContainer>
         )}
         <TotalPayment>
-          <LeftText>
-            {pageMode === '구매' ? '총 결제금액' : '정산 금액'}
-          </LeftText>
+          <LeftText>{pageMode ? '총 결제금액' : '정산 금액'}</LeftText>
           <RightText pageMode={pageMode}>
-            {pageMode === '구매' ? '다음 화면에서 확인' : '299,000원'}
+            {pageMode
+              ? '다음 화면에서 확인'
+              : currentBtn === 1
+              ? saleProceeds + '원'
+              : `${(detailData.sellNowPrice * 0.95)?.toLocaleString()}원`}
           </RightText>
         </TotalPayment>
-        <ContinueBtn>
-          {currentBtn === 2 ? `즉시 ${pageMode} 계속` : `${pageMode} 입찰 계속`}
+        <ContinueBtn
+          onClick={() => {
+            goToPayment();
+            bidSubmit();
+          }}
+        >
+          {pageMode
+            ? currentBtn === 2
+              ? `즉시 구매 계속`
+              : '구매 입찰 계속'
+            : currentBtn === 2
+            ? `즉시 판매 계속`
+            : `판매 입찰 계속`}
         </ContinueBtn>
       </BiddingBox>
     </BiddingContainer>
@@ -192,6 +226,9 @@ const ProductImg = styled.div`
   width: 80px;
   height: 80px;
   border: 1px solid #ebebeb;
+  background-image: ${({ itemImg }) => `url(${itemImg})`};
+  background-size: cover;
+  background-position: center;
 `;
 
 const ProductInfo = styled.div`
@@ -206,17 +243,14 @@ const ModelNumber = styled.div`
   font-weight: bold;
 `;
 
-const EnglishName = styled.div`
-  font-size: 14px;
-`;
-
 const KoreanName = styled.div`
   font-size: 13px;
   color: rgba(34, 34, 34, 0.5);
+  margin-bottom: 20px;
 `;
 
 const ProductSize = styled.div`
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
 `;
 
@@ -265,7 +299,7 @@ const ModeButton = styled.div`
   font-weight: ${({ currentBtn, targetId }) =>
     currentBtn === targetId ? 600 : 400};
   background-color: ${({ pageMode, currentBtn, targetId }) =>
-    pageMode === '구매'
+    pageMode
       ? currentBtn === targetId
         ? '#ef6253'
         : ''
@@ -364,10 +398,9 @@ const LeftText = styled.div`
 `;
 
 const RightText = styled.div`
-  font-size: ${({ pageMode }) => (pageMode === '판매' ? 20 : 15)}px;
-  font-weight: ${({ pageMode }) => (pageMode === '판매' ? 600 : 400)};
-  color: ${({ pageMode }) =>
-    pageMode === '판매' ? '#31b46e' : 'rgba(34, 34, 34, 0.5)'};
+  font-size: ${({ pageMode }) => (pageMode ? 15 : 25)}px;
+  font-weight: ${({ pageMode }) => (pageMode ? 400 : 600)};
+  color: ${({ pageMode }) => (pageMode ? 'rgba(34, 34, 34, 0.5)' : '#31b46e')};
 `;
 
 const DeadLineContainer = styled.div`

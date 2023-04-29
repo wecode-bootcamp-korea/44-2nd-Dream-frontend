@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 function ProductData({ detailData }) {
+  const { productLevel } = detailData;
+  const rating = '★'.repeat(productLevel) + '☆'.repeat(5 - productLevel);
+
   return (
     <div>
       <Title>상품 정보</Title>
@@ -12,11 +15,11 @@ function ProductData({ detailData }) {
         </ModelNumber>
         <ReleaseDate>
           <DateKey>연령</DateKey>
-          <DateValue>{detailData.productAge}</DateValue>
+          <DateValue>{detailData.productAge}세 이상</DateValue>
         </ReleaseDate>
         <Color>
           <DateKey>난이도</DateKey>
-          <DateValue>{detailData.productLevel}</DateValue>
+          <DateValue>{rating}</DateValue>
         </Color>
         <SellingPrice>
           <DateKey>발매가</DateKey>

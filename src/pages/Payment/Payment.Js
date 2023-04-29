@@ -10,27 +10,27 @@ import CheckAgree from './CheckAgree';
 import PaymentMethod from './PaymentMethod';
 import tossPay from './Toss';
 
-const Payment = () => {
-  const [data, setData] = useState({});
+const Payment = ({ pageMode, currentBtn, bidData }) => {
+  // const [data, setData] = useState({});
   const [writeInfo, setWriteInfo] = useState({ address: '' });
-  const { dealNumber, commission, productName, dueDate, bidPrice } = data;
+  // const { dealNumber, commission, productName, dueDate, bidPrice } = data;
 
-  useEffect(() => {
-    fetch('http://localhost:3000/data/payment.json')
-      .then(res => res.json())
-      .then(result => setData(result));
-  }, [dealNumber, productName, bidPrice]);
+  // useEffect(() => {
+  //   fetch('http://localhost:3000/data/payment.json')
+  //     .then(res => res.json())
+  //     .then(result => setData(result));
+  // }, [dealNumber, productName, bidPrice]);
   // console.log(data.bidPrice);
-  const [pageMode, setPageMode] = useState('구매');
   const [openModal, setOpenModal] = useState(false);
   const confirmModal = () => {
     setOpenModal(prev => !prev);
   };
+
   return (
     <Content>
-      <ProductInfo pageMode={pageMode} data={data} />
+      <ProductInfo pageMode={pageMode} bidData={bidData} />
 
-      {pageMode === '판매' && <SellAccount pageMode={pageMode} />}
+      {!pageMode && <SellAccount pageMode={pageMode} />}
 
       <AddressInfo
         writeInfo={writeInfo}
@@ -40,25 +40,29 @@ const Payment = () => {
         pageMode={pageMode}
       />
 
-      {pageMode === '구매' && <Point pageMode={pageMode} />}
+      {pageMode && <Point pageMode={pageMode} />}
 
       <FinalOrderInfo
         pageMode={pageMode}
-        bidPrice={bidPrice}
-        commission={commission}
-        dueDate={dueDate}
+        // bidPrice={bidPrice}
+        // commission={commission}
+        // dueDate={dueDate}
+        bidData={bidData}
+        currentBtn={currentBtn}
       />
 
-      {pageMode === '구매' ? <PaymentMethod /> : <CashReceipt />}
+      {pageMode ? <PaymentMethod /> : <CashReceipt />}
 
       <CheckAgree
         tossPay={tossPay}
         pageMode={pageMode}
-        bidPrice={bidPrice}
-        commission={commission}
-        dealNumber={dealNumber}
-        productName={productName}
+        bidData={bidData}
+        // bidPrice={bidPrice}
+        // commission={commission}
+        // dealNumber={dealNumber}
+        // productName={productName}
         writeInfo={writeInfo}
+        currentBtn={currentBtn}
       />
     </Content>
   );

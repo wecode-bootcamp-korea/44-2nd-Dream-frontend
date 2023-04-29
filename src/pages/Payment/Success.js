@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const Success = writeInfo => {
-  const [pageMode, setPageMode] = useState('구매');
+const Success = ({ pageMode, currentBtn, address, bidData }) => {
   const [success, setSuccess] = useState({});
-  console.log({ writeInfo });
   const { productImage, totalAmount } = success;
 
   useEffect(() => {
@@ -15,7 +13,7 @@ const Success = writeInfo => {
       },
       body: JSON.stringify({
         dealNumber: 'd6155182-e589-11ed-9b10-c7d0bb38e7df',
-        address: writeInfo.address,
+        address: address,
       }),
     })
       .then(res => res.json())
@@ -30,11 +28,16 @@ const Success = writeInfo => {
         </ImageWrap>
         <CompleteWrap>
           <CompleteTitle>
-            {pageMode === '구매' ? '구매' : '판매'} 입찰이 완료되었습니다.
+            {pageMode
+              ? currentBtn === 1
+                ? '구매 입찰이 완료되었습니다.'
+                : '즉시 구매가 완료되었습니다.'
+              : currentBtn === 1
+              ? '판매 입찰이 완료되었습니다.'
+              : '즉시 판매가 완료되었습니다.'}
           </CompleteTitle>
-
           <CompleteWhen>
-            {pageMode === '구매' ? (
+            {pageMode ? (
               <p>
                 결제는 거래가 성사되는 시점에 <br /> 등록하신 결제 정보로 자동
                 처리됩니다.
@@ -49,7 +52,7 @@ const Success = writeInfo => {
           </CompleteWhen>
 
           <CompleteDetailBtn>
-            {pageMode === '구매' ? '구매' : '판매'} 내역 상세보기
+            {pageMode ? '구매' : '판매'} 내역 상세보기
           </CompleteDetailBtn>
 
           <PurchaseErase>
@@ -57,25 +60,23 @@ const Success = writeInfo => {
           </PurchaseErase>
         </CompleteWrap>
         <TotalPriceBox>
-          <TotalPriceName>
-            총 {pageMode === '구매' ? '결제' : '정산'} 금액
-          </TotalPriceName>
+          <TotalPriceName>총 {pageMode ? '결제' : '정산'} 금액</TotalPriceName>
           <TotalPrice pageMode={pageMode}>
-            {totalAmount.toLocaleString()}원
+            {totalAmount?.toLocaleString()}원
           </TotalPrice>
         </TotalPriceBox>
         <HopePriceWrap>
           <HopePriceBox>
             <HopePriceName pageMode={pageMode}>
-              {pageMode === '구매' ? '구매' : '판매'} 희망가
+              {pageMode ? '구매' : '판매'} 희망가
             </HopePriceName>
-            <HopePrice>{totalAmount.toLocaleString()}원</HopePrice>
+            <HopePrice>{totalAmount?.toLocaleString()}원</HopePrice>
           </HopePriceBox>
           <BidPriceWrap>
             <BidPriceName pageMode={pageMode}>검수비</BidPriceName>
             <BidPrice pageMode={pageMode}>무료</BidPrice>
           </BidPriceWrap>
-          {pageMode === '판매' && (
+          {!pageMode && (
             <SellCommissionWrap>
               <SellCommissionName>판매 수수료</SellCommissionName>
               <SellCommission>무료 이벤트 </SellCommission>
@@ -84,21 +85,18 @@ const Success = writeInfo => {
           <DelieveryFeeWrap>
             <DeliveryFeeName>배송비</DeliveryFeeName>
             <DelieveryFee pageMode={pageMode}>
-              {pageMode === '구매' ? '무료 이벤트' : '선불 ・ 판매자 부담'}
+              {pageMode ? '무료 이벤트' : '선불 ・ 판매자 부담'}
             </DelieveryFee>
           </DelieveryFeeWrap>
-
-          {pageMode === '구매' ? (
-            ''
-          ) : (
-            <>
-              <Border />
+          <>
+            {currentBtn === 1 && <Border />}
+            {currentBtn === 1 && (
               <BidDeadlineWrap>
                 <BidDeadlineName>입찰 마감 기한</BidDeadlineName>
-                <BidDeadlineDate>7일 - 2023/04/30까지</BidDeadlineDate>
+                <BidDeadlineDate>{bidData.dueDate}까지</BidDeadlineDate>
               </BidDeadlineWrap>
-            </>
-          )}
+            )}
+          </>
         </HopePriceWrap>
       </SuccessWrap>
     </SuccessContainer>
@@ -198,7 +196,7 @@ const TotalPrice = styled.span`
   font-weight: 700;
   font-style: italic;
   align-self: flex-end;
-  color: ${({ pageMode }) => (pageMode === '구매' ? '#f15746' : '#41b978')};
+  color: ${({ pageMode }) => (pageMode ? '#f15746' : '#41b978')};
 `;
 
 const HopePriceWrap = styled.div`
@@ -208,7 +206,7 @@ const HopePriceWrap = styled.div`
 `;
 
 const HopePriceName = styled.h4`
-  color: ${({ pageMode }) => (pageMode === '구매' ? '#9c9c9c' : 'black')};
+  color: ${({ pageMode }) => (pageMode ? '#9c9c9c' : 'black')};
   font-size: 18px;
 `;
 
@@ -230,12 +228,12 @@ const BidPriceWrap = styled.div`
 `;
 
 const BidPriceName = styled.h4`
-  color: ${({ pageMode }) => (pageMode === '구매' ? '#9c9c9c' : 'black')};
+  color: ${({ pageMode }) => (pageMode ? '#9c9c9c' : 'black')};
   font-size: 18px;
 `;
 
 const BidPrice = styled.p`
-  font-weight: ${({ pageMode }) => (pageMode === '구매' ? 600 : 400)};
+  font-weight: ${({ pageMode }) => (pageMode ? 600 : 400)};
   font-size: 18px;
 `;
 
@@ -251,7 +249,7 @@ const DeliveryFeeName = styled.h4`
 `;
 
 const DelieveryFee = styled.p`
-  font-weight: ${({ pageMode }) => (pageMode === '구매' ? 600 : 400)};
+  font-weight: ${({ pageMode }) => (pageMode ? 600 : 400)};
   font-size: 18px;
   letter-spacing: 1px;
 `;

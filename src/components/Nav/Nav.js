@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import logoImg from '../../assets/dreamLogo.png';
 
 function MainHeader() {
   return (
@@ -14,15 +15,20 @@ function MainHeader() {
       </HeaderTop>
       <div>
         <HeaderMain>
-          <Logo>DREAM</Logo>
+          <Logo logoImg={logoImg} />
           <MainUl>
             <MainLi weight>
-              <HomeLink>
-                <Link href="/">HOME</Link>
-              </HomeLink>
+              <LinkTag to="/">HOME</LinkTag>
             </MainLi>
-            <MainLi>LIKE</MainLi>
-            <MainLi>SEARCH</MainLi>
+            <MainLi>
+              <LinkTag to="/interestProduct">LIKE</LinkTag>
+            </MainLi>
+            <MainLi>
+              <LinkTag to="/">SEARCH</LinkTag>
+            </MainLi>
+            <MainLi>
+              <LinkTag to="/">MY</LinkTag>
+            </MainLi>
           </MainUl>
         </HeaderMain>
         <MainCategory>
@@ -42,8 +48,8 @@ function MainHeader() {
 }
 
 const HeaderWrap = styled.header`
-  width: 100vw;
-  height: auto;
+  width: 100%;
+  height: 161px;
   position: sticky;
   top: -40px;
   margin-left: auto;
@@ -55,13 +61,9 @@ const HeaderWrap = styled.header`
 const HeaderTop = styled.nav`
   display: flex;
   justify-content: flex-end;
-  width: 100vw;
-  padding-right: 30px;
-`;
-
-const HomeLink = styled.div`
-  color: inherit;
-  text-decoration: none;
+  width: 100%;
+  padding-top: 20px;
+  padding-right: 79px;
 `;
 
 const TopUl = styled.ul`
@@ -77,28 +79,32 @@ const TopLi = styled.li`
 `;
 
 const HeaderMain = styled.div`
-  max-width: 100vw;
+  max-width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 38px 10px 20px;
+  padding: 25px 80px 20px;
   align-items: center;
 `;
 
-const Logo = styled.h1`
-  padding: 0 40px;
-  font-size: 30px;
-  font-weight: 900;
-  font-style: italic;
+const Logo = styled.div`
+  width: 130px;
+  height: 30px;
+  background-image: ${({ logoImg }) => `url(${logoImg})`};
+  background-size: contain;
+  background-repeat: no-repeat;
 `;
 
-const MainUl = styled(TopUl)`
-  padding-right: 20px;
-`;
+const MainUl = styled(TopUl)``;
 
 const MainLi = styled.li`
   padding: 5px 10px;
   font-size: 18px;
-  font-weight: ${props => (props.weight ? '700' : '350')};
+  font-weight: ${props => (props.weight ? '700' : '400')};
+`;
+
+const LinkTag = styled(Link)`
+  color: #222222;
+  text-decoration: none;
 `;
 
 const MainCategory = styled.div`
@@ -110,7 +116,7 @@ const MainCategory = styled.div`
 const CategoryUl = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  padding: 5px 40px;
+  padding: 5px 60px 10px;
   cursor: pointer;
 `;
 const CategoryLi = styled.li`

@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const CheckAgree = ({
-  tossPay,
-  pageMode,
-  bidPrice,
-  commission,
-  dealNumber,
-  productName,
-  writeInfo,
-}) => {
+const CheckAgree = ({ tossPay, pageMode, bidData, writeInfo, currentBtn }) => {
   const [checked, setChecked] = useState([false, false, false, false]);
+  const navigate = useNavigate();
 
   const handleCheckBox = targetId => {
     const newIsChecked = [...checked];
@@ -20,9 +14,23 @@ const CheckAgree = ({
 
   const allChecked = checked.every(check => check === true);
 
+  function goToBid() {
+    if (pageMode && currentBtn === 2) {
+      tossPay(
+        bidData.dealNumber,
+        bidData.bidPrice,
+        bidData.commission,
+        bidData.productName,
+        writeInfo
+      );
+    } else {
+      navigate('/success');
+    }
+  }
+
   return (
     <CheckAgreeContainer>
-      {(pageMode === '구매' ? AGREE_PURCHASE : AGREE_SELL).map(value => {
+      {(pageMode ? AGREE_PURCHASE : AGREE_SELL).map(value => {
         return (
           <CheckBoxWrap key={value.id}>
             <AllDetail>
@@ -46,21 +54,26 @@ const CheckAgree = ({
         );
       })}
       <TotalPriceWrap>
-        <TotalPriceName>
-          {pageMode === '구매' ? '총 결제금액' : '정산금액'}
-        </TotalPriceName>
+        <TotalPriceName>{pageMode ? '총 결제금액' : '정산금액'}</TotalPriceName>
         <TotalPrice pageMode={pageMode}>
-          {(bidPrice + commission).toLocaleString()}원
+          {pageMode
+            ? bidData.bidPrice + bidData.commission
+            : (bidData.bidPrice - bidData.commission).toLocaleString()}
+          원
         </TotalPrice>
       </TotalPriceWrap>
       <PaymentButton
         allChecked={allChecked}
-        onClick={() =>
-          tossPay(dealNumber, bidPrice, commission, productName, writeInfo)
-        }
+        onClick={goToBid}
         disabled={!allChecked}
       >
-        {pageMode === '구매' ? '결제하기' : '바로 판매하기'}
+        {pageMode
+          ? currentBtn === 1
+            ? '구매 입찰하기'
+            : '결제하기'
+          : currentBtn === 1
+          ? '판매 입찰하기'
+          : '바로 판매하기'}
       </PaymentButton>
     </CheckAgreeContainer>
   );
@@ -108,15 +121,9 @@ const StyledLabel = styled.label`
 
 const CheckAgreeDetail = styled.h3`
   font-size: ${({ pageMode, id }) =>
-    id === 4 && pageMode === '구매'
-      ? '20px'
-      : id === 5 && pageMode === '판매'
-      ? '20px'
-      : '19px'};
+    id === 4 && pageMode ? '20px' : id === 5 && !pageMode ? '20px' : '19px'};
   font-weight: ${({ pageMode, id }) =>
-    id === 4 && pageMode === '구매'
-      ? 'bold'
-      : id === 5 && pageMode === '판매' && 'bold'};
+    id === 4 && pageMode ? 'bold' : id === 5 && !pageMode && 'bold'};
   margin-bottom: 12px;
   padding-top: 15px;
   line-height: 1.3;
@@ -131,9 +138,9 @@ const CheckSub = styled.p`
 `;
 const Border = styled.div`
   border-bottom: ${({ pageMode, id }) =>
-    id === 4 && pageMode === '구매'
+    id === 4 && pageMode
       ? '1px solid none'
-      : id === 5 && pageMode === '판매'
+      : id === 5 && !pageMode
       ? '1px solid none'
       : '1px solid #a3a3a3'};
 `;
@@ -152,7 +159,7 @@ const TotalPriceName = styled.h2`
 `;
 
 const TotalPrice = styled.span`
-  color: ${({ pageMode }) => (pageMode === '구매' ? ' #f15746' : '#41b978')};
+  color: ${({ pageMode }) => (pageMode ? ' #f15746' : '#41b978')};
   font-size: 27px;
   font-style: italic;
   font-weight: bold;
