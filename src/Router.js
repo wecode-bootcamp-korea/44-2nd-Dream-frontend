@@ -24,7 +24,7 @@ const Router = () => {
   const today = new Date();
   const thirtyDaysLater = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
   const [deadLineDate, setDeadLineDate] = useState(thirtyDaysLater);
-  const [bidData, setBidData] = useState({});
+  // const [bidData, setBidData] = useState({});
 
   function reviewSubmit() {
     const formData = new FormData();
@@ -55,13 +55,13 @@ const Router = () => {
     });
   }
 
-  useEffect(() => {
-    fetch('http://10.58.52.75:3000/products/like')
-      .then(response => response.json())
-      .then(result => {
-        setInterestData(result);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch('http://10.58.52.75:3000/products/like')
+  //     .then(response => response.json())
+  //     .then(result => {
+  //       setInterestData(result);
+  //     });
+  // }, []);
 
   function rerendering() {
     fetch('http://10.58.52.75:3000/products/like')
@@ -71,27 +71,27 @@ const Router = () => {
       });
   }
 
-  function bidSubmit() {
-    fetch('http://10.58.52.174:3000/bid/input', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-      },
-      body: JSON.stringify({
-        productId: detailData.productId,
-        bidPrice:
-          currentBtn === 1
-            ? parseFloat(bidValue.replace(/,/g, ''))
-            : pageMode
-            ? detailData.buyNowPrice
-            : detailData.sellNowPrice,
-        dueDate: formattedDate,
-        bidType: pageMode ? 'buying' : 'selling',
-      }),
-    })
-      .then(response => response.json())
-      .then(result => setBidData(result));
-  }
+  // function bidSubmit() {
+  //   fetch('http://10.58.52.174:3000/bid/input', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json;charset=utf-8',
+  //     },
+  //     body: JSON.stringify({
+  //       productId: detailData.productId,
+  //       bidPrice:
+  //         currentBtn === 1
+  //           ? parseFloat(bidValue.replace(/,/g, ''))
+  //           : pageMode
+  //           ? detailData.buyNowPrice
+  //           : detailData.sellNowPrice,
+  //       dueDate: formattedDate,
+  //       bidType: pageMode ? 'buying' : 'selling',
+  //     }),
+  //   })
+  //     .then(response => response.json())
+  //     .then(result => setBidData(result));
+  // }
 
   const dateType = {
     1: new Date(today.getTime() + 24 * 60 * 60 * 1000),
@@ -145,12 +145,12 @@ const Router = () => {
         />
         <Route path="/tradeDetails" element={<TradeDetails />} />
         <Route
-          path="/payment"
+          path="/payment/:id"
           element={
             <Payment
               pageMode={pageMode}
               currentBtn={currentBtn}
-              bidData={bidData}
+              // bidData={bidData}
             />
           }
         />
@@ -160,7 +160,7 @@ const Router = () => {
             <Success
               pageMode={pageMode}
               currentBtn={currentBtn}
-              bidData={bidData}
+              // bidData={bidData}
             />
           }
         />
@@ -177,7 +177,7 @@ const Router = () => {
               detailData={detailData}
               currentBtn={currentBtn}
               setCurrentBtn={setCurrentBtn}
-              bidSubmit={bidSubmit}
+              // bidSubmit={bidSubmit}
               handleDate={handleDate}
               bidValue={bidValue}
               setBidValue={setBidValue}

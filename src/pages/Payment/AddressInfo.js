@@ -2,16 +2,28 @@ import React, { useState } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import styled from 'styled-components';
 import DeliveryModal from './DeliveryModal';
+import AddAddressModal from './AddAddressModal';
+import AddressBook from './\bAddressBook';
 
 const AddressInfo = ({
   openModal,
+  openAddress,
+  openBook,
   confirmModal,
   pageMode,
+  addressModal,
+  setOpenAddress,
+  addressBookModal,
   writeInfo,
   setWriteInfo,
 }) => {
-  // const [writeInfo, setWriteInfo] = useState({ address: '' });
   const [message, setMessage] = useState('배송 시 요청사항을 선택하세요');
+  const [address, setAddress] = useState('');
+
+  const [inputValue, setInputValue] = useState({
+    name: '',
+    detailAddress: '',
+  });
 
   const scriptUrl =
     'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
@@ -39,25 +51,58 @@ const AddressInfo = ({
     open({ onComplete: handleComplete });
   };
 
+  const [addressStorage, setAddressStorage] = useState([]);
+
+  const [bookModalData, setBookModalData] = useState([]);
+
   return (
     <AddressContainer>
       <AddressTitleWrap>
         <AddressTitle>{pageMode ? '배송' : '반송'} 주소</AddressTitle>
-        <AddressPlus onClick={handleClick}> + 새 주소 추가</AddressPlus>
+        <AddressPlus onClick={addressModal}>+ 새 주소 추가</AddressPlus>
       </AddressTitleWrap>
-
+      {openAddress && (
+        <AddAddressModal
+          addressModal={addressModal}
+          handleClick={handleClick}
+          writeInfo={writeInfo}
+          setAddress={setAddress}
+          address={address}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+        />
+      )}
+      {openAddress && <BlackModal onClick={() => addressModal()} />}
       <ReceiverWrap>
         <ReceiverTitle>받는 분</ReceiverTitle>
-        <ReceiverName>조건호</ReceiverName>
+        <ReceiverName>{inputValue.name}</ReceiverName>
       </ReceiverWrap>
-      <DeliveryAddressWrap>
-        <DeliveryTitle>{pageMode ? '배송' : '반송'} 주소</DeliveryTitle>
-        <DeliveryDetail>
-          <p>{writeInfo.address}</p>
-        </DeliveryDetail>
-      </DeliveryAddressWrap>
-
-      <SelectRequest onClick={confirmModal}>
+      <DeliveryAddressContainer>
+        <DeliveryAddressWrap>
+          <DeliveryTitle>{pageMode ? '배송' : '반송'} 주소</DeliveryTitle>
+          <DeliveryDetail>
+            <p>
+              {address}
+              {inputValue.detailAddress}
+            </p>
+          </DeliveryDetail>
+        </DeliveryAddressWrap>
+        <ChangeBtn onClick={addressBookModal}>변경</ChangeBtn>
+      </DeliveryAddressContainer>
+      {openBook && (
+        <AddressBook
+          setBookModalData={setBookModalData}
+          addressBookModal={addressBookModal}
+          bookModalData={bookModalData}
+          address={address}
+          setAddress={setAddress}
+          setAddressStorage={setAddressStorage}
+          addressStorage={addressStorage}
+          setInputValue={setInputValue}
+        />
+      )}
+      {openBook && <BlackModal onClick={() => addressBookModal()} />}
+      <SelectRequest onClick={confirmModal} message={message}>
         <p>{message}</p> <span> {'>'} </span>
       </SelectRequest>
       {openModal && (
@@ -167,13 +212,33 @@ const DeliveryDetail = styled.div`
   border: none;
   width: 500px;
 `;
+
+const ChangeBtn = styled.button`
+  /* position: absolute;
+  right: 550px;
+  top: 340px; */
+  width: 60px;
+  height: 40px;
+  margin-top: -35px;
+  font-size: 15px;
+  background-color: white;
+  border: 1px solid #bcbcbc;
+  border-radius: 12px;
+  color: #6a6a6a;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 const SelectRequest = styled.button`
   display: flex;
   align-items: center;
   align-content: flex-start;
   font-size: 17px;
   border: 1px solid gray;
-  color: #c4c4c4;
+  color: ${props =>
+    props.message === '배송 시 요청사항을 선택하세요' ? '#c4c4c4' : 'black'};
+
   border-radius: 12px;
   justify-content: space-between;
   height: 70px;
@@ -207,6 +272,12 @@ const DeliveryMethodWrap = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 10px;
+`;
+
+const DeliveryAddressContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const DeliveryMethodTitle = styled.h3`

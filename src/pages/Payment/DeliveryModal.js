@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineCheck } from 'react-icons/ai';
 
-const DeliveryModal = ({ confirmModal, setMessage, pageMode }) => {
+const DeliveryModal = ({ confirmModal, setMessage }) => {
   const [currentId, setCurrentId] = useState(0);
 
   const handleId = targetId => {
