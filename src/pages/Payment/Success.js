@@ -11,10 +11,18 @@ const Success = ({ pageMode, currentBtn, address, bidData }) => {
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
       },
-      body: JSON.stringify({
-        dealNumber: 'd6155182-e589-11ed-9b10-c7d0bb38e7df',
-        address: address,
-      }),
+      body: JSON.stringify(
+        pageMode
+          ? {
+              dealNumber: 'd6155182-e589-11ed-9b10-c7d0bb38e7df',
+              address: address,
+              biddingId: 1,
+            }
+          : {
+              dealNumber: 'd6155182-e589-11ed-9b10-c7d0bb38e7df',
+              계좌번호: 3504042,
+            }
+      ),
     })
       .then(res => res.json())
       .then(req => setSuccess(req));

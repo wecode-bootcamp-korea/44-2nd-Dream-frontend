@@ -8,23 +8,54 @@ import SellAccount from './SellAcount';
 import CashReceipt from './CashReceipt';
 import CheckAgree from './CheckAgree';
 import PaymentMethod from './PaymentMethod';
+import { useSearchParams, useParams } from 'react-router-dom';
 import tossPay from './Toss';
+import { api } from '../../api';
 
-const Payment = ({ pageMode, currentBtn, bidData }) => {
-  // const [data, setData] = useState({});
+const Payment = ({ pageMode, currentBtn }) => {
   const [writeInfo, setWriteInfo] = useState({ address: '' });
-  // const { dealNumber, commission, productName, dueDate, bidPrice } = data;
 
-  // useEffect(() => {
-  //   fetch('http://localhost:3000/data/payment.json')
-  //     .then(res => res.json())
-  //     .then(result => setData(result));
-  // }, [dealNumber, productName, bidPrice]);
-  // console.log(data.bidPrice);
   const [openModal, setOpenModal] = useState(false);
   const confirmModal = () => {
     setOpenModal(prev => !prev);
   };
+
+  const params = useParams;
+  const productId = params.id;
+
+  const [openAddress, setOpenAddress] = useState(false);
+  const [openBook, setOpenBook] = useState(false);
+  const [bidData, setBidData] = useState({});
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const buyingParams = () => {
+    searchParams.set('bidtype', 'buying');
+    setSearchParams(searchParams);
+  };
+  const sellingParams = () => {
+    searchParams.set('bidtype', 'selling');
+    setSearchParams(searchParams);
+  };
+
+  const addressModal = () => {
+    setOpenAddress(prev => !prev);
+  };
+
+  const addressBookModal = () => {
+    setOpenBook(prev => !prev);
+  };
+
+  useEffect(() => {
+    fetch(`${api}/biddingin/32?bidype=${pageMode ? 'buying' : 'selling'}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: localStorage.getItem('token'),
+      },
+    })
+      .then(res => res.json())
+      .then(result => setBidData(result));
+  }, []);
 
   return (
     <Content>
@@ -38,15 +69,16 @@ const Payment = ({ pageMode, currentBtn, bidData }) => {
         openModal={openModal}
         confirmModal={confirmModal}
         pageMode={pageMode}
+        openAddress={openAddress}
+        addressModal={addressModal}
+        addressBookModal={addressBookModal}
+        openBook={openBook}
       />
 
       {pageMode && <Point pageMode={pageMode} />}
 
       <FinalOrderInfo
         pageMode={pageMode}
-        // bidPrice={bidPrice}
-        // commission={commission}
-        // dueDate={dueDate}
         bidData={bidData}
         currentBtn={currentBtn}
       />
@@ -57,10 +89,6 @@ const Payment = ({ pageMode, currentBtn, bidData }) => {
         tossPay={tossPay}
         pageMode={pageMode}
         bidData={bidData}
-        // bidPrice={bidPrice}
-        // commission={commission}
-        // dealNumber={dealNumber}
-        // productName={productName}
         writeInfo={writeInfo}
         currentBtn={currentBtn}
       />

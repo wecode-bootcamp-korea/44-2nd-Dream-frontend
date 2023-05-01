@@ -8,7 +8,7 @@ const tossPay = (dealNumber, bidPrice, commission, productName, writeInfo) => {
       .requestPayment('카드', {
         // 결제 수단 파라미터
         // 결제 정보 파라미터
-        amount: (bidPrice + commission).toLocaleString(),
+        amount: bidPrice + commission,
         orderId: dealNumber,
         orderName: productName,
         customerName: '조건호',
@@ -23,7 +23,7 @@ const tossPay = (dealNumber, bidPrice, commission, productName, writeInfo) => {
           },
           body: JSON.stringify({
             dealNumber: 'd6155182-e589-11ed-9b10-c7d0bb38e7df',
-            address: writeInfo,
+            address: writeInfo.address,
             userId: 51,
           }),
         });

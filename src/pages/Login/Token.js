@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Token = () => {
-  const IP = '10.58.52.92:3000';
+  const IP = '10.58.52.75:3000';
   const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get('code');
   const getKakaoToken = () => {
