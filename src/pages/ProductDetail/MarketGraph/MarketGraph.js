@@ -2,7 +2,7 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 import useFetch from '../../../hooks/useFetch';
-import { api } from '../../api';
+import { api } from '../../../api';
 
 const MarketGraph = () => {
   const [graphData] = useFetch(`${api.graph}24`);

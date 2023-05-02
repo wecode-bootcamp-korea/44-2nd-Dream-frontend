@@ -3,20 +3,20 @@
     "id": 1,
     "title": "난이도",
     "name": [
-      { "name_id": 2, "name_text": "★★★★★" },
-      { "name_id": 3, "name_text": "★★★★☆" },
-      { "name_id": 4, "name_text": "★★★☆☆" },
-      { "name_id": 5, "name_text": "★★☆☆☆" },
-      { "name_id": 6, "name_text": "★☆☆☆☆" }
+      { "nameId": 11, "urlNum": 5, "nameText": "★★★★★" },
+      { "nameId": 12, "urlNum": 4, "nameText": "★★★★☆" },
+      { "nameId": 13, "urlNum": 3, "nameText": "★★★☆☆" },
+      { "nameId": 14, "urlNum": 2, "nameText": "★★☆☆☆" },
+      { "nameId": 15, "urlNum": 1, "nameText": "★☆☆☆☆" }
     ]
   },
   {
     "id": 2,
     "title": "연령",
     "name": [
-      { "name_id": 12, "name_text": "+4" },
-      { "name_id": 13, "name_text": "+9" },
-      { "name_id": 14, "name_text": "+18" }
+      { "nameId": 16, "urlNum": 1, "nameText": "+4" },
+      { "nameId": 17, "urlNum": 2, "nameText": "+9" },
+      { "nameId": 18, "urlNum": 3, "nameText": "+18" }
     ]
   }
 ]

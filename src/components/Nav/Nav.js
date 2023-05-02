@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import SearchModal from './SearchModal';
 import styled from 'styled-components';
 import logoImg from '../../assets/dreamLogo.png';
+
 function MainHeader() {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -9,9 +11,9 @@ function MainHeader() {
     setModalOpen(true);
     e.preventDefault();
   };
-
   return (
     <HeaderWrap>
+      {/* {modalOpen && <SearchModal setModalOpen={setModalOpen} />} */}
       <HeaderTop>
         <TopUl>
           <TopLi>고객센터</TopLi>
@@ -30,7 +32,10 @@ function MainHeader() {
               <LinkTag to="/interestProduct">LIKE</LinkTag>
             </MainLi>
             <MainLi>
-              <LinkTag to="/">SEARCH</LinkTag>
+              <LinkTag to="/" onClick={showModal}>
+                SEARCH
+              </LinkTag>
+              {modalOpen && <SearchModal setModalOpen={setModalOpen} />}
             </MainLi>
             <MainLi>
               <LinkTag to="/">MY</LinkTag>
@@ -56,9 +61,8 @@ const HeaderWrap = styled.header`
   width: 100%;
   height: 161px;
   position: sticky;
-  top: -40px;
-  margin-left: auto;
-  margin-right: auto;
+  top: -45px;
+  margin: 0 auto;
   background-color: white;
   z-index: 2;
 `;
@@ -66,9 +70,10 @@ const HeaderTop = styled.nav`
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  padding-top: 20px;
+  padding-top: 19px;
   padding-right: 79px;
 `;
+
 const TopUl = styled.ul`
   display: flex;
   justify-content: space-around;
@@ -86,6 +91,7 @@ const HeaderMain = styled.div`
   padding: 25px 80px 20px;
   align-items: center;
 `;
+
 const Logo = styled.div`
   width: 130px;
   height: 30px;
@@ -93,12 +99,15 @@ const Logo = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
 `;
+
 const MainUl = styled(TopUl)``;
+
 const MainLi = styled.li`
   padding: 5px 10px;
   font-size: 18px;
   font-weight: ${props => (props.weight ? '700' : '400')};
 `;
+
 const LinkTag = styled(Link)`
   color: #222222;
   text-decoration: none;

@@ -1,14 +1,35 @@
 import React, { useEffect, useState } from 'react';
+// import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-function FilterBar() {
+function FilterBar({ setCategoryTitle, setCategoryNum }) {
   const [sideCategory, setSideCategory] = useState([]);
+  // const [searchParams, setSearchParams] = useSearchParams();
+
+  const categoryClickInfo = (id, urlNum, nameId) => {
+    let title;
+    if (id === 1 && id != nameId) {
+      title = 'levelId';
+    } else if (id === 2 && id != nameId) {
+      title = 'ageId';
+    }
+    console.log('키 : ', title);
+    console.log('벨류 : ', urlNum);
+    // searchParams.append(title, url);
+    // setSearchParams(searchParams);
+    setCategoryTitle(title);
+    setCategoryNum(urlNum);
+  };
 
   useEffect(() => {
     fetch('/data/sideCategory.json')
       .then(res => res.json())
       .then(data => setSideCategory(data));
   }, []);
+
+  useEffect(() => {
+    fetch('');
+  });
 
   return (
     <FilterBarBox>
@@ -23,9 +44,18 @@ function FilterBar() {
               <CategoryDetailBox key={id}>
                 <CategorySummary>&nbsp;&nbsp;{title}</CategorySummary>
                 <ul>
-                  {name?.map(({ name_id, name_text }) => {
+                  {name?.map(({ nameId, nameText, urlNum }, index) => {
                     return (
-                      <CategoryInner key={name_id}>{name_text}</CategoryInner>
+                      <CategoryInner
+                        key={nameId}
+                        value={urlNum}
+                        i={index}
+                        onClick={() => {
+                          categoryClickInfo(id, urlNum, nameId);
+                        }}
+                      >
+                        {nameText}
+                      </CategoryInner>
                     );
                   })}
                 </ul>
@@ -69,7 +99,6 @@ const RocketDelivery = styled.button`
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
-
   &:hover {
     width: 200px;
     color: white;
@@ -98,7 +127,6 @@ const CategoryInner = styled.li`
   color: gray;
   font-size: 15px;
   cursor: pointer;
-
   &:hover {
     color: black;
     font-weight: 700;
