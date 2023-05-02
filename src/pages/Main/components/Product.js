@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CiBookmark, CiMemoPad } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -14,6 +14,8 @@ function Product({
   likeCount,
   reviewCount,
   productOriginalPrice,
+  productLevel,
+  productAge,
 }) {
   const navigate = useNavigate();
 
@@ -28,23 +30,25 @@ function Product({
   return (
     <ProductsBox>
       <ProductWrap>
-        <TopItemWrap
+        <div
           onClick={() => {
             goToDetail(id);
           }}
         >
           <ImgWrap>
-            <PremiumValue>{percent}%</PremiumValue>
             <Img src={url} alt="img" />
           </ImgWrap>
 
           <TextWrap>
             <Title>{title}</Title>
             <ProductNum> No. {productNum}</ProductNum>
-            <Price>{Math.floor(price).toLocaleString()}</Price>
-            <OriginalPrice>{productOriginalPrice}</OriginalPrice>
+            <PriceBox>
+              <Price>{Math.floor(price).toLocaleString()}</Price>
+              <PremiumValue percentActive={percent}>{percent}%</PremiumValue>
+              {/* <OriginalPrice>{productOriginalPrice}</OriginalPrice> */}
+            </PriceBox>
           </TextWrap>
-        </TopItemWrap>
+        </div>
 
         <ButtonWrap>
           <BookmarkWrap>
@@ -71,29 +75,26 @@ const ProductsBox = styled.div`
 const ProductWrap = styled.div`
   width: 270px;
   height: 430px;
-  padding: 10px;
+  padding: 20px 10px;
 `;
-
-const TopItemWrap = styled.div``;
 
 const ImgWrap = styled.div`
   position: relative;
 `;
 
-const PremiumValue = styled.div`
-  position: absolute;
-  top: 13px;
-  right: 10px;
-  font-size: 13px;
-  font-weight: 700;
-  color: red;
+const Img = styled.img`
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  object-position: center;
+  /* border-radius: 10px; */
 `;
 
 const TextWrap = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 0 7px 0;
-  padding: 0 10px;
+  padding: 0 5px;
   font-size: 14px;
   line-height: 16px;
 `;
@@ -121,32 +122,49 @@ const ProductNum = styled.p`
   color: #333; */
 `;
 
-const Price = styled.p`
+const PriceBox = styled.div`
+  width: 230px;
+  margin: 5px 0 3px;
   display: flex;
-  align-items: center;
+  justify-content: start;
+  justify-content: space-between;
+`;
+
+const Price = styled.p`
+  /* display: flex; */
+  /* align-items: center; */
   /* height: 30px;
   line-height: 17px;
   font-size: 14px;
   font-weight: 700; */
+  width: 70px;
   font-size: 17px;
   font-weight: 700;
   color: #333;
-  margin-right: 4px;
-  margin: 10px 0 8px 0;
+  /* margin-right: 4px; */
+  /* margin: 10px 0 8px 0; */
   /* padding: 5px 10px; */
 `;
 
-const OriginalPrice = styled.p``;
+const PremiumValue = styled.div`
+  /* position: absolute;
+  top: 13px;
+  right: 13px; */
+  width: 35px;
+  font-size: 13px;
+  font-weight: 700;
+  color: ${({ percentActive }) => (percentActive > 0 ? '#41B979' : '#EE6153')};
+`;
+
+// const OriginalPrice = styled.p``;
 
 const ButtonWrap = styled.div`
   display: flex;
-  /* justify-content: space-between; */
 `;
 
 const BookmarkWrap = styled.div`
   display: flex;
   justify-content: space-evenly;
-  margin-left: 4px;
   color: rgba(34, 34, 34, 0.5);
   font-size: 20px;
 `;
@@ -154,14 +172,7 @@ const BookmarkWrap = styled.div`
 const LikeCount = styled.p`
   display: flex;
   align-items: center;
-  padding: 0 5px 0 3px;
-  font-size: 12px;
-`;
-
-const ReviewCount = styled.p`
-  display: flex;
-  align-items: center;
-  padding: 0 0 0 5px;
+  padding: 0 5px 0 0;
   font-size: 12px;
 `;
 
@@ -172,13 +183,12 @@ const ReviewWrap = styled.div`
   color: rgba(34, 34, 34, 0.5);
   font-size: 20px;
 `;
-const Img = styled.img`
-  width: 250px;
-  height: 250px;
-  padding: 10px;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 5px;
+
+const ReviewCount = styled.p`
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 5px;
+  font-size: 12px;
 `;
 
 export default Product;

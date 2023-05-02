@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
+// import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import MainImg from './components/MainImg';
 import CategoryBtn from './components/CategoryBtn';
 import FilterBar from './components/FilterBar';
@@ -10,17 +11,25 @@ function Main() {
   const [mainImage, setMainImage] = useState([]);
   const [products, setProducts] = useState([]);
   const [offset, setOffset] = useState(0);
+  const [dropDownId, setDropDownId] = useState(0);
+  const [categoryTitle, setCategoryTitle] = useState('');
+  const [categoryNum, setCategoryNum] = useState('');
 
-  //TODO : 통신 안 할때 쓸 moc데이터 입니다.
-  // const [moc, setMoc] = useState([]);
-  // useEffect(() => {
-  //   fetch('/data/mainMockData.json')
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setMoc(data);
-  //     });
-  // }, []);
+  const optionValue = RIGHT_CATEGORY.filter(
+    list => list.id === Number(dropDownId)
+  )[0]?.value;
 
+  const sortOrderValue = RIGHT_CATEGORY.filter(
+    list => list.id === Number(dropDownId)
+  )[0]?.sortOrderValue;
+
+  const sortLimitOffset = `limit=${products.length}&offset=0`;
+  const limitOffsetUrl = `limit=10&offset=${offset}`;
+  const sortUrl = `&sort=${optionValue}`;
+  const sortOrderUrl = `&sortorder=${sortOrderValue}`;
+  const categoryUrl = `&${categoryTitle}=${categoryNum}`;
+
+  //Main Image 목데이터 fetch
   useEffect(() => {
     fetch('/data/mainImg.json')
       .then(res => res.json())
@@ -29,17 +38,39 @@ function Main() {
       });
   }, []);
 
+  //TODO : 필터 정렬 fetch
   useEffect(() => {
-    fetch(`http://10.58.52.65:3000/products?limit=10&offset=${offset}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-      },
-    })
+    fetch(
+      `http://10.58.52.75:3000/products?${sortLimitOffset}${sortUrl}${sortOrderUrl}${categoryUrl}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+        },
+      }
+    )
+      .then(response => response.json())
+      .then(item => {
+        setProducts(item);
+      });
+  }, [dropDownId, categoryTitle, categoryNum]);
+
+  //TODO : 무한 스크롤 fetch
+  useEffect(() => {
+    fetch(
+      `http://10.58.52.75:3000/products?${limitOffsetUrl}${sortUrl}${sortOrderUrl}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+        },
+      }
+    )
       .then(response => response.json())
       .then(item => {
         setProducts(prev => prev.concat(item));
       });
+
     window.addEventListener('scroll', handleScroll);
   }, [offset]);
 
@@ -55,55 +86,65 @@ function Main() {
 
   return (
     <MainWrap>
-      <MainImg mainImage={mainImage} id={mainImage.id} url={mainImage.url} />
-      <CategoryMapDiv>
-        {CATEGORY.map(({ id, text }) => {
-          return <CategoryBtn key={id} id={id} text={text} />;
-        })}
-      </CategoryMapDiv>
+      <MainImageBox>
+        <MainImg mainImage={mainImage} id={mainImage.id} url={mainImage.url} />
+        <CategoryMapDiv>
+          {CATEGORY.map(({ id, text }) => {
+            return <CategoryBtn key={id} id={id} text={text} />;
+          })}
+        </CategoryMapDiv>
+      </MainImageBox>
 
       <MainContentsWrap>
-        <FilterBar />
+        <FilterBar
+          setCategoryTitle={setCategoryTitle}
+          setCategoryNum={setCategoryNum}
+        />
         <Contents>
           <MainContentsTop>
-            <ItemNum>상품 10,000</ItemNum>
-            <ItemSelect name="">
-              {RIGHT_CATEGORY.map(({ id, text }) => {
+            <ItemNum>상품 2,000</ItemNum>
+            <ItemSelect name="" onChange={e => setDropDownId(e.target.value)}>
+              {RIGHT_CATEGORY.map(({ id, title }) => {
                 return (
-                  <ItemOption key={id} name={id} value={text}>
-                    {text}
+                  <ItemOption key={id} name={id} value={id}>
+                    {title}
                   </ItemOption>
                 );
               })}
             </ItemSelect>
           </MainContentsTop>
           <ProductsMapDiv>
-            {products?.map(
-              ({
-                productId,
-                productImage,
-                productName,
-                productOriginalPrice,
-                productModelNumber,
-                premiumPercent,
-                likeCount,
-                reviewCount,
-              }) => {
-                return (
-                  <Product
-                    key={productId}
-                    id={productId}
-                    url={productImage}
-                    title={productName}
-                    price={productOriginalPrice}
-                    productNum={productModelNumber}
-                    likeCount={likeCount}
-                    reviewCount={reviewCount}
-                    percent={Math.floor(premiumPercent).toFixed(2)}
-                  />
-                );
-              }
-            )}
+            {products?.length > 0 &&
+              products.map(
+                ({
+                  productId,
+                  productImage,
+                  productName,
+                  productOriginalPrice,
+                  productModelNumber,
+                  premiumPercent,
+                  likeCount,
+                  reviewCount,
+                  productLevel,
+                  productAge,
+                }) => {
+                  return (
+                    <Product
+                      key={productId}
+                      id={productId}
+                      url={productImage}
+                      title={productName}
+                      price={productOriginalPrice}
+                      productNum={productModelNumber}
+                      likeCount={likeCount}
+                      reviewCount={reviewCount}
+                      productLevel={productLevel}
+                      productAge={productAge}
+                      percent={Math.floor(premiumPercent).toFixed(2)}
+                    />
+                  );
+                }
+              )}
           </ProductsMapDiv>
         </Contents>
       </MainContentsWrap>
@@ -112,19 +153,21 @@ function Main() {
 }
 
 const MainWrap = styled.div`
-  margin-left: auto;
-  margin-right: auto;
+  margin: auto 0 auto;
+`;
+
+const MainImageBox = styled.div`
+  border-bottom: 1px solid rgba(188, 188, 188, 0.5);
 `;
 
 const CategoryMapDiv = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 3px;
+  max-width: 1300px;
+  display: flex;
   margin: 0 auto;
   padding: 40px 0 85px 0;
-  border-bottom: 1px solid rgba(188, 188, 188, 0.5);
+  flex-wrap: 1 1 240px;
   align-items: center;
+  /* border-bottom: 1px solid rgba(188, 188, 188, 0.5); */
 `;
 
 const MainContentsWrap = styled.div`
@@ -149,6 +192,7 @@ const MainContentsTop = styled.div`
 
 const ItemNum = styled.p`
   font-size: 17px;
+  padding-left: 60px;
 `;
 const ItemSelect = styled.select`
   width: 160px;
@@ -179,36 +223,38 @@ const ProductsMapDiv = styled(MainWrap)`
 `;
 
 export default Main;
-
 const CATEGORY = [
-  { id: 1, text: 'POINT QUIZ' },
-  { id: 2, text: 'BEST' },
-  { id: 3, text: 'NEW' },
-  { id: 4, text: 'EVENT' },
+  { id: 5, text: 'POINT QUIZ' },
+  { id: 6, text: 'BEST' },
+  { id: 7, text: 'NEW' },
+  { id: 8, text: 'EVENT' },
 ];
-
 const RIGHT_CATEGORY = [
-  { id: 0, text: '선택', endpoint: '' },
-  { id: 1, text: '좋아요 순', endpoint: 'like' },
-  { id: 2, text: '리뷰순', endpoint: 'review' },
+  { id: 0, title: '선택', value: '', sortOrderValue: '' },
+  { id: 1, title: '좋아요 순', value: 'like', sortOrderValue: 'desc' },
+  { id: 2, title: '리뷰순', value: 'review', sortOrderValue: 'desc' },
   {
     id: 3,
-    text: '즉시판매가',
-    endpoint: '&sort=immediatesellprice&sortorder=asc',
+    title: '즉시판매가',
+    value: 'immediatesellprice',
+    sortOrderValue: 'asc',
   },
   {
     id: 4,
-    text: '즉시구매가',
-    endpoint: '&sort=immediatebuyprice&sortorder=desc',
+    title: '즉시구매가',
+    value: 'immediatebuyprice',
+    sortOrderValue: 'desc',
   },
   {
     id: 5,
-    text: '프리미엄 가격 높은 순',
-    endpoint: '&sort=premium&sortorder=desc',
+    title: '프리미엄 가격 높은 순',
+    value: 'premium',
+    sortOrderValue: 'desc',
   },
   {
     id: 6,
-    text: '프리미엄 가격 낮은 순',
-    endpoint: '&sort=premium&sortorder=asc',
+    title: '프리미엄 가격 낮은 순',
+    value: 'premium',
+    sortOrderValue: 'asc',
   },
 ];

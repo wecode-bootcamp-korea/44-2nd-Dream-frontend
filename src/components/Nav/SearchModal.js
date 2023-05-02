@@ -31,7 +31,7 @@ function SearchModal({ setModalOpen }) {
   //TODO : 석준님 (검색어 단어 fetch)
   useEffect(() => {
     fetch(
-      `http://10.58.52.65:3000/search?limit=10&offset=0&keyword=${debounceValue}`,
+      `http://10.58.52.175:3000/search?limit=10&offset=0&keyword=${debounceValue}`,
       {
         method: 'GET',
         headers: {
@@ -55,7 +55,7 @@ function SearchModal({ setModalOpen }) {
   const [hotTopics, setHotTopics] = useState([]);
 
   useEffect(() => {
-    fetch('http://10.58.52.174:3000/search/hottopics', {
+    fetch('http://10.58.52.175:3000/search/hottopics', {
       method: 'GET',
       headers: {
         'content-Type': 'application/json;charset=utf-8',
