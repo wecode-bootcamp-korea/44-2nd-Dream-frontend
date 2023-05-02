@@ -42,15 +42,6 @@ const FooterBox = styled.div`
   margin-top: 50px;
   margin-bottom: 30px;
   padding: 40px 80px 10px;
-  /* position: relative;
-  transform: translateY(-0%);
-  bottom: 0;
-  width: 100%;
-  height: 135px;
-  background-color: white;
-  div {
-    padding: 8px 0;
-  } */
 `;
 
 const FooterContent = styled.div`

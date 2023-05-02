@@ -15,14 +15,12 @@ function CategoryBtn({ id, text }) {
 }
 
 const ButtonBox = styled.div`
-  /* width: fit-content; */
   height: 130px;
   margin: 0 auto;
   padding: 30px 10px;
 `;
 
 const Button = styled.button`
-  /* width: 200px; */
   max-width: 10vw;
   min-width: 14vw;
   height: 100px;

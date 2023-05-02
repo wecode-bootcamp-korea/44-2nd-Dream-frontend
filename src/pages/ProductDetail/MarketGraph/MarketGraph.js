@@ -4,12 +4,15 @@ import Chart from 'chart.js/auto';
 <<<<<<< HEAD
 import useFetch from '../../../hooks/useFetch';
 import { api } from '../../../api';
+<<<<<<< HEAD
 =======
 // import useFetch from '../../../hooks/useFetch';
 import { api } from '../../../api';
 import { useEffect } from 'react';
 import { useState } from 'react';
 >>>>>>> 3bd74b0 (수정사항 반영중)
+=======
+>>>>>>> c57c928 (Add: Main page - 필터기능,fetch기능 구현)
 
 const MarketGraph = ({ paramsId, graphChange }) => {
   const [graphData, setGraphData] = useState({});

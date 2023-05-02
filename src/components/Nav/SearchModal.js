@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Clock from 'react-live-clock';
 import useDebounce from '../../pages/Main/Debounce';
@@ -15,23 +15,22 @@ function SearchModal({ setModalOpen }) {
     setModalOpen(false);
   };
 
-  const openInnerModal = () => {
-    setInnerModal(true);
-  };
+  const outside = useRef();
 
   const searchHandler = e => {
     setSearch(e.target.value);
   };
 
   const navigate = useNavigate();
-  const goToDetail = id => {
-    navigate(`/detail/${id}`);
+
+  const goToDetail = productId => {
+    navigate(`/detail/${productId}`);
   };
 
-  //TODO : 석준님 (검색어 단어 fetch)
+  //TODO : 검색어 단어 fetch
   useEffect(() => {
     fetch(
-      `http://10.58.52.175:3000/search?limit=10&offset=0&keyword=${debounceValue}`,
+      `http://10.58.52.75:3000/search?limit=10&offset=0&keyword=${debounceValue}`,
       {
         method: 'GET',
         headers: {
@@ -40,10 +39,10 @@ function SearchModal({ setModalOpen }) {
       }
     )
       .then(response => {
-        if (!response.ok) {
-          alert('해당 단어가 없습니다');
-        } else {
+        if (response.ok) {
           return response.json();
+        } else if (response === !response.ok) {
+          alert('다시 한번 시도해 보세요!');
         }
       })
       .then(data => {
@@ -51,11 +50,11 @@ function SearchModal({ setModalOpen }) {
       });
   }, [debounceValue]);
 
-  //TODO : 다희님 (인기 검색어 fetch)
+  //TODO : 인기 검색어 fetch
   const [hotTopics, setHotTopics] = useState([]);
 
   useEffect(() => {
-    fetch('http://10.58.52.175:3000/search/hottopics', {
+    fetch('http://10.58.52.75:3000/search/hottopics', {
       method: 'GET',
       headers: {
         'content-Type': 'application/json;charset=utf-8',
@@ -68,7 +67,14 @@ function SearchModal({ setModalOpen }) {
   }, []);
 
   return (
-    <Total>
+    <Total
+      ref={outside}
+      onClick={e => {
+        if (e.target === outside.current) {
+          setInnerModal(false);
+        }
+      }}
+    >
       <div>
         <CloseBtnWrap>
           <CloseBtn onClick={closeModal}>✕</CloseBtn>
@@ -80,7 +86,7 @@ function SearchModal({ setModalOpen }) {
               type="search"
               value={search}
               placeholder="제품명, 모델명, 모델번호 등"
-              onFocus={() => openInnerModal(true)}
+              onClick={() => setInnerModal(true)}
               onChange={searchHandler}
             />
           </SearchInputWrap>
@@ -95,37 +101,33 @@ function SearchModal({ setModalOpen }) {
             </SearchMenu>
             <SearchBox>
               <SearchProductLink>
-                {search.length !== 0 ? (
-                  wordData?.map(
-                    ({
-                      productId,
-                      productImage,
-                      productName,
-                      productModelNumber,
-                    }) => {
-                      return (
-                        <SearchBox key={productId} onClick={goToDetail}>
-                          <SearchContents>
-                            <ImageBox>
-                              <SearchImg src={productImage} />
-                            </ImageBox>
-                            <TextBox>
-                              <SearchText>{productName}</SearchText>
-                              <ProductNum>{productModelNumber}</ProductNum>
-                            </TextBox>
-                          </SearchContents>
-                        </SearchBox>
-                      );
-                    }
-                  )
-                ) : (
-                  <Alert>
-                    <AlertTitle>검색하신 결과가 없습니다.</AlertTitle>
-                    <AlertText>
-                      상품 등록 요청은 앱 1:1 문의하기 로 요청해주세요.
-                    </AlertText>
-                  </Alert>
-                )}
+                {search.length !== 0
+                  ? wordData?.map(
+                      ({
+                        productId,
+                        productImage,
+                        productName,
+                        productModelNumber,
+                      }) => {
+                        return (
+                          <SearchBox
+                            key={productId}
+                            onClick={() => goToDetail(productId)}
+                          >
+                            <SearchContents>
+                              <ImageBox>
+                                <SearchImg src={productImage} />
+                              </ImageBox>
+                              <TextBox>
+                                <SearchText>{productName}</SearchText>
+                                <ProductNum>{productModelNumber}</ProductNum>
+                              </TextBox>
+                            </SearchContents>
+                          </SearchBox>
+                        );
+                      }
+                    )
+                  : ''}
               </SearchProductLink>
             </SearchBox>
           </SearchInnerWrap>
@@ -147,11 +149,7 @@ function SearchModal({ setModalOpen }) {
           <SearchContentTitle>
             <Title>인기 검색어</Title>
             <DateText>
-              <Clock
-                format="MM.DD HH:mm:ss"
-                ticking={true}
-                // timezone="KR/Pacific"
-              />
+              <Clock format="MM.DD HH:mm" ticking={true} />
             </DateText>
             <ClockText>한시간 기준</ClockText>
           </SearchContentTitle>
@@ -174,31 +172,6 @@ function SearchModal({ setModalOpen }) {
     </Total>
   );
 }
-
-const Alert = styled.div`
-  width: 822px;
-  height: 600px;
-  padding-top: 260px;
-`;
-
-const AlertTitle = styled.p`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  letter-spacing: -0.16px;
-  color: rgba(34, 34, 34, 0.8);
-`;
-
-const AlertText = styled.p`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 6px;
-  font-size: 13px;
-  letter-spacing: -0.07px;
-  color: rgba(34, 34, 34, 0.5);
-`;
 
 const Total = styled.div`
   display: block;
@@ -277,13 +250,13 @@ const SearchMenu = styled.div`
 
 const SearchMenuText = styled.p`
   width: 822px;
+  font-weight: 700;
+  padding: 0px 3px 3px;
+  border-bottom: 1px solid #ebebeb;
   font-size: 14px;
   line-height: 20px;
   letter-spacing: -0.21px;
   color: #000;
-  font-weight: 700;
-  padding: 0px 9px 16px;
-  border-bottom: 1px solid #ebebeb;
 `;
 
 const SearchBox = styled.div`
@@ -302,7 +275,7 @@ const SearchContents = styled.div`
   justify-content: baseline;
   width: 300px;
   height: 84px;
-  padding: 7px 0;
+  padding: 7px 3px;
   cursor: pointer;
 `;
 
@@ -439,27 +412,4 @@ const RECOMMEND = [
   { id: 3, title: '해리 포터' },
   { id: 4, title: '랜드로버 디펜더 90' },
   { id: 5, title: '클래식' },
-];
-
-const POPULAR = [
-  { id: 1, title: '인기검색어 1' },
-  { id: 2, title: '인기검색어 2' },
-  { id: 3, title: '인기검색어 3' },
-  { id: 4, title: '인기검색어 4' },
-  { id: 5, title: '인기검색어 5' },
-  { id: 6, title: '인기검색어 6' },
-  { id: 7, title: '인기검색어 7' },
-  { id: 8, title: '인기검색어 8' },
-  { id: 9, title: '인기검색어 9' },
-  { id: 10, title: '인기검색어 10' },
-  // { id: 11, title: '인기검색어 11' },
-  // { id: 12, title: '인기검색어 12' },
-  // { id: 13, title: '인기검색어 13' },
-  // { id: 14, title: '인기검색어 14' },
-  // { id: 15, title: '인기검색어 15' },
-  // { id: 16, title: '인기검색어 16' },
-  // { id: 17, title: '인기검색어 17' },
-  // { id: 18, title: '인기검색어 18' },
-  // { id: 19, title: '인기검색어 19' },
-  // { id: 20, title: '인기검색어 20' },
 ];
