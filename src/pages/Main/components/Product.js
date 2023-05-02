@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CiBookmark, CiMemoPad } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -87,7 +87,6 @@ const Img = styled.img`
   height: 250px;
   object-fit: cover;
   object-position: center;
-  /* border-radius: 10px; */
 `;
 
 const TextWrap = styled.div`
@@ -115,11 +114,6 @@ const ProductNum = styled.p`
   text-overflow: ellipsis;
   margin-bottom: 6px;
   color: #777;
-  /* line-height: 16px;
-  font-size: 13px;
-  letter-spacing: -0.07px;
-  font-weight: 700;
-  color: #333; */
 `;
 
 const PriceBox = styled.div`
@@ -131,32 +125,18 @@ const PriceBox = styled.div`
 `;
 
 const Price = styled.p`
-  /* display: flex; */
-  /* align-items: center; */
-  /* height: 30px;
-  line-height: 17px;
-  font-size: 14px;
-  font-weight: 700; */
   width: 70px;
   font-size: 17px;
   font-weight: 700;
   color: #333;
-  /* margin-right: 4px; */
-  /* margin: 10px 0 8px 0; */
-  /* padding: 5px 10px; */
 `;
 
 const PremiumValue = styled.div`
-  /* position: absolute;
-  top: 13px;
-  right: 13px; */
   width: 35px;
   font-size: 13px;
   font-weight: 700;
   color: ${({ percentActive }) => (percentActive > 0 ? '#41B979' : '#EE6153')};
 `;
-
-// const OriginalPrice = styled.p``;
 
 const ButtonWrap = styled.div`
   display: flex;

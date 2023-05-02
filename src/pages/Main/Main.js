@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-// import { useLocation } from 'react-router-dom';
-// import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { api } from '../../api';
 import MainImg from './components/MainImg';
 import CategoryBtn from './components/CategoryBtn';
 import FilterBar from './components/FilterBar';
@@ -41,7 +40,7 @@ function Main() {
   //TODO : 필터 정렬 fetch
   useEffect(() => {
     fetch(
-      `http://10.58.52.75:3000/products?${sortLimitOffset}${sortUrl}${sortOrderUrl}${categoryUrl}`,
+      `${api.main}?${sortLimitOffset}${sortUrl}${sortOrderUrl}${categoryUrl}`,
       {
         method: 'GET',
         headers: {
@@ -167,7 +166,6 @@ const CategoryMapDiv = styled.div`
   padding: 40px 0 85px 0;
   flex-wrap: 1 1 240px;
   align-items: center;
-  /* border-bottom: 1px solid rgba(188, 188, 188, 0.5); */
 `;
 
 const MainContentsWrap = styled.div`

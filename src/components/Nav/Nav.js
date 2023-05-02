@@ -13,7 +13,6 @@ function MainHeader() {
   };
   return (
     <HeaderWrap>
-      {/* {modalOpen && <SearchModal setModalOpen={setModalOpen} />} */}
       <HeaderTop>
         <TopUl>
           <TopLi>고객센터</TopLi>
