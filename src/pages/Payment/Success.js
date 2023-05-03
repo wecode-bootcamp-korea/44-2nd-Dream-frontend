@@ -1,38 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 
-const Success = ({ pageMode, currentBtn, address, bidData }) => {
-  const [success, setSuccess] = useState({});
-  const { productImage, totalAmount } = success;
-
-  useEffect(() => {
-    fetch('http://10.58.52.75:3000/payment', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-      },
-      body: JSON.stringify(
-        pageMode
-          ? {
-              dealNumber: 'd6155182-e589-11ed-9b10-c7d0bb38e7df',
-              address: address,
-              biddingId: 1,
-            }
-          : {
-              dealNumber: 'd6155182-e589-11ed-9b10-c7d0bb38e7df',
-              계좌번호: 3504042,
-            }
-      ),
-    })
-      .then(res => res.json())
-      .then(req => setSuccess(req));
-  }, []);
+const Success = ({ pageMode, currentBtn, address, bidData, biddingId }) => {
+  const location = useLocation();
+  const success = location.state;
 
   return (
     <SuccessContainer>
       <SuccessWrap>
         <ImageWrap>
-          <Image productImage={productImage} />
+          <Image productImage={success?.productImage} />
         </ImageWrap>
         <CompleteWrap>
           <CompleteTitle>
@@ -70,7 +48,11 @@ const Success = ({ pageMode, currentBtn, address, bidData }) => {
         <TotalPriceBox>
           <TotalPriceName>총 {pageMode ? '결제' : '정산'} 금액</TotalPriceName>
           <TotalPrice pageMode={pageMode}>
-            {totalAmount?.toLocaleString()}원
+            {success?.conmission
+              ? (
+                  Number(success?.bidPrice) + Number(success?.commission)
+                )?.toLocaleString() + '원'
+              : Number(success?.bidPrice).toLocaleString() + '원'}
           </TotalPrice>
         </TotalPriceBox>
         <HopePriceWrap>
@@ -78,7 +60,13 @@ const Success = ({ pageMode, currentBtn, address, bidData }) => {
             <HopePriceName pageMode={pageMode}>
               {pageMode ? '구매' : '판매'} 희망가
             </HopePriceName>
-            <HopePrice>{totalAmount?.toLocaleString()}원</HopePrice>
+            <HopePrice>
+              {success?.conmission
+                ? (
+                    Number(success?.bidPrice) + Number(success?.commission)
+                  )?.toLocaleString() + '원'
+                : Number(success?.bidPrice).toLocaleString() + '원'}
+            </HopePrice>
           </HopePriceBox>
           <BidPriceWrap>
             <BidPriceName pageMode={pageMode}>검수비</BidPriceName>
@@ -101,7 +89,7 @@ const Success = ({ pageMode, currentBtn, address, bidData }) => {
             {currentBtn === 1 && (
               <BidDeadlineWrap>
                 <BidDeadlineName>입찰 마감 기한</BidDeadlineName>
-                <BidDeadlineDate>{bidData.dueDate}까지</BidDeadlineDate>
+                <BidDeadlineDate>{success?.dueDate}까지</BidDeadlineDate>
               </BidDeadlineWrap>
             )}
           </>

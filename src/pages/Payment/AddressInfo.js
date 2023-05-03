@@ -16,14 +16,13 @@ const AddressInfo = ({
   addressBookModal,
   writeInfo,
   setWriteInfo,
+  addressData,
+  setInputValue,
+  inputValue,
+  setAddressData,
 }) => {
   const [message, setMessage] = useState('배송 시 요청사항을 선택하세요');
   const [address, setAddress] = useState('');
-
-  const [inputValue, setInputValue] = useState({
-    name: '',
-    detailAddress: '',
-  });
 
   const scriptUrl =
     'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
@@ -46,6 +45,7 @@ const AddressInfo = ({
     }
     setWriteInfo({ ...writeInfo, address: fullAddress });
   };
+  // const [addressData, setAddressData] = useState({});
 
   const handleClick = () => {
     open({ onComplete: handleComplete });
@@ -70,6 +70,7 @@ const AddressInfo = ({
           address={address}
           inputValue={inputValue}
           setInputValue={setInputValue}
+          setAddressData={setAddressData}
         />
       )}
       {openAddress && <BlackModal onClick={() => addressModal()} />}

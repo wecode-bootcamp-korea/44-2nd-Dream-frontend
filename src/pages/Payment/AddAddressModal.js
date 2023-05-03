@@ -9,6 +9,7 @@ const AddAddressModal = ({
   setAddress,
   inputValue,
   setInputValue,
+  setAddressData,
 }) => {
   const handleAddress = () => {
     addressModal();
@@ -22,8 +23,6 @@ const AddAddressModal = ({
     setInputValue({ ...inputValue, [name]: value });
   };
 
-  const [addressData, setAddressData] = useState({});
-  console.log(writeInfo);
   const postAddress = () => {
     fetch('http://10.58.52.75:3000/users/address', {
       method: 'POST',
@@ -38,14 +37,14 @@ const AddAddressModal = ({
       }),
     })
       .then(res => res.json())
-      .then(result => console.log(result));
+      .then(result => setAddressData(result));
   };
 
   return (
     <AddAddressModalContainer>
       <AddAddressTitleWrap>
         <AddAddressTitle>새 주소 추가</AddAddressTitle>
-        <CancelModal>x</CancelModal>
+        <CancelModal>✕</CancelModal>
       </AddAddressTitleWrap>
       <NameInputWrap>
         <NameInputTitle>이름</NameInputTitle>

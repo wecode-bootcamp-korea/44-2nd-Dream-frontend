@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 const FinalOrderInfo = ({ pageMode, bidData, currentBtn }) => {
-  // console.log('bidPrice', bidPrice);
   return (
     <FinalOrderInfoContainer>
       <FinalOrderInfoTitle>최종 주문 정보</FinalOrderInfoTitle>
@@ -10,8 +9,12 @@ const FinalOrderInfo = ({ pageMode, bidData, currentBtn }) => {
       </FinalOrderInfoPriceTitle>
       <FinalOrderInfoPrice pageMode={pageMode}>
         {pageMode
-          ? bidData.bidPrice + bidData.commission
-          : (bidData.bidPrice - bidData.commission)?.toLocaleString()}
+          ? (
+              Number(bidData.bidPrice) + Number(bidData.commission)
+            )?.toLocaleString()
+          : (
+              Number(bidData.bidPrice) - Number(bidData.commission)
+            )?.toLocaleString()}
         원
       </FinalOrderInfoPrice>
       <OrderBorder />
@@ -19,7 +22,9 @@ const FinalOrderInfo = ({ pageMode, bidData, currentBtn }) => {
         <PriceHopeName>
           {pageMode ? '구매 희망가' : '즉시 판매가'}
         </PriceHopeName>
-        <PriceHopeInfo>{bidData.bidPrice?.toLocaleString()}원 </PriceHopeInfo>
+        <PriceHopeInfo>
+          {Math.floor(bidData.bidPrice)?.toLocaleString()}원
+        </PriceHopeInfo>
       </PriceHopeWrap>
 
       {pageMode && (

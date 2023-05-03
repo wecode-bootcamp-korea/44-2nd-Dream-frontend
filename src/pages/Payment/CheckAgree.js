@@ -1,15 +1,133 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { loadTossPayments } from '@tosspayments/payment-sdk';
+
 import styled from 'styled-components';
 
-const CheckAgree = ({ tossPay, pageMode, bidData, writeInfo, currentBtn }) => {
-  const [checked, setChecked] = useState([false, false, false, false]);
+const CheckAgree = ({
+  pageMode,
+  bidData,
+  writeInfo,
+  currentBtn,
+  inputValue,
+  accountData,
+}) => {
+  const [checked, setChecked] = useState(
+    pageMode
+      ? [false, false, false, false]
+      : [false, false, false, false, false]
+  );
+  console.log(accountData);
   const navigate = useNavigate();
-
+  const { cardId, accountId } = accountData;
   const handleCheckBox = targetId => {
     const newIsChecked = [...checked];
     newIsChecked[targetId - 1] = !newIsChecked[targetId - 1];
     setChecked(newIsChecked);
+  };
+
+  const bidtype = pageMode ? 'buying' : 'selling';
+  const paytype = currentBtn === 1 ? '/bidding' : '';
+  const tossPay = (
+    dealNumber,
+    bidPrice,
+    commission,
+    productName,
+    writeInfo,
+    pageMode,
+    currentBtn,
+    biddingId,
+    addressData,
+    inputValue,
+    accountData
+  ) => {
+    const clientKey = process.env.REACT_APP_TOSS_CLIENT_KEY;
+
+    console.log(dealNumber);
+
+    loadTossPayments(clientKey).then(tossPayments => {
+      tossPayments
+        .requestPayment('카드', {
+          // 결제 수단 파라미터
+          // 결제 정보 파라미터
+          amount: Number(bidPrice) + Number(commission),
+          orderId: dealNumber,
+          orderName: productName,
+          customerName: inputValue.name,
+        })
+        .then(function (result) {
+          fetch(`http://10.58.52.75:3000/payment${paytype}/${bidtype}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              Authorization: localStorage.getItem('token'),
+            },
+            body: JSON.stringify(
+              pageMode
+                ? {
+                    dealNumber: dealNumber,
+                    addressId: addressData.addressId,
+                    biddingId: biddingId,
+                  }
+                : {
+                    dealNumber: bidData.bidData.dealNumber,
+                    accountNumberId: bidData.accountId,
+                    cardNumberId: bidData.cardId,
+                    biddingId: bidData.bidData.biddingId,
+                  }
+            ),
+          })
+            .then(res => res.json())
+            .then(data => {
+              // setSuccess(res);
+              console.log('checkAgree : ', data);
+              navigate('/success', { state: data });
+            });
+        })
+        // .then(res => {
+        //   setSuccess(res);
+        //   console.log('checkAgree : ', res);
+        //   navigate('/success', { state: res });
+        // })
+        .catch(function (error) {
+          if (error.code === 'USER_CANCEL') {
+            // 결제 고객이 결제창을 닫았을 때 에러 처리
+          } else if (error.code === 'INVALID_CARD_COMPANY') {
+            // 유효하지 않은 카드 코드에 대한 에러 처리
+          }
+        });
+    });
+  };
+
+  const purchaseBid = bidData => {
+    console.log(bidData.bidData);
+    fetch(`http://10.58.52.75:3000/payment${paytype}/${bidtype}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: localStorage.getItem('token'),
+      },
+      body: JSON.stringify(
+        pageMode
+          ? {
+              dealNumber: bidData.bidData.dealNumber,
+              addressId: bidData.addressData.addressId,
+              biddingId: bidData.bidData.biddingId,
+            }
+          : {
+              dealNumber: bidData.bidData.dealNumber,
+              accountNumberId: accountId,
+              cardNumberId: cardId,
+              biddingId: bidData.bidData.biddingId,
+            }
+      ),
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        navigate('/success', { state: data });
+      });
   };
 
   const allChecked = checked.every(check => check === true);
@@ -21,9 +139,14 @@ const CheckAgree = ({ tossPay, pageMode, bidData, writeInfo, currentBtn }) => {
         bidData.bidPrice,
         bidData.commission,
         bidData.productName,
-        writeInfo
+        bidData.biddingId,
+
+        writeInfo,
+        pageMode,
+        currentBtn
       );
     } else {
+      purchaseBid({ bidData });
       navigate('/success');
     }
   }
@@ -57,8 +180,12 @@ const CheckAgree = ({ tossPay, pageMode, bidData, writeInfo, currentBtn }) => {
         <TotalPriceName>{pageMode ? '총 결제금액' : '정산금액'}</TotalPriceName>
         <TotalPrice pageMode={pageMode}>
           {pageMode
-            ? bidData.bidPrice + bidData.commission
-            : (bidData.bidPrice - bidData.commission).toLocaleString()}
+            ? (
+                Number(bidData.bidPrice) + Number(bidData.commission)
+              )?.toLocaleString()
+            : (
+                Number(bidData.bidPrice) - Number(bidData.commission)
+              )?.toLocaleString()}
           원
         </TotalPrice>
       </TotalPriceWrap>

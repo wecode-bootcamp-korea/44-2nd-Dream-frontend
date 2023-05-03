@@ -1,18 +1,24 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
-<<<<<<< HEAD
 import useFetch from '../../../hooks/useFetch';
+<<<<<<< HEAD
 import { api } from '../../../api';
 <<<<<<< HEAD
 =======
+=======
+
+>>>>>>> 44d459f (fetch 통신)
 // import useFetch from '../../../hooks/useFetch';
 import { api } from '../../../api';
 import { useEffect } from 'react';
 import { useState } from 'react';
+<<<<<<< HEAD
 >>>>>>> 3bd74b0 (수정사항 반영중)
 =======
 >>>>>>> c57c928 (Add: Main page - 필터기능,fetch기능 구현)
+=======
+>>>>>>> 44d459f (fetch 통신)
 
 const MarketGraph = ({ paramsId, graphChange }) => {
   const [graphData, setGraphData] = useState({});

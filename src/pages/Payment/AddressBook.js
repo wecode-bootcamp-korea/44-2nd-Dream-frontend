@@ -28,7 +28,7 @@ const AddressBook = ({
       .then(res => res.json())
       .then(result => setAddressStorage(result));
   }, []);
-
+  console.log(addressStorage);
   return (
     <AddressBookContainer>
       <AddressBookWrap>
