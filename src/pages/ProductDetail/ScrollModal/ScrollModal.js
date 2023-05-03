@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { BsBookmarkHeart } from 'react-icons/bs';
 
-function ScrollModal({ detailData }) {
+function ScrollModal({ detailData, goToPurchase, goToSales }) {
   return (
     <EntireArea>
       <FlexArea>
@@ -20,7 +20,7 @@ function ScrollModal({ detailData }) {
               {detailData.likeCount === null ? 0 : detailData.likeCount}
             </InterestNum>
           </Interest>
-          <PurchaseButton>
+          <PurchaseButton onClick={goToPurchase}>
             <Purchase>구매</Purchase>
             <div>
               <PurchasePrice>
@@ -29,7 +29,7 @@ function ScrollModal({ detailData }) {
               <ImmediatePurchase>즉시 구매가</ImmediatePurchase>
             </div>
           </PurchaseButton>
-          <SellButton>
+          <SellButton onClick={goToSales}>
             <Sell>판매</Sell>
             <div>
               <SellPrice>

@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ConfirmModal from './ConfirmModal/ConfirmModal';
+import { api } from '../../api';
 
-function AgreePage({ pageMode, detailData }) {
+function AgreePage({ pageMode }) {
   const navigate = useNavigate();
+  const params = useParams();
+  const paramsId = params.id;
+  const [detailData, setDetailData] = useState([]);
   const [confirmModal, setConfirmModal] = useState(false);
   const [isChecked, setIsChecked] = useState([
     false,
@@ -15,10 +19,16 @@ function AgreePage({ pageMode, detailData }) {
   ]);
   const allChecked = isChecked.every(el => el === true);
 
+  useEffect(() => {
+    fetch(`${api.productDetail}${paramsId}`)
+      .then(response => response.json())
+      .then(result => setDetailData(result));
+  }, []);
+
   function goToBiddingPage() {
     if (allChecked) {
-      navigate('/bidding');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      navigate(`/bidding/${paramsId}`);
+      window.scrollTo(0, 0);
     }
   }
 

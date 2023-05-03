@@ -26,19 +26,19 @@ function BreakDownModal({ closeTradeModal, tradeData }) {
   }
 
   function handelPriceSort() {
-    BREAK_DOWN[currentId].sort((a, b) => {
+    tradeData[BREAK_DOWN[currentId]].sort((a, b) => {
       if (changeSort) {
-        return a.price - b.price;
+        return a.bidPrice - b.bidPrice;
       } else {
-        return b.price - a.price;
+        return b.bidPrice - a.bidPrice;
       }
     });
   }
 
   function handelDateSort() {
-    BREAK_DOWN[currentId].sort((a, b) => {
-      const [day1, month1, year1] = a.value.split('/');
-      const [day2, month2, year2] = b.value.split('/');
+    tradeData[BREAK_DOWN[currentId]].sort((a, b) => {
+      const [day1, month1, year1] = a.dates?.split('-');
+      const [day2, month2, year2] = b.dates?.split('-');
 
       const date1 = new Date(`20${year1}`, month1 - 1, day1);
       const date2 = new Date(`20${year2}`, month2 - 1, day2);
@@ -126,7 +126,7 @@ function BreakDownModal({ closeTradeModal, tradeData }) {
           </TradeDate>
         </ContentHeader>
         <BreakDownContainer>
-          {tradeData[BREAK_DOWN[currentId]]?.map(data => {
+          {tradeData[BREAK_DOWN[currentId]].map(data => {
             return (
               <BreakDown key={data.id}>
                 <TradeSizeValue>ONE SIZE</TradeSizeValue>

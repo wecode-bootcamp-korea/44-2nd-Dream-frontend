@@ -10,6 +10,7 @@ function DropZone({
   textAreaValue,
   setTextAreaValue,
   reviewSubmit,
+  detailData,
 }) {
   const onDrop = useCallback(acceptedFiles => {
     setFile(acceptedFiles[0]);
@@ -33,11 +34,11 @@ function DropZone({
         ✕
       </CloseButton>
       <ProductContainer>
-        <ProductImage />
+        <ProductImage image={detailData.imageUrl} />
         <ProductInfo>
-          <ModelNumber>porche-asfgg-154342</ModelNumber>
-          <EnglishName>Lego Harry Potter Hogwarts Great Hall</EnglishName>
-          <KoreanName>포르쉐 911</KoreanName>
+          <ModelNumber>{detailData.modelNumber}</ModelNumber>
+          <EnglishName>The Lego Group All rights</EnglishName>
+          <KoreanName>{detailData.productName}</KoreanName>
           <ProductSize>ONE SIZE</ProductSize>
         </ProductInfo>
       </ProductContainer>
@@ -122,7 +123,7 @@ const ProductImage = styled.div`
   width: 90px;
   height: 90px;
   border-radius: 13px;
-  background-image: url('https://images.unsplash.com/photo-1567329776387-a135c5ea2f75?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80');
+  background-image: ${({ image }) => `url(${image})`};
   background-position: center;
   background-size: cover;
 `;

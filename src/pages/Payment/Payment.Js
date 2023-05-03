@@ -14,27 +14,61 @@ import { api } from '../../api';
 
 const Payment = ({ pageMode, currentBtn }) => {
   const [writeInfo, setWriteInfo] = useState({ address: '' });
+  const params = useParams();
+  const paramsId = params.id;
+  const [bidData, setBidData] = useState({});
+  const bidtype = pageMode ? 'buying' : 'selling';
+  const token = localStorage.getItem('token');
+  const [openAddress, setOpenAddress] = useState(false);
+  const [openBook, setOpenBook] = useState(false);
+
+  console.log(paramsId);
+  console.log(bidtype);
+  console.log(`${api.payment}biddingin/${paramsId}?bidtype=${bidtype}`);
+
+  useEffect(() => {
+    fetch(`${api.payment}biddingin/${paramsId}?bidtype=${bidtype}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    })
+      .then(res => res.json())
+      .then(result => setBidData(result));
+  }, []);
+
+  console.log(bidData);
+
+  // useEffect(() => {
+  //   fetch(`${api.payment}/biddingin/32?bidype=${pageMode ? ‘buying’ : ‘selling’}`, {
+  //     method: ‘GET’,
+  //     headers: {
+  //       ‘Content-Type’: ‘application/json;charset=utf-8’,
+  //       Authorization: localStorage.getItem(‘token’),
+  //     },
+  //   })
+  //     .then(res => res.json())
+  //     .then(result => setBidData(result));
+  // }, []);
+
+  // const { dealNumber, commission, productName, dueDate, bidPrice } = data;
+
+  // useEffect(() => {
+  //   fetch('http://localhost:3000/data/payment.json')
+  //     .then(res => res.json())
+  //     .then(result => setData(result));
+  // }, [dealNumber, productName, bidPrice]);
+  // console.log(data.bidPrice);
+  // const location = useLocation();
+
+  // const bidData = location.state;
+
+  // console.log(location.state);
 
   const [openModal, setOpenModal] = useState(false);
   const confirmModal = () => {
     setOpenModal(prev => !prev);
-  };
-
-  const params = useParams;
-  const productId = params.id;
-
-  const [openAddress, setOpenAddress] = useState(false);
-  const [openBook, setOpenBook] = useState(false);
-  const [bidData, setBidData] = useState({});
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const buyingParams = () => {
-    searchParams.set('bidtype', 'buying');
-    setSearchParams(searchParams);
-  };
-  const sellingParams = () => {
-    searchParams.set('bidtype', 'selling');
-    setSearchParams(searchParams);
   };
 
   const addressModal = () => {
@@ -44,18 +78,6 @@ const Payment = ({ pageMode, currentBtn }) => {
   const addressBookModal = () => {
     setOpenBook(prev => !prev);
   };
-
-  useEffect(() => {
-    fetch(`${api}/biddingin/32?bidype=${pageMode ? 'buying' : 'selling'}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-        Authorization: localStorage.getItem('token'),
-      },
-    })
-      .then(res => res.json())
-      .then(result => setBidData(result));
-  }, []);
 
   return (
     <Content>

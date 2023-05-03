@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import MarketGraph from '../MarketGraph/MarketGraph';
 
-function GoingPrice({
-  openTradeModal,
-  graphChange,
-  graphData,
-  setGraphData,
-  tradeData,
-}) {
+function GoingPrice({ openTradeModal, tradeData, paramsId }) {
   const [currentDateId, setCurrentDateId] = useState(1);
   const [currentTradeId, setCurrentTradeId] = useState(1);
 
@@ -24,6 +18,16 @@ function GoingPrice({
     3: PURCHASE_HEADER,
   };
 
+  const GRAPH_DATE = {
+    1: '',
+    2: '?term=40',
+    3: '?term=30',
+    4: '?term=20',
+    5: '?term=10',
+  };
+
+  const [graphChange, setGraphChange] = useState(GRAPH_DATE[1]);
+
   function handleDateButton(targetId) {
     setCurrentDateId(targetId);
   }
@@ -32,11 +36,15 @@ function GoingPrice({
     setCurrentTradeId(targetId);
   }
 
+  function handleGragh(targetId) {
+    setGraphChange(GRAPH_DATE[targetId]);
+  }
+
   return (
     <div>
       <Title>시세</Title>
       <DateTabList>
-        {DATETAB_DATA.map((data, i) => {
+        {DATETAB_DATA.map(data => {
           return (
             <DateTab
               key={data.id}
@@ -44,7 +52,7 @@ function GoingPrice({
               targetId={data.id}
               onClick={() => {
                 handleDateButton(data.id);
-                graphChange(data.id);
+                handleGragh(data.id);
               }}
             >
               {data.date}
@@ -52,7 +60,11 @@ function GoingPrice({
           );
         })}
       </DateTabList>
-      <MarketGraph graphData={graphData} setGraphData={setGraphData} />
+      <MarketGraph
+        graphChange={graphChange}
+        // setGraphData={setGraphData}
+        paramsId={paramsId}
+      />
       <TradeTabList>
         {TRADETAB_DATA.map((data, i) => {
           return (
@@ -75,19 +87,20 @@ function GoingPrice({
         <TradeDate>{TRADE_HEADER[currentTradeId][2]?.title}</TradeDate>
       </TradeHeader>
       <BreakDownTable>
-        {tradeData[BREAK_DOWN[currentTradeId]]?.map(data => {
-          return (
-            <BreakDown key={data.id}>
-              <TradeSizeValue>ONE SIZE</TradeSizeValue>
-              <TradePriceValue>
-                {Number(data.bidPrice).toLocaleString() + '원'}
-              </TradePriceValue>
-              <TradeDateValue>
-                {currentTradeId === 1 ? data.dates : data.quantity}
-              </TradeDateValue>
-            </BreakDown>
-          );
-        })}
+        {tradeData.length !== 0 &&
+          tradeData[BREAK_DOWN[currentTradeId]].map(data => {
+            return (
+              <BreakDown key={data.id}>
+                <TradeSizeValue>ONE SIZE</TradeSizeValue>
+                <TradePriceValue>
+                  {Number(data.bidPrice).toLocaleString() + '원'}
+                </TradePriceValue>
+                <TradeDateValue>
+                  {currentTradeId === 1 ? data.dates : data.quantity}
+                </TradeDateValue>
+              </BreakDown>
+            );
+          })}
       </BreakDownTable>
       <SeeMore
         onClick={() => {

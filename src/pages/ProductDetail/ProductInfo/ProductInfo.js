@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { BsBookmarkHeart } from 'react-icons/bs';
-import { BsBookmarkHeartFill } from 'react-icons/bs';
+import { BsBookmarkHeart, BsBookmarkHeartFill } from 'react-icons/bs';
 import ProductData from '../ProductData/ProductData';
 import SippingInfo from '../ShippingInfo/ShippingInfo';
 import BeforeCheck from '../BeforeCheck/BeforeCheck';
@@ -11,48 +9,24 @@ import GoingPrice from '../GoingPrice/GoingPrice';
 
 function ProductInfo({
   openTradeModal,
-  graphChange,
-  graphData,
-  setGraphData,
+  // graphData,
+  // setGraphData,
   detailData,
-  setPageMode,
   tradeData,
   handleLike,
+  paramsId,
+  goToPurchase,
+  goToSales,
 }) {
   const [interestBtn, setInterestBtn] = useState(false);
-  const navigate = useNavigate();
-
-  function goToPurchase() {
-    setPageMode(true);
-    navigate('/agree');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function goToSales() {
-    setPageMode(false);
-    navigate('/agree');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
 
   function handleInterestToggle() {
     setInterestBtn(prev => !prev);
   }
 
-  // function pushLike() {
-  //   fetch('http://10.58.52.75:3000/like/27', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ userId: 51 }),
-  //   })
-  //     .then(response => response.json())
-  //     .then(result => console.log(result));
-  // }
-
   return (
     <InfoArea>
-      <BrandName>DREAM</BrandName>
+      <CategoryName>{detailData.categoryName}</CategoryName>
       <EnglishName>The Lego Group All rights</EnglishName>
       <KoreanName>{detailData.productName}</KoreanName>
       <SizeArea>
@@ -85,7 +59,11 @@ function ProductInfo({
         </div>
       </PriceArea>
       <ButtonArea>
-        <PurchaseButton onClick={goToPurchase}>
+        <PurchaseButton
+          onClick={() => {
+            goToPurchase(detailData.productId);
+          }}
+        >
           <Purchase>구매</Purchase>
           <div>
             <PurchasePrice>
@@ -96,7 +74,11 @@ function ProductInfo({
             <ImmediatePurchase>즉시 구매가</ImmediatePurchase>
           </div>
         </PurchaseButton>
-        <SellButton onClick={goToSales}>
+        <SellButton
+          onClick={() => {
+            goToSales(detailData.productId);
+          }}
+        >
           <Sell>판매</Sell>
           <div>
             <SellPrice>{`${Number(
@@ -109,7 +91,7 @@ function ProductInfo({
       <Interest
         onClick={() => {
           handleInterestToggle();
-          handleLike();
+          handleLike(paramsId);
         }}
       >
         {interestBtn ? <FullInterestIcon /> : <EmptyInterestIcon />}
@@ -124,10 +106,10 @@ function ProductInfo({
       <SippingInfo />
       <GoingPrice
         openTradeModal={openTradeModal}
-        graphChange={graphChange}
-        graphData={graphData}
-        setGraphData={setGraphData}
+        // graphData={graphData}
+        // setGraphData={setGraphData}
         tradeData={tradeData}
+        paramsId={paramsId}
       />
       <BeforeCheck />
       <Guarantee />
@@ -142,15 +124,14 @@ const InfoArea = styled.div`
   border-left: 1px solid #ebebeb;
 `;
 
-const BrandName = styled.div`
+const CategoryName = styled.div`
   display: inline-block;
   vertical-align: top;
   padding-top: 1px;
   margin-bottom: 12px;
-  font-size: 18px;
+  font-size: 25px;
   letter-spacing: -0.27px;
-  font-weight: 800;
-  border-bottom: 2px solid #222;
+  font-weight: 700;
 `;
 
 const EnglishName = styled.div`

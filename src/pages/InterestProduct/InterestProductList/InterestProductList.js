@@ -23,7 +23,7 @@ function InterestProductList({ data, handleLike }) {
           </PurchaseBtn>
           <RemoveBtn
             onClick={() => {
-              handleLike();
+              handleLike(data.productId);
             }}
           >
             삭제

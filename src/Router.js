@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AgreePage from './pages/AgreePage/AgreePage';
 import BiddingPage from './pages/BiddingPage/BiddingPage';
@@ -7,7 +7,7 @@ import InterestProduct from './pages/InterestProduct/InterestProduct';
 import Login from './pages/Login/Login';
 import Token from './pages/Login/Token';
 import Main from './pages/Main/Main';
-import SearchModal from '../src/components/Nav/SearchModal';
+import SearchModal from './pages/Main/components/SearchModal';
 import Payment from './pages/Payment/Payment';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Success from './pages/Payment/Success';
@@ -15,61 +15,71 @@ import TradeDetails from './pages/TradeDetails/TradeDetails';
 
 const Router = () => {
   const [pageMode, setPageMode] = useState(true);
-  const [detailData, setDetailData] = useState({});
+  // const [detailData, setDetailData] = useState({});
   const [file, setFile] = useState(null);
   const [textAreaValue, setTextAreaValue] = useState('');
   const [currentBtn, setCurrentBtn] = useState(2);
   const [interestData, setInterestData] = useState([]);
-  const [bidValue, setBidValue] = useState('');
-  const today = new Date();
-  const thirtyDaysLater = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
-  const [deadLineDate, setDeadLineDate] = useState(thirtyDaysLater);
+  // const [bidData, setBidData] = useState({});
+  const token = localStorage.getItem('token');
+  // const [bidValue, setBidValue] = useState('');
+  // const today = new Date();
+  // const thirtyDaysLater = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
+  // const [deadLineDate, setDeadLineDate] = useState(thirtyDaysLater);
   // const [bidData, setBidData] = useState({});
 
-  function reviewSubmit() {
-    const formData = new FormData();
-    formData.append('productId', detailData.productId);
-    formData.append('reviewImg', file);
-    formData.append('title', 'review');
-    formData.append('content', textAreaValue);
-    fetch('http://10.58.52.75:3000/review', {
-      method: 'POST',
-      cache: 'no-cache',
-      body: formData,
-    })
-      .then(response => response.json())
-      .then(result => {
-        console.log(result);
-      });
-  }
-
-  function handleLike() {
-    fetch('http://10.58.52.75:3000/like/27', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId: 51 }),
-    }).then(response => {
-      rerendering();
-    });
-  }
-
-  // useEffect(() => {
-  //   fetch('http://10.58.52.75:3000/products/like')
+  // function reviewSubmit() {
+  //   const formData = new FormData();
+  //   formData.append('productId', detailData.productId);
+  //   formData.append('reviewImg', file);
+  //   formData.append('title', 'review');
+  //   formData.append('content', textAreaValue);
+  //   fetch('http://10.58.52.75:3000/review', {
+  //     method: 'POST',
+  //     cache: 'no-cache',
+  //     body: formData,
+  //   })
   //     .then(response => response.json())
   //     .then(result => {
-  //       setInterestData(result);
+  //       console.log(result);
   //     });
-  // }, []);
+  // }
+
+  function handleLike(targetId) {
+    fetch(`http://10.58.52.75:3000/like/${targetId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    }).then(() => rerendering());
+  }
 
   function rerendering() {
-    fetch('http://10.58.52.75:3000/products/like')
+    fetch('http://10.58.52.75:3000/products/like', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    })
       .then(response => response.json())
       .then(result => {
         setInterestData(result);
       });
   }
+
+  // useEffect(() => {
+  //   fetch('http://10.58.52.75:3000/products/like', {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: token,
+  //     },
+  //   })
+  //     .then(response => response.json())
+  //     .then(result => {
+  //       setInterestData(result);
+  //     });
+  // }, []);
 
   // function bidSubmit() {
   //   fetch('http://10.58.52.174:3000/bid/input', {
@@ -93,22 +103,22 @@ const Router = () => {
   //     .then(result => setBidData(result));
   // }
 
-  const dateType = {
-    1: new Date(today.getTime() + 24 * 60 * 60 * 1000),
-    2: new Date(today.getTime() + 3 * 24 * 60 * 60 * 1000),
-    3: new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000),
-    4: new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000),
-    5: new Date(today.getTime() + 60 * 24 * 60 * 60 * 1000),
-  };
+  // const dateType = {
+  //   1: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+  //   2: new Date(today.getTime() + 3 * 24 * 60 * 60 * 1000),
+  //   3: new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000),
+  //   4: new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000),
+  //   5: new Date(today.getTime() + 60 * 24 * 60 * 60 * 1000),
+  // };
 
-  function handleDate(targetId) {
-    setDeadLineDate(dateType[targetId]);
-  }
+  // function handleDate(targetId) {
+  //   setDeadLineDate(dateType[targetId]);
+  // }
 
-  const year = deadLineDate.getFullYear();
-  const month = String(deadLineDate.getMonth() + 1).padStart(2, '0');
-  const day = String(deadLineDate.getDate()).padStart(2, '0');
-  const formattedDate = `${year}/${month}/${day}`;
+  // const year = deadLineDate.getFullYear();
+  // const month = String(deadLineDate.getMonth() + 1).padStart(2, '0');
+  // const day = String(deadLineDate.getDate()).padStart(2, '0');
+  // const formattedDate = `${year}/${month}/${day}`;
 
   return (
     <BrowserRouter>
@@ -123,13 +133,13 @@ const Router = () => {
           element={
             <ProductDetail
               setPageMode={setPageMode}
-              detailData={detailData}
-              setDetailData={setDetailData}
+              // detailData={detailData}
+              // setDetailData={setDetailData}
               file={file}
               setFile={setFile}
-              textAreaValu={textAreaValue}
+              textAreaValue={textAreaValue}
               setTextAreaValue={setTextAreaValue}
-              reviewSubmit={reviewSubmit}
+              // reviewSubmit={reviewSubmit}
               handleLike={handleLike}
             />
           }
@@ -140,6 +150,7 @@ const Router = () => {
             <InterestProduct
               handleLike={handleLike}
               interestData={interestData}
+              setInterestData={setInterestData}
             />
           }
         />
@@ -165,34 +176,25 @@ const Router = () => {
           }
         />
 
+        <Route path="/agree/:id" element={<AgreePage pageMode={pageMode} />} />
         <Route
-          path="/agree"
-          element={<AgreePage pageMode={pageMode} detailData={detailData} />}
-        />
-        <Route
-          path="/bidding"
+          path="/bidding/:id"
           element={
             <BiddingPage
               pageMode={pageMode}
-              detailData={detailData}
+              // detailData={detailData}
               currentBtn={currentBtn}
               setCurrentBtn={setCurrentBtn}
+              // bidData={bidData}
+              // setBidData={setBidData}
               // bidSubmit={bidSubmit}
-              handleDate={handleDate}
-              bidValue={bidValue}
-              setBidValue={setBidValue}
-              formattedDate={formattedDate}
+              // handleDate={handleDate}
+              // bidValue={bidValue}
+              // setBidValue={setBidValue}
+              // formattedDate={formattedDate}
             />
           }
         />
-        <Route path="/detail" element={<ProductDetail />} />
-        <Route path="/interestProduct" element={<InterestProduct />} />
-        <Route path="/agree" element={<AgreePage />} />
-        <Route path="/bidding" element={<BiddingPage />} />
-        <Route path="/payment" element={<Payment />} />
-        {/* <Route path="/purchaseBid" element={<PurchaseBid />} /> */}
-        {/* <Route path="/payment" element={<Payment />} /> */}
-        <Route path="/payment" element={<Payment />} />
       </Routes>
     </BrowserRouter>
   );

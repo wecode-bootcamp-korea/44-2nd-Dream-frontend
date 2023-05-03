@@ -13,6 +13,7 @@ function PhotoReview({
   setFile,
   setTextAreaValue,
   reviewSubmit,
+  detailData,
 }) {
   const [reviewData, setReviewData] = useFetch('/data/reviewData.json');
 
@@ -60,6 +61,7 @@ function PhotoReview({
           textAreaValue={textAreaValue}
           setTextAreaValue={setTextAreaValue}
           reviewSubmit={reviewSubmit}
+          detailData={detailData}
         />
       )}
     </ReviewContainer>
