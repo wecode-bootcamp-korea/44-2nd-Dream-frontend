@@ -8,7 +8,7 @@ import SellAccount from './SellAcount';
 import CashReceipt from './CashReceipt';
 import CheckAgree from './CheckAgree';
 import PaymentMethod from './PaymentMethod';
-import { useSearchParams, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import tossPay from './Toss';
 import { api } from '../../api';
 
@@ -21,13 +21,8 @@ const Payment = ({ pageMode, currentBtn }) => {
   const token = localStorage.getItem('token');
   const [openAddress, setOpenAddress] = useState(false);
   const [openBook, setOpenBook] = useState(false);
-
-  console.log(paramsId);
-  console.log(bidtype);
-  console.log(`${api.payment}biddingin/${paramsId}?bidtype=${bidtype}`);
-
   useEffect(() => {
-    fetch(`${api.payment}biddingin/${paramsId}?bidtype=${bidtype}`, {
+    fetch(`${api.payment}/biddingin/${paramsId}?bidtype=${bidtype}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -38,38 +33,19 @@ const Payment = ({ pageMode, currentBtn }) => {
       .then(result => setBidData(result));
   }, []);
 
-  console.log(bidData);
-
-  // useEffect(() => {
-  //   fetch(`${api.payment}/biddingin/32?bidype=${pageMode ? ‘buying’ : ‘selling’}`, {
-  //     method: ‘GET’,
-  //     headers: {
-  //       ‘Content-Type’: ‘application/json;charset=utf-8’,
-  //       Authorization: localStorage.getItem(‘token’),
-  //     },
-  //   })
-  //     .then(res => res.json())
-  //     .then(result => setBidData(result));
-  // }, []);
-
-  // const { dealNumber, commission, productName, dueDate, bidPrice } = data;
-
-  // useEffect(() => {
-  //   fetch('http://localhost:3000/data/payment.json')
-  //     .then(res => res.json())
-  //     .then(result => setData(result));
-  // }, [dealNumber, productName, bidPrice]);
-  // console.log(data.bidPrice);
-  // const location = useLocation();
-
-  // const bidData = location.state;
-
-  // console.log(location.state);
+  const [openAccount, setOpenAccount] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
   const confirmModal = () => {
     setOpenModal(prev => !prev);
   };
+
+  const [addressData, setAddressData] = useState({});
+  const [accountData, setAccountData] = useState({});
+  const [inputValue, setInputValue] = useState({
+    name: '',
+    detailAddress: '',
+  });
 
   const addressModal = () => {
     setOpenAddress(prev => !prev);
@@ -79,11 +55,26 @@ const Payment = ({ pageMode, currentBtn }) => {
     setOpenBook(prev => !prev);
   };
 
+  const accountModal = () => {
+    setOpenAccount(prev => !prev);
+  };
+
+  const [calculatedValue, setCalculatedValue] = useState({});
+
   return (
     <Content>
       <ProductInfo pageMode={pageMode} bidData={bidData} />
 
-      {!pageMode && <SellAccount pageMode={pageMode} />}
+      {!pageMode && (
+        <SellAccount
+          pageMode={pageMode}
+          accountModal={accountModal}
+          openAccount={openAccount}
+          calculatedValue={calculatedValue}
+          setCalculatedValue={setCalculatedValue}
+          setAccountData={setAccountData}
+        />
+      )}
 
       <AddressInfo
         writeInfo={writeInfo}
@@ -95,6 +86,10 @@ const Payment = ({ pageMode, currentBtn }) => {
         addressModal={addressModal}
         addressBookModal={addressBookModal}
         openBook={openBook}
+        addressData={addressData}
+        setAddressData={setAddressData}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
       />
 
       {pageMode && <Point pageMode={pageMode} />}
@@ -108,11 +103,14 @@ const Payment = ({ pageMode, currentBtn }) => {
       {pageMode ? <PaymentMethod /> : <CashReceipt />}
 
       <CheckAgree
+        inputValue={inputValue}
         tossPay={tossPay}
         pageMode={pageMode}
         bidData={bidData}
         writeInfo={writeInfo}
         currentBtn={currentBtn}
+        addressData={addressData}
+        accountData={accountData}
       />
     </Content>
   );
