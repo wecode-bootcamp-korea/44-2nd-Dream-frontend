@@ -8,4 +8,6 @@ export const api = {
   order: `${BASE_URL}/order`,
   payment: `${BASE_URL}/bid`,
   trade: `${BASE_URL}/bid/info/`,
+  review: `${BASE_URL}/reviews`,
+  interest: `${BASE_URL}/products/like`,
 };

@@ -21,6 +21,7 @@ function Product({
 
   const goToDetail = () => {
     navigate(`/detail/${id}`);
+    window.scrollTo(0, 0);
   };
 
   const goToInterest = () => {

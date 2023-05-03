@@ -1,44 +1,44 @@
 [
   {
     "id": 1,
-    "image": "https://images.unsplash.com/photo-1610876691676-bb447cca5fd2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
-    "userName": "youngwoon",
+    "reviewImageUrl": "https://images.unsplash.com/photo-1610876691676-bb447cca5fd2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+    "userNickname": "youngwoon",
     "likeNumber": 32,
-    "content": "잘 받았습니다! 감사합니다!"
+    "reviewContent": "잘 받았습니다! 감사합니다!"
   },
   {
     "id": 2,
-    "image": "https://images.unsplash.com/photo-1585366119957-e9730b6d0f60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80",
-    "userName": "jong_c",
+    "reviewImageUrl": "https://images.unsplash.com/photo-1585366119957-e9730b6d0f60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80",
+    "userNickname": "jong_c",
     "likeNumber": 11,
-    "content": "#레고 나름 저렴하게 샀습니다!"
+    "reviewContent": "#레고 나름 저렴하게 샀습니다!"
   },
   {
     "id": 3,
-    "image": "https://images.unsplash.com/photo-1577138967570-266667b3deed?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80",
-    "userName": "leekyuheon",
+    "reviewImageUrl": "https://images.unsplash.com/photo-1577138967570-266667b3deed?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80",
+    "userNickname": "leekyuheon",
     "likeNumber": 57,
-    "content": "#레고입문 넘나 예쁘닷 💙"
+    "reviewContent": "#레고입문 넘나 예쁘닷 💙"
   },
   {
     "id": 4,
-    "image": "https://images.unsplash.com/photo-1639234911987-3d047101d432?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-    "userName": "new_hwan",
+    "reviewImageUrl": "https://images.unsplash.com/photo-1639234911987-3d047101d432?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+    "userNickname": "new_hwan",
     "likeNumber": 22,
-    "content": "오랜만에 옛날 향수 느꼈네요. 예쁩니다!🙃"
+    "reviewContent": "오랜만에 옛날 향수 느꼈네요. 예쁩니다!🙃"
   },
   {
     "id": 5,
-    "image": "https://images.unsplash.com/photo-1611604548018-d56bbd85d681?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-    "userName": "loeyg_nah",
+    "reviewImageUrl": "https://images.unsplash.com/photo-1611604548018-d56bbd85d681?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+    "userNickname": "loeyg_nah",
     "likeNumber": 39,
-    "content": "너무너무 이쁘고 만드는거 재밌음 🫶🏻🫶🏻"
+    "reviewContent": "너무너무 이쁘고 만드는거 재밌음 🫶🏻🫶🏻"
   },
   {
     "id": 6,
-    "image": "https://images.unsplash.com/photo-1517012068311-53ed5975e234?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1056&q=80",
-    "userName": "react_dom",
+    "reviewImageUrl": "https://images.unsplash.com/photo-1517012068311-53ed5975e234?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1056&q=80",
+    "userNickname": "react_dom",
     "likeNumber": 11,
-    "content": "동심으로 돌아간 느낌도 받아서 좋네요 💛"
+    "reviewContent": "동심으로 돌아간 느낌도 받아서 좋네요 💛"
   }
 ]

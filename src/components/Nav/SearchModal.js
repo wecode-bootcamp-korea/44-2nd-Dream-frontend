@@ -238,7 +238,7 @@ const TotalWrap = styled.div`
 
 const SearchInnerWrap = styled.div`
   position: absolute;
-  width: 100%;
+  width: 833px;
   height: 100vh;
   padding: 0 5px;
   background-color: white;

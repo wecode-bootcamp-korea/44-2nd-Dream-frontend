@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import InterestProductList from './InterestProductList/InterestProductList';
 import SideNav from './SideNav/SideNav';
+import { api } from '../../api';
 
 function InterestProduct({ handleLike, interestData, setInterestData }) {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    fetch('http://10.58.52.75:3000/products/like', {
+    fetch(`${api.interest}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
@@ -22,8 +23,6 @@ function InterestProduct({ handleLike, interestData, setInterestData }) {
         setInterestData(result);
       });
   }, []);
-
-  console.log(interestData);
 
   return (
     <FullContainer>

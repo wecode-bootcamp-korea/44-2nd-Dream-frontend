@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { IoMdHeartEmpty } from 'react-icons/io';
 import { IoMdHeart } from 'react-icons/io';
+import { BsTrash } from 'react-icons/bs';
 
-function ReviewList({ data }) {
+function ReviewList({ data, removeReview }) {
   const [heartToggle, setHeartToggle] = useState(false);
 
   function handleHeartToggle() {
@@ -12,19 +13,30 @@ function ReviewList({ data }) {
 
   return (
     <div>
-      <ReviewImg image={data.image} />
+      <ReviewImg image={data.reviewImageUrl} />
       <Container>
-        <UserName>{data.userName}</UserName>
+        <UserName>{data.userNickname}</UserName>
         <HeartContainer>
           <div onClick={handleHeartToggle}>
             {heartToggle ? <FullHeartButton /> : <EmptyHeartButton />}
           </div>
           <HeartNumber>
-            {heartToggle ? data.likeNumber + 1 : data.likeNumber}
+            {heartToggle
+              ? data.likeNumber
+                ? data.likeNumber + 1
+                : 1
+              : data.likeNumber
+              ? data.likeNumber
+              : ''}
           </HeartNumber>
         </HeartContainer>
+        <Trash
+          onClick={() => {
+            removeReview(data.reviewId);
+          }}
+        />
       </Container>
-      <ReviewContent>{data.content}</ReviewContent>
+      <ReviewContent>{data.reviewContent}</ReviewContent>
     </div>
   );
 }
@@ -48,12 +60,22 @@ const Container = styled.div`
 
 const UserName = styled.div`
   font-weight: 600;
+  flex-grow: 1;
+`;
+
+const Trash = styled(BsTrash)`
+  text-align: right;
+  margin-left: 10px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const HeartContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
+  padding-top: 5px;
 `;
 
 const EmptyHeartButton = styled(IoMdHeartEmpty)`

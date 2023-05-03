@@ -15,15 +15,16 @@ function ProductDetail({
   // detailData,
   // setDetailData,
   file,
-  textAreaValue,
+  // textAreaValue,
   setFile,
-  setTextAreaValue,
+  // setTextAreaValue,
   handleLike,
 }) {
   const [detailData, setDetailData] = useState([]);
   const [scrollModal, setScrollModal] = useState(false);
   const [tradeModalWindow, setTradeModalWindow] = useState(false);
   const [reviewModalWindow, setReviewModalWindow] = useState(false);
+  const [textAreaValue, setTextAreaValue] = useState('');
   // const [graphData, setGraphData] = useState(1);
   const navigate = useNavigate();
   const fixed = useRef();
@@ -100,81 +101,59 @@ function ProductDetail({
     window.scrollTo(0, 0);
   }
 
-  function reviewSubmit() {
-    const formData = new FormData();
-    formData.append('productId', detailData.productId);
-    formData.append('reviewImg', file);
-    formData.append('title', 'review');
-    formData.append('content', textAreaValue);
-    fetch('http://10.58.52.75:3000/reviews', {
-      headers: {
-        Accpet: 'application/json',
-        Authorization: token,
-      },
-      method: 'POST',
-      cache: 'no-cache',
-      body: formData,
-    })
-      .then(response => response.json())
-      .then(result => {
-        console.log(result);
-      });
-  }
-
   return (
-    <>
-      <FullContainer>
-        {scrollModal && (
-          <ScrollModal
-            detailData={detailData}
-            goToPurchase={goToPurchase}
-            goToSales={goToSales}
-          />
-        )}
-        {tradeModalWindow && (
-          <BreakDownModal
-            closeTradeModal={closeTradeModal}
-            tradeData={tradeData}
-          />
-        )}
-        {(tradeModalWindow || reviewModalWindow) && (
-          <BlackModal
-            onClick={() => {
-              closeTradeModal();
-              closeReviewModal();
-            }}
-          />
-        )}
-        <ProductArea>
-          <ProductImage fixed={fixed} detailData={detailData} />
-          <ProductInfo
-            detailData={detailData}
-            openTradeModal={openTradeModal}
-            // graphData={graphData}
-            // setGraphData={setGraphData}
-            setPageMode={setPageMode}
-            tradeData={tradeData}
-            handleLike={handleLike}
-            paramsId={paramsId}
-            goToPurchase={goToPurchase}
-            goToSales={goToSales}
-          />
-        </ProductArea>
-        <HorizontalLine />
-        <PhotoReview
-          reviewModalWindow={reviewModalWindow}
-          openReviewModal={openReviewModal}
-          closeReviewModal={closeReviewModal}
-          file={file}
-          textAreaValue={textAreaValue}
-          setFile={setFile}
-          setTextAreaValue={setTextAreaValue}
-          reviewSubmit={reviewSubmit}
+    <FullContainer>
+      {scrollModal && (
+        <ScrollModal
           detailData={detailData}
+          goToPurchase={goToPurchase}
+          goToSales={goToSales}
         />
-      </FullContainer>
+      )}
+      {tradeModalWindow && (
+        <BreakDownModal
+          closeTradeModal={closeTradeModal}
+          tradeData={tradeData}
+        />
+      )}
+      {(tradeModalWindow || reviewModalWindow) && (
+        <BlackModal
+          onClick={() => {
+            closeTradeModal();
+            closeReviewModal();
+          }}
+        />
+      )}
+      <ProductArea>
+        <ProductImage fixed={fixed} detailData={detailData} />
+        <ProductInfo
+          detailData={detailData}
+          openTradeModal={openTradeModal}
+          // graphData={graphData}
+          // setGraphData={setGraphData}
+          setPageMode={setPageMode}
+          tradeData={tradeData}
+          handleLike={handleLike}
+          paramsId={paramsId}
+          goToPurchase={goToPurchase}
+          goToSales={goToSales}
+        />
+      </ProductArea>
+      <HorizontalLine />
+      <PhotoReview
+        reviewModalWindow={reviewModalWindow}
+        openReviewModal={openReviewModal}
+        closeReviewModal={closeReviewModal}
+        file={file}
+        textAreaValue={textAreaValue}
+        setFile={setFile}
+        setTextAreaValue={setTextAreaValue}
+        // reviewSubmit={reviewSubmit}
+        detailData={detailData}
+        paramsId={paramsId}
+      />
       <Footer />
-    </>
+    </FullContainer>
   );
 }
 
