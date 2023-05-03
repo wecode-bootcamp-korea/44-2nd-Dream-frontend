@@ -1,11 +1,25 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
+<<<<<<< HEAD
 import useFetch from '../../../hooks/useFetch';
 import { api } from '../../../api';
+=======
+// import useFetch from '../../../hooks/useFetch';
+import { api } from '../../../api';
+import { useEffect } from 'react';
+import { useState } from 'react';
+>>>>>>> 3bd74b0 (수정사항 반영중)
 
-const MarketGraph = () => {
-  const [graphData] = useFetch(`${api.graph}24`);
+const MarketGraph = ({ paramsId, graphChange }) => {
+  const [graphData, setGraphData] = useState({});
+  // const [graphData] = useFetch(`${api.graph}${paramsId}${graphChange}`);
+
+  useEffect(() => {
+    fetch(`${api.graph}${paramsId}${graphChange}`)
+      .then(response => response.json())
+      .then(result => setGraphData(result));
+  }, [graphChange]);
 
   const data = {
     labels: graphData.date,

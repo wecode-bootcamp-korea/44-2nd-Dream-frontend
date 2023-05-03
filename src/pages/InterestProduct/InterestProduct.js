@@ -1,23 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import InterestProductList from './InterestProductList/InterestProductList';
 import SideNav from './SideNav/SideNav';
 
-function InterestProduct({ handleLike, interestData }) {
+function InterestProduct({ handleLike, interestData, setInterestData }) {
+  const token = localStorage.getItem('token');
+
+  useEffect(() => {
+    fetch('http://10.58.52.75:3000/products/like', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    })
+      .then(response => {
+        console.log(response);
+        return response.json();
+      })
+      .then(result => {
+        console.log(result);
+        setInterestData(result);
+      });
+  }, []);
+
+  console.log(interestData);
+
   return (
     <FullContainer>
       <SideNav />
       <InterestProductContainer>
         <InterestProductTitle>관심 상품</InterestProductTitle>
-        {interestData.map(data => {
-          return (
-            <InterestProductList
-              key={data.id}
-              data={data}
-              handleLike={handleLike}
-            />
-          );
-        })}
+        {interestData !== undefined &&
+          interestData.map(data => {
+            return (
+              <InterestProductList
+                key={data.productId}
+                data={data}
+                handleLike={handleLike}
+              />
+            );
+          })}
       </InterestProductContainer>
     </FullContainer>
   );

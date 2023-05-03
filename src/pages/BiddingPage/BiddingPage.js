@@ -1,29 +1,48 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { api } from '../../api';
 
 function BiddingPage({
   pageMode,
-  detailData,
   currentBtn,
   setCurrentBtn,
-  bidSubmit,
-  handleDate,
-  bidValue,
-  setBidValue,
-  formattedDate,
+  bidData,
+  setBidData,
+  // bidSubmit,
+  // handleDate,
+  // bidValue,
+  // setBidValue,
+  // formattedDate,
 }) {
   const [currentId, setCurrentId] = useState(4);
   const [commission, setCommission] = useState('-');
   const [saleProceeds, setSaleProceeds] = useState('-');
+  // const [bidData, setBidData] = useState({});
+  const [bidValue, setBidValue] = useState('');
+  const today = new Date();
+  const thirtyDaysLater = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
+  const [deadLineDate, setDeadLineDate] = useState(thirtyDaysLater);
+  const params = useParams();
+  const paramsId = params.id;
+  const [detailData, setDetailData] = useState([]);
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
+  // console.log(bidData);
+
+  useEffect(() => {
+    fetch(`${api.productDetail}${paramsId}`)
+      .then(response => response.json())
+      .then(result => setDetailData(result));
+  }, []);
 
   function handleButton(targetId) {
     setCurrentBtn(targetId);
   }
 
   function goToPayment() {
-    navigate('/payment');
+    navigate(`/payment/${paramsId}`);
   }
 
   function handleInput(e) {
@@ -46,6 +65,49 @@ function BiddingPage({
       (Number(bidValue.replace(/,/g, '')) * 0.95).toLocaleString()
     );
   }
+
+  function bidSubmit() {
+    fetch('http://10.58.52.75:3000/bid/input', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        productId: detailData.productId,
+        bidPrice:
+          currentBtn === 1
+            ? parseFloat(bidValue.replace(/,/g, ''))
+            : pageMode
+            ? detailData.buyNowPrice
+            : detailData.sellNowPrice,
+        dueDate: formattedDate,
+        bidType: pageMode ? 'buying' : 'selling',
+      }),
+    })
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+        goToPayment();
+      });
+  }
+
+  const dateType = {
+    1: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+    2: new Date(today.getTime() + 3 * 24 * 60 * 60 * 1000),
+    3: new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000),
+    4: new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000),
+    5: new Date(today.getTime() + 60 * 24 * 60 * 60 * 1000),
+  };
+
+  function handleDate(targetId) {
+    setDeadLineDate(dateType[targetId]);
+  }
+
+  const year = deadLineDate.getFullYear();
+  const month = String(deadLineDate.getMonth() + 1).padStart(2, '0');
+  const day = String(deadLineDate.getDate()).padStart(2, '0');
+  const formattedDate = `${year}/${month}/${day}`;
 
   return (
     <BiddingContainer>
@@ -181,8 +243,8 @@ function BiddingPage({
         </TotalPayment>
         <ContinueBtn
           onClick={() => {
-            goToPayment();
             bidSubmit();
+            // goToPayment();
           }}
         >
           {pageMode

@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { api } from '../../api';
 import styled from 'styled-components';
 import ProductInfo from './ProductInfo/ProductInfo';
 import ProductImage from './ProductImage/ProductImage';
@@ -7,32 +9,31 @@ import PhotoReview from './PhotoReview/PhotoReview';
 import BreakDownModal from './BreakDownModal/BreakDownModal';
 import useFetch from '../../hooks/useFetch';
 import Footer from '../../components/Footer/Footer';
-import { useParams } from 'react-router-dom';
-import { api } from '../../api';
 
 function ProductDetail({
   setPageMode,
-  detailData,
-  setDetailData,
+  // detailData,
+  // setDetailData,
   file,
   textAreaValue,
   setFile,
   setTextAreaValue,
-  reviewSubmit,
   handleLike,
 }) {
+  const [detailData, setDetailData] = useState([]);
   const [scrollModal, setScrollModal] = useState(false);
   const [tradeModalWindow, setTradeModalWindow] = useState(false);
   const [reviewModalWindow, setReviewModalWindow] = useState(false);
-  const [graphData, setGraphData] = useState(1);
+  // const [graphData, setGraphData] = useState(1);
+  const navigate = useNavigate();
   const fixed = useRef();
-  const [tradeData] = useFetch('http://10.58.52.75:3000/bid/info/24');
-
   const params = useParams();
-  const productId = params.id;
+  const paramsId = params.id;
+  const [tradeData] = useFetch(`${api.trade}${paramsId}`);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    fetch(`${api.productDetail}${productId}`)
+    fetch(`${api.productDetail}${paramsId}`)
       .then(response => response.json())
       .then(result => setDetailData(result));
   }, []);
@@ -87,14 +88,49 @@ function ProductDetail({
     window.document.body.style.overflowY = 'scroll';
   }
 
-  function graphChange(targetId) {
-    setGraphData(targetId);
+  function goToPurchase(targetId) {
+    setPageMode(true);
+    navigate(`/agree/${targetId}`);
+    window.scrollTo(0, 0);
+  }
+
+  function goToSales(targetId) {
+    setPageMode(false);
+    navigate(`/agree/${targetId}`);
+    window.scrollTo(0, 0);
+  }
+
+  function reviewSubmit() {
+    const formData = new FormData();
+    formData.append('productId', detailData.productId);
+    formData.append('reviewImg', file);
+    formData.append('title', 'review');
+    formData.append('content', textAreaValue);
+    fetch('http://10.58.52.75:3000/reviews', {
+      headers: {
+        Accpet: 'application/json',
+        Authorization: token,
+      },
+      method: 'POST',
+      cache: 'no-cache',
+      body: formData,
+    })
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+      });
   }
 
   return (
     <>
       <FullContainer>
-        {scrollModal && <ScrollModal detailData={detailData} />}
+        {scrollModal && (
+          <ScrollModal
+            detailData={detailData}
+            goToPurchase={goToPurchase}
+            goToSales={goToSales}
+          />
+        )}
         {tradeModalWindow && (
           <BreakDownModal
             closeTradeModal={closeTradeModal}
@@ -114,12 +150,14 @@ function ProductDetail({
           <ProductInfo
             detailData={detailData}
             openTradeModal={openTradeModal}
-            graphChange={graphChange}
-            graphData={graphData}
-            setGraphData={setGraphData}
+            // graphData={graphData}
+            // setGraphData={setGraphData}
             setPageMode={setPageMode}
             tradeData={tradeData}
             handleLike={handleLike}
+            paramsId={paramsId}
+            goToPurchase={goToPurchase}
+            goToSales={goToSales}
           />
         </ProductArea>
         <HorizontalLine />
@@ -132,6 +170,7 @@ function ProductDetail({
           setFile={setFile}
           setTextAreaValue={setTextAreaValue}
           reviewSubmit={reviewSubmit}
+          detailData={detailData}
         />
       </FullContainer>
       <Footer />
