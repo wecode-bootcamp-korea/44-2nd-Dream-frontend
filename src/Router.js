@@ -11,6 +11,7 @@ import Payment from './pages/Payment/Payment';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Success from './pages/Payment/Success';
 import TradeDetails from './pages/TradeDetails/TradeDetails';
+import { api } from './api';
 
 const Router = () => {
   const [pageMode, setPageMode] = useState(true);
@@ -32,7 +33,7 @@ const Router = () => {
   }
 
   function rerendering() {
-    fetch('http://10.58.52.75:3000/products/like', {
+    fetch(`${api.interest}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
@@ -51,7 +52,6 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/dream/kakao" element={<Token />} />
         <Route path="/" element={<Main />} />
-
         <Route
           path="/detail/:id"
           element={

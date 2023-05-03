@@ -1,8 +1,10 @@
 import React from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
-import useFetch from '../../../hooks/useFetch';
 import DropZone from './DropZone/DropZone';
 import ReviewList from './ReviewList/ReviewList';
+import { api } from '../../../api';
 
 function PhotoReview({
   reviewModalWindow,
@@ -14,21 +16,58 @@ function PhotoReview({
   setTextAreaValue,
   reviewSubmit,
   detailData,
+  paramsId,
 }) {
-  const [reviewData, setReviewData] = useFetch('/data/reviewData.json');
+  const token = localStorage.getItem('token');
+  const [reviewData, setReviewData] = useState([]);
 
-  function handleUpload() {
-    setReviewData([
-      ...reviewData,
-      {
-        id: 7,
-        image: `${URL.createObjectURL(file)}`,
-        userName: 'youngwoon',
-        likeNumber: '',
-        content: textAreaValue,
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    fetch(`${api.review}?productId=${paramsId}`)
+      .then(response => response.json())
+      .then(result => {
+        setReviewData(result);
+      });
+  };
+
+  function reviewSubmit() {
+    const formData = new FormData();
+    formData.append('productId', detailData.productId);
+    formData.append('reviewImg', file);
+    formData.append('title', 'review');
+    formData.append('content', textAreaValue);
+    fetch(`${api.review}`, {
+      headers: {
+        Accpet: 'application/json',
+        Authorization: token,
       },
-    ]);
+      method: 'POST',
+      cache: 'no-cache',
+      body: formData,
+    }).then(response => {
+      if (response.status === 201) {
+        fetchData();
+      }
+    });
   }
+
+  function removeReview(reviewId) {
+    fetch(`${api.review}/${reviewId}`, {
+      headers: {
+        Accpet: 'application/json',
+        Authorization: token,
+      },
+      method: 'DELETE',
+    }).then(response => {
+      if (response.status === 200) {
+        fetchData();
+      }
+    });
+  }
+
   return (
     <ReviewContainer>
       <ReviewHeader>
@@ -47,8 +86,10 @@ function PhotoReview({
       </ReviewHeader>
       <ReviewContents>
         <ReviewListContainer>
-          {reviewData.map(data => {
-            return <ReviewList key={data.id} data={data} />;
+          {reviewData.map((data, i) => {
+            return (
+              <ReviewList key={i} data={data} removeReview={removeReview} />
+            );
           })}
         </ReviewListContainer>
       </ReviewContents>
@@ -57,7 +98,6 @@ function PhotoReview({
           file={file}
           setFile={setFile}
           closeReviewModal={closeReviewModal}
-          handleUpload={handleUpload}
           textAreaValue={textAreaValue}
           setTextAreaValue={setTextAreaValue}
           reviewSubmit={reviewSubmit}

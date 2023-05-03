@@ -46,7 +46,7 @@ function ScrollModal({ detailData, goToPurchase, goToSales }) {
 
 const EntireArea = styled.div`
   position: fixed;
-  top: 121px;
+  top: 116px;
   display: flex;
   justify-content: center;
   width: 100%;

@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchModal from './SearchModal';
 import styled from 'styled-components';
 import logoImg from '../../assets/dreamLogo.png';
 
 function MainHeader() {
   const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
+  function goToLogin() {
+    navigate('/login');
+  }
 
   const showModal = e => {
     setModalOpen(true);
@@ -17,12 +23,17 @@ function MainHeader() {
         <TopUl>
           <TopLi>고객센터</TopLi>
           <TopLi>관심상품</TopLi>
-          <TopLi>로그인</TopLi>
+          <TopLi onClick={goToLogin}>{token ? '로그아웃' : '로그인'}</TopLi>
         </TopUl>
       </HeaderTop>
       <div>
         <HeaderMain>
-          <Logo logoImg={logoImg} />
+          <Logo
+            logoImg={logoImg}
+            onClick={() => {
+              navigate('/');
+            }}
+          />
           <MainUl>
             <MainLi weight>
               <LinkTag to="/">HOME</LinkTag>
@@ -35,9 +46,6 @@ function MainHeader() {
                 SEARCH
               </LinkTag>
               {modalOpen && <SearchModal setModalOpen={setModalOpen} />}
-            </MainLi>
-            <MainLi>
-              <LinkTag to="/">MY</LinkTag>
             </MainLi>
           </MainUl>
         </HeaderMain>
@@ -97,6 +105,9 @@ const Logo = styled.div`
   background-image: ${({ logoImg }) => `url(${logoImg})`};
   background-size: contain;
   background-repeat: no-repeat;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const MainUl = styled(TopUl)``;

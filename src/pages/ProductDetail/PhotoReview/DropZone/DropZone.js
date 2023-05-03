@@ -6,7 +6,6 @@ function DropZone({
   file,
   setFile,
   closeReviewModal,
-  handleUpload,
   textAreaValue,
   setTextAreaValue,
   reviewSubmit,
@@ -22,6 +21,14 @@ function DropZone({
     setTextAreaValue(e.target.value);
   }
 
+  function removeTextArea() {
+    setTextAreaValue('');
+  }
+
+  function AddTextArea(content) {
+    setTextAreaValue(content);
+  }
+
   return (
     <WriteReviewContainer>
       <WriteReviewTitle>홈데코 올리기</WriteReviewTitle>
@@ -29,6 +36,7 @@ function DropZone({
         onClick={() => {
           closeReviewModal();
           setFile(null);
+          removeTextArea();
         }}
       >
         ✕
@@ -63,16 +71,34 @@ function DropZone({
         onChange={handleTextArea}
       />
       <HashTagContainer>
-        <HashTag>#레고</HashTag>
-        <HashTag>#레고브릭</HashTag>
-        <HashTag>#홈데코</HashTag>
+        <HashTag
+          onClick={() => {
+            AddTextArea('#레고');
+          }}
+        >
+          #레고
+        </HashTag>
+        <HashTag
+          onClick={() => {
+            AddTextArea('#레고브릭');
+          }}
+        >
+          #레고브릭
+        </HashTag>
+        <HashTag
+          onClick={() => {
+            AddTextArea('#홈데코');
+          }}
+        >
+          #홈데코
+        </HashTag>
       </HashTagContainer>
       <SubmitButton
         onClick={() => {
-          handleUpload();
           closeReviewModal();
           setFile(null);
           reviewSubmit();
+          removeTextArea();
         }}
       >
         등록
@@ -86,7 +112,7 @@ const WriteReviewContainer = styled.div`
   width: 480px;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 2;
+  z-index: 3;
   padding: 32px;
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
   background-color: #ffffff;

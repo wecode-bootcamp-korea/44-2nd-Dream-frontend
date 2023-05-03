@@ -53,7 +53,8 @@ const CheckAgree = ({
           amount: Number(bidPrice) + Number(commission),
           orderId: dealNumber,
           orderName: productName,
-          customerName: inputValue.name,
+          // customerName: inputValue.name,
+          customerName: '김영운',
         })
         .then(function (result) {
           fetch(`http://10.58.52.75:3000/payment${paytype}/${bidtype}`, {
