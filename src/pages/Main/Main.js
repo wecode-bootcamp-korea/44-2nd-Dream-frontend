@@ -222,10 +222,10 @@ const ProductsMapDiv = styled(MainWrap)`
 
 export default Main;
 const CATEGORY = [
-  { id: 5, text: 'POINT QUIZ' },
+  { id: 5, text: 'EVENT' },
   { id: 6, text: 'BEST' },
   { id: 7, text: 'NEW' },
-  { id: 8, text: 'EVENT' },
+  { id: 8, text: 'PRESENT' },
 ];
 const RIGHT_CATEGORY = [
   { id: 0, title: '선택', value: '', sortOrderValue: '' },
