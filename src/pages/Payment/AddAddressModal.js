@@ -10,6 +10,8 @@ const AddAddressModal = ({
   inputValue,
   setInputValue,
   setAddressData,
+  addressStorage,
+  setAddressStorage,
 }) => {
   const handleAddress = () => {
     addressModal();
@@ -37,7 +39,7 @@ const AddAddressModal = ({
       }),
     })
       .then(res => res.json())
-      .then(result => setAddressData(result));
+      .then(result => setAddressStorage(result));
   };
 
   return (

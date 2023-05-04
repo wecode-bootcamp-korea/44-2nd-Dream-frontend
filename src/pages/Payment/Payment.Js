@@ -34,6 +34,7 @@ const Payment = ({ pageMode, currentBtn }) => {
   }, []);
 
   const [openAccount, setOpenAccount] = useState(false);
+  const [addressStorage, setAddressStorage] = useState([]);
 
   const [openModal, setOpenModal] = useState(false);
   const confirmModal = () => {
@@ -77,6 +78,8 @@ const Payment = ({ pageMode, currentBtn }) => {
       )}
 
       <AddressInfo
+        addressStorage={addressStorage}
+        setAddressStorage={setAddressStorage}
         writeInfo={writeInfo}
         setWriteInfo={setWriteInfo}
         openModal={openModal}
@@ -111,6 +114,7 @@ const Payment = ({ pageMode, currentBtn }) => {
         currentBtn={currentBtn}
         addressData={addressData}
         accountData={accountData}
+        addressStorage={addressStorage}
       />
     </Content>
   );

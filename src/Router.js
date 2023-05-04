@@ -12,6 +12,7 @@ import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Success from './pages/Payment/Success';
 import TradeDetails from './pages/TradeDetails/TradeDetails';
 import { api } from './api';
+import PointQuiz from './pages/PointQuiz/PointQuiz';
 
 const Router = () => {
   const [pageMode, setPageMode] = useState(true);
@@ -76,6 +77,7 @@ const Router = () => {
           }
         />
         <Route path="/tradeDetails" element={<TradeDetails />} />
+        <Route path="/event" element={<PointQuiz />} />
         <Route
           path="/payment/:id"
           element={<Payment pageMode={pageMode} currentBtn={currentBtn} />}

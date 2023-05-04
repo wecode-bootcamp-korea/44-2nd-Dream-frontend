@@ -20,6 +20,8 @@ const AddressInfo = ({
   setInputValue,
   inputValue,
   setAddressData,
+  addressStorage,
+  setAddressStorage,
 }) => {
   const [message, setMessage] = useState('배송 시 요청사항을 선택하세요');
   const [address, setAddress] = useState('');
@@ -51,7 +53,7 @@ const AddressInfo = ({
     open({ onComplete: handleComplete });
   };
 
-  const [addressStorage, setAddressStorage] = useState([]);
+  // const [addressStorage, setAddressStorage] = useState([]);
 
   const [bookModalData, setBookModalData] = useState([]);
 
@@ -71,6 +73,8 @@ const AddressInfo = ({
           inputValue={inputValue}
           setInputValue={setInputValue}
           setAddressData={setAddressData}
+          addressStorage={addressStorage}
+          setAddressStorage={setAddressStorage}
         />
       )}
       {openAddress && <BlackModal onClick={() => addressModal()} />}
