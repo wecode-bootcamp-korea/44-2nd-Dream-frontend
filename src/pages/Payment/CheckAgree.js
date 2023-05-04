@@ -11,6 +11,8 @@ const CheckAgree = ({
   currentBtn,
   inputValue,
   accountData,
+  addressData,
+  addressStorage,
 }) => {
   const [checked, setChecked] = useState(
     pageMode
@@ -18,6 +20,7 @@ const CheckAgree = ({
       : [false, false, false, false, false]
   );
   console.log(accountData);
+  console.log(addressData);
   const navigate = useNavigate();
   const { cardId, accountId } = accountData;
   const handleCheckBox = targetId => {
@@ -39,11 +42,13 @@ const CheckAgree = ({
     biddingId,
     addressData,
     inputValue,
-    accountData
+    accountData,
+    addressStorage
   ) => {
     const clientKey = process.env.REACT_APP_TOSS_CLIENT_KEY;
 
     console.log(dealNumber);
+    console.log(addressStorage);
 
     loadTossPayments(clientKey).then(tossPayments => {
       tossPayments
@@ -67,7 +72,7 @@ const CheckAgree = ({
               pageMode
                 ? {
                     dealNumber: dealNumber,
-                    addressId: addressData.addressId,
+                    addressId: 2,
                     biddingId: biddingId,
                   }
                 : {
@@ -112,7 +117,8 @@ const CheckAgree = ({
         pageMode
           ? {
               dealNumber: bidData.bidData.dealNumber,
-              addressId: bidData.addressData.addressId,
+              // addressId: bidData.addressStorage.addressId,
+              addressId: 2,
               biddingId: bidData.bidData.biddingId,
             }
           : {

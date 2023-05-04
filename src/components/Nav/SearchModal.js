@@ -64,7 +64,7 @@ function SearchModal({ setModalOpen }) {
       .then(data => {
         setHotTopics(data);
       });
-  }, []);
+  }, [wordData]);
 
   return (
     <Total

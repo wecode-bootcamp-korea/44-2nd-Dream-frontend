@@ -1,11 +1,20 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 function CategoryBtn({ id, text }) {
+  const navigate = useNavigate();
+  function goToEvent() {
+    navigate('/event');
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
   return (
     <ButtonBox>
       <div>
-        <Button>
+        <Button onClick={goToEvent}>
           <InnerText id={id}>{text}</InnerText>
         </Button>
         <OuterText>{text}</OuterText>
