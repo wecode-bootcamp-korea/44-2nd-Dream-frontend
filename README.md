@@ -47,6 +47,7 @@
 
  **로그인(Kakao Social Login)**
  
+ 
 ***
  
  ### Products
@@ -71,11 +72,32 @@
  
  **구매 입찰**
  
+
+https://user-images.githubusercontent.com/122069802/236659570-2d5a25d1-865b-4949-b281-a85271aa91b0.mov
+
+
  **즉시 구매**
+ 
+ 
+
+https://user-images.githubusercontent.com/122069802/236659588-d04a5f3b-dc02-4aac-8852-86f22613f7ce.mov
+
+
  
  **판매 입찰**
  
+
+https://user-images.githubusercontent.com/122069802/236659598-8d752a65-da9f-49e7-b3d8-664a8317641e.mov
+
+
+ 
  **즉시 판매**
+ 
+
+https://user-images.githubusercontent.com/122069802/236659611-3bbd69b3-79dc-4543-be37-0b5a1d0ae525.mov
+
+
+ 
  
  ***
  
@@ -84,6 +106,11 @@
  ### Search
  
  **상품 검색**
+ 
+
+https://user-images.githubusercontent.com/122069802/236659617-1452d9e8-0a41-4e29-af0a-04b9986ec4e2.mov
+
+
  
  **인기상품 검색**
  
