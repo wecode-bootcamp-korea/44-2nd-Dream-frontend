@@ -7,7 +7,7 @@
 ## 프론트앤드
 김영운([**Github**](https://github.com/), [회고록]())<br>
 조건호([**Github**](https://github.com/), [회고록]())<br>
-최선영([**Github**](https://github.com/suny0ung)), [회고록](https://note-ballpen.tistory.com/24))<br>
+최선영([**Github**](https://github.com/suny0ung), [회고록](https://note-ballpen.tistory.com/24))<br>
 
 <br>
 
