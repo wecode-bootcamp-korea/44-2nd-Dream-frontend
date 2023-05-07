@@ -51,6 +51,11 @@
 <br>
 
 
+ ## flow
+ 
+ <img width="500" alt="스크린샷 2023-05-07 오후 6 17 45" src="https://user-images.githubusercontent.com/121158293/236668841-92202a4a-31ab-4610-bf53-4c8b0d5229ca.png">
+
+
  ## 구현 페이지
  
 
