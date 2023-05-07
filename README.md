@@ -1,70 +1,109 @@
-# Getting Started with Create React App
+# 44-2nd-Dream-backend 경매 플랫폼 제작 프로젝트
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+박세익([**Github**](https://github.com/), [회고록](https://walwaldev.tistory.com/))<br>
+장다희([**Github**](https://github.com/walwald), [회고록](https://walwaldev.tistory.com/))<br>
+김민서([**Github**](https://github.com/), [회고록](https://walwaldev.tistory.com/))<br>
+송석준([**Github**](https://github.com/), [회고록](https://walwaldev.tistory.com/))<br>
+<br>
 
-## Available Scripts
+## 📍프로젝트 기간 & 인원
+* 프로젝트 기간: 2주 (2023.04.20 ~ 2023.05.04)   
+* 개발 인원:  
+  `Frontend`: 최선영(Product Manager), 김영운, 조건호 <br>
+  `Backend`: 박세익(Project Manager), 장다희, 김민서, 송석준 <br>
+* [백엔드 Github 저장소](https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend)
+* 모델링한 사이트: [KREAM](https://kream.co.kr/)
+<br>
 
-In the project directory, you can run:
+## 📍사용 기술
 
-### `npm start`
+* FrontEnd   
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+ |JavaScript|Node.js|MySql|Rest|Prettier|Docker|AWS|
+|---|---|---|---|---|---|---|
+|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/js-icon.svg" alt="icon" width="65" height="65" /></div>| <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/nginx-icon.svg" alt="icon" width="65" height="65" /></div>| <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/restapi-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/prettier-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/docker-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/aws-icon.svg" alt="icon" width="65" height="65" /></div>|
+<br>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* 협업 <br><br>
+<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <br>
+<img src="https://img.shields.io/badge/trello-0055cc?style=for-the-badge&logo=trello&logoColor=yellow"> <br>
+<img src="https://img.shields.io/badge/slack-4A154B?style=for-the-badge&logo=Slack&logoColor=wihte"> <br>
+<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white"> <br>
+<br>
 
-### `npm test`
+ ## 📍[ERD](https://dbdiagram.io/d/64426bdf6b31947051f9b394)
+![DREAM (1)](https://user-images.githubusercontent.com/120387100/236399537-f89176d5-fa75-4acc-bda2-b7ef61e5319c.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+ ## 📍[Postman](https://documenter.getpostman.com/view/26858291/2s93eWzskR)
 
-### `npm run build`
+ <br>
+ 
+ ## 핵심 기능
+ 
+ ### Users
+ **회원가입**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<br> 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+ **로그인(Kakao Social Login)**
+ 
+***
+ 
+ ### Products
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+ **상품 정보** 
 
-### `npm run eject`
+<br>
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**상품 검색**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+***
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<br>
+ 
+ ### Bid
+ 
+ ***
+ 
+ <br>
+ 
+ ### Payment
+ 
+ **구매 입찰**
+ 
+ **즉시 구매**
+ 
+ **판매 입찰**
+ 
+ **즉시 판매**
+ 
+ ***
+ 
+ <br>
+ 
+ ### Search
+ 
+ **상품 검색**
+ 
+ **인기상품 검색**
+ 
+ ***
+ 
+ <br>
+ 
+ ### Likes
+ 
+ ***
+ 
+ <br>
+ 
+ ### Reviews
+ 
+ **CREATE :**
+ 
+ **READ :**
+ 
+ **UPDATE :**
+ 
+ **DELETE :**
+ 
