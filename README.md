@@ -1,9 +1,22 @@
 # 44-2nd-Dream-backend 경매 플랫폼 제작 프로젝트
 
+<img src=https://user-images.githubusercontent.com/121158293/236659809-3ff8df57-9fe3-4515-93da-a2581b72d309.png width="280" height="65">
+
+<br>
+
+## 프론트앤드
+김영운([**Github**](https://github.com/), [회고록]())<br>
+조건호([**Github**](https://github.com/), [회고록]())<br>
+최선영([**Github**](https://github.com/suny0ung)), [회고록](https://note-ballpen.tistory.com/24))<br>
+
+<br>
+
+## 백앤드
 박세익([**Github**](https://github.com/), [회고록](https://walwaldev.tistory.com/))<br>
 장다희([**Github**](https://github.com/walwald), [회고록](https://walwaldev.tistory.com/))<br>
 김민서([**Github**](https://github.com/), [회고록](https://walwaldev.tistory.com/))<br>
 송석준([**Github**](https://github.com/), [회고록](https://walwaldev.tistory.com/))<br>
+
 <br>
 
 ## 📍프로젝트 기간 & 인원
@@ -19,112 +32,66 @@
 
 * FrontEnd   
 
- |JavaScript|Node.js|MySql|Rest|Prettier|Docker|AWS|
-|---|---|---|---|---|---|---|
-|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/js-icon.svg" alt="icon" width="65" height="65" /></div>| <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/nginx-icon.svg" alt="icon" width="65" height="65" /></div>| <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/restapi-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/prettier-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/docker-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/aws-icon.svg" alt="icon" width="65" height="65" /></div>|
+ |React|JavaScript|styledcomponents|Rest|Prettier|
+|---|---|---|---|---|
+|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/react-icon.svg" alt="icon" width="52" height="52" /></div>| <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/js-icon.svg" alt="icon" width="65" height="65" /></div>| <div style="display: flex; align-items: flex-start;"><img src="https://img.shields.io/badge/styledcomponents-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white"> </div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/restapi-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/prettier-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/docker-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/aws-icon.svg" alt="icon" width="65" height="65" /></div>|
 <br>
 
-* 협업 <br><br>
-<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <br>
-<img src="https://img.shields.io/badge/trello-0055cc?style=for-the-badge&logo=trello&logoColor=yellow"> <br>
-<img src="https://img.shields.io/badge/slack-4A154B?style=for-the-badge&logo=Slack&logoColor=wihte"> <br>
-<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white"> <br>
+
+
+</div>
+
+* 협업 <br>
+<div style="display: flex; align-items: flex-start;">
+<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+<img src="https://img.shields.io/badge/trello-0055cc?style=for-the-badge&logo=trello&logoColor=yellow">
+<img src="https://img.shields.io/badge/slack-4A154B?style=for-the-badge&logo=Slack&logoColor=wihte">
+<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+<br>
 <br>
 
- ## 📍[ERD](https://dbdiagram.io/d/64426bdf6b31947051f9b394)
-![DREAM (1)](https://user-images.githubusercontent.com/120387100/236399537-f89176d5-fa75-4acc-bda2-b7ef61e5319c.png)
 
- ## 📍[Postman](https://documenter.getpostman.com/view/26858291/2s93eWzskR)
+ ## 구현 페이지
+ 
 
- <br>
- 
- ## 핵심 기능
- 
- ### Users
- **회원가입**
+ ### 1. 회원가입
 
 <br> 
 
- **로그인(Kakao Social Login)**
- 
- 
-***
- 
- ### Products
+### 2. 로그인(Kakao Social Login)
 
- **상품 정보** 
-
-<br>
-
-**상품 검색**
-
-***
-
-<br>
+<br> 
  
- ### Bid
- 
- ***
- 
- <br>
- 
- ### Payment
- 
- **구매 입찰**
- 
-
-https://user-images.githubusercontent.com/122069802/236659570-2d5a25d1-865b-4949-b281-a85271aa91b0.mov
-
-
- **즉시 구매**
- 
- 
-
-https://user-images.githubusercontent.com/122069802/236659588-d04a5f3b-dc02-4aac-8852-86f22613f7ce.mov
-
-
- 
- **판매 입찰**
- 
-
-https://user-images.githubusercontent.com/122069802/236659598-8d752a65-da9f-49e7-b3d8-664a8317641e.mov
-
-
- 
- **즉시 판매**
- 
-
-https://user-images.githubusercontent.com/122069802/236659611-3bbd69b3-79dc-4543-be37-0b5a1d0ae525.mov
-
-
- 
- 
- ***
- 
- <br>
- 
- ### Search
+### 3. Search
  
  **상품 검색**
  
-
-https://user-images.githubusercontent.com/122069802/236659617-1452d9e8-0a41-4e29-af0a-04b9986ec4e2.mov
-
-
- 
  **인기상품 검색**
  
- ***
+<br>
+ 
+### 4. 제품 필터
+
  
  <br>
  
- ### Likes
+### 5. Payment
  
- ***
+ **구매 입찰**
+ 
+ **즉시 구매**
+ 
+ **판매 입찰**
+ 
+ **즉시 판매**
  
  <br>
  
- ### Reviews
+### 6. Likes
+ 
+ <br>
+ 
+ ### 7. Reviews
  
  **CREATE :**
  
